@@ -50,29 +50,60 @@ you can point your own subdomain at it (e.g. `budget.yoursite.com`).
 
 ## 3. Embed it
 
-Copy `embed/embed.css` into your stylesheet, then paste this where you want the
-game. `embed/example.html` is a working demo page — open it to see the result.
+You do **not** need access to your site's stylesheet. Both options below carry
+their own styling and are tested against a deliberately hostile CMS theme — one
+that forces `font-family` globally, crushes every `iframe` to 120px with
+`!important`, repaints links, and uses colliding class names. Both survive it.
+
+### Option 1 — one script tag (recommended)
 
 ```html
-<div class="bh-embed">
-  <iframe
-    src="https://yoursite.com/budget-game/"
-    title="Balancing Hollister — a city budget game"
-    loading="lazy"></iframe>
-</div>
-<p class="bh-embed-note">
-  Prefer it full screen?
-  <a href="https://yoursite.com/budget-game/" target="_blank" rel="noopener">Open in a new tab</a>.
-</p>
+<script src="https://jc-ksbw.github.io/budget_game/embed/embed.js"></script>
 ```
 
-The stylesheet gives the iframe a **760px height on desktop** and, below 640px,
-hides it in favour of a **launch card** that opens the game full screen. That
-switch is deliberate — see the phone note below.
+That is the whole thing. It renders into a **Shadow DOM**, so your theme's CSS
+cannot reach inside and nothing leaks out. On desktop you get the game in a
+760px frame; below 640px it switches to a launch card that opens the game full
+screen.
 
-If you would rather keep the iframe on phones, delete the `.bh-launch` rules and
-change the mobile block to a height you like. Subtract your own site header's
-height from `100dvh`.
+Optional attributes:
+
+| Attribute | Default | What it does |
+|---|---|---|
+| `data-mode` | `auto` | `iframe` to always frame it, `card` to always show the launch card |
+| `data-height` | `760` | Desktop frame height in px |
+| `data-breakpoint` | `640` | Width below which the card replaces the frame |
+| `data-src` | `../dist/index.html` | Game URL, resolved against the script's own URL |
+
+It renders where the tag sits. If your CMS moves scripts to the footer, drop an
+empty div where you want it instead:
+
+```html
+<div data-balancing-hollister></div>
+<script src="https://jc-ksbw.github.io/budget_game/embed/embed.js"></script>
+```
+
+### Option 2 — plain HTML, no JavaScript
+
+If your CMS strips `<script>` tags, paste the contents of
+[`embed/snippet.html`](embed/snippet.html) into an HTML block. It carries a
+scoped `<style>` block and needs no stylesheet changes.
+
+It is hardened with `!important` on the properties themes usually hijack, which
+is why it holds up in the hostile test — but a theme that also uses `!important`
+at higher specificity could still reach it. The script version cannot be reached
+at all, so prefer it where you can.
+
+### Option 3 — bare iframe
+
+If you only have an iframe field and cannot paste HTML at all:
+
+```
+https://jc-ksbw.github.io/budget_game/dist/index.html
+```
+
+Set the height to **760px**. Be aware this is the weakest option on phones — see
+below.
 
 ## 4. Things that will bite you
 
@@ -82,7 +113,8 @@ auto-size, and there is nothing to measure. The fixed-height wrapper with the
 iframe at `height: 100%` is also the workaround for iOS Safari, which otherwise
 expands an iframe to its content height and breaks the sticky header.
 
-**On a phone, an iframe is a worse experience.** A 390×664 screen with your site
+**On a phone, an iframe is a worse experience.** (Options 1 and 2 handle this
+for you by swapping in the launch card; option 3 cannot.) A 390×664 screen with your site
 header leaves the game about 540px, puts a scroll inside a scroll, and — because
 `env(safe-area-inset-*)` resolves against the top document — lets the game's
 bottom tab bar sit under the home indicator. That is why the stylesheet shows a

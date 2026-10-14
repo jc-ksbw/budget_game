@@ -16,9 +16,18 @@ game-design estimate.
 
 ## Hosting and embedding
 
-See **[HOSTING.md](HOSTING.md)**. Short version: `dist/index.html` is one
-self-contained file — upload it anywhere, then embed it with the stylesheet and
-snippet in [`embed/`](embed/). `embed/example.html` is a working demo.
+See **[HOSTING.md](HOSTING.md)**. `dist/index.html` is one self-contained file —
+upload it anywhere. To embed it in a site whose stylesheet you can't edit, paste
+one script tag:
+
+```html
+<script src="https://jc-ksbw.github.io/budget_game/embed/embed.js"></script>
+```
+
+It renders into a Shadow DOM (immune to the host theme), frames the game on
+desktop, and swaps to a full-screen launch card on phones.
+[`embed/snippet.html`](embed/snippet.html) is a no-JavaScript equivalent. Both
+are tested against a deliberately hostile CMS theme.
 
 ## Play it
 

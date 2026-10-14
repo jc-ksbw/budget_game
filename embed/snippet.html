@@ -1,0 +1,110 @@
+<!-- ============================================================
+     Balancing Hollister — no-JavaScript embed.
+
+     Use this if your CMS strips <script> tags. Paste the whole
+     block into an HTML / embed field. It carries its own styles,
+     scoped to .bh-hollister, so it needs no changes to your site's
+     stylesheet and will not collide with it.
+
+     Replace BOTH occurrences of the game URL if you host it
+     somewhere other than GitHub Pages.
+     ============================================================ -->
+
+<div class="bh-hollister">
+  <style>
+    .bh-hollister {
+      display: block !important; width: auto !important; max-width: none !important;
+      margin: 0 !important; padding: 0 !important; border: 0 !important;
+      background: none !important; box-shadow: none !important;
+      float: none !important; position: static !important; overflow: visible !important;
+    }
+    .bh-hollister, .bh-hollister * {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important;
+      background: none !important; text-decoration: none !important;
+      transform: none !important; float: none !important; max-width: none;
+    }
+    .bh-hollister { font-size: 16px !important; line-height: 1.5 !important; }
+    .bh-hollister * { box-sizing: border-box; }
+    .bh-hollister .bh-frame {
+      position: relative !important; width: 100% !important; max-width: 900px !important;
+      height: 760px !important; margin: 0 auto !important; padding: 0 !important;
+      border: 1px solid rgba(11,11,11,.12) !important;
+      border-radius: 14px !important; overflow: hidden !important;
+      background: #fcfcfb !important;
+    }
+    .bh-hollister .bh-frame > iframe {
+      display: block !important; width: 100% !important; height: 100% !important;
+      min-height: 0 !important; max-height: none !important;
+      border: 0 !important; margin: 0 !important; padding: 0 !important;
+    }
+    .bh-hollister .bh-note {
+      max-width: 900px !important; margin: 10px auto 0 !important; padding: 0 !important;
+      text-align: center !important; font-size: 13.5px !important; color: #52514e !important;
+    }
+    .bh-hollister .bh-note a { color: inherit !important; text-decoration: underline !important; }
+    .bh-hollister .bh-card {
+      display: none; color: #0b0b0b !important;
+      max-width: 900px !important; margin: 0 auto !important; padding: 0 !important;
+      background: #fcfcfb !important;
+      border: 1px solid rgba(11,11,11,.12) !important;
+      border-radius: 14px !important; overflow: hidden !important;
+    }
+    .bh-hollister .bh-bar { display: flex !important; height: 8px !important; }
+    .bh-hollister .bh-bar i { display: block !important; }
+    .bh-hollister .bh-bar i:nth-child(1) { background:#2a78d6 !important; flex:30 }
+    .bh-hollister .bh-bar i:nth-child(2) { background:#eb6834 !important; flex:30 }
+    .bh-hollister .bh-bar i:nth-child(3) { background:#1baf7a !important; flex:12 }
+    .bh-hollister .bh-bar i:nth-child(4) { background:#eda100 !important; flex:11 }
+    .bh-hollister .bh-bar i:nth-child(5) { background:#e87ba4 !important; flex:17 }
+    .bh-hollister .bh-body { padding: 16px !important; display: block !important; }
+    .bh-hollister .bh-kicker {
+      display: block !important; font-size: 11px; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: #d03b3b;
+    }
+    .bh-hollister .bh-title {
+      display: block !important; font-size: 21px; font-weight: 650;
+      letter-spacing: -.02em; margin: 6px 0 4px;
+    }
+    .bh-hollister .bh-sub { display: block !important; font-size: 14px !important; color: #52514e !important; }
+    .bh-hollister .bh-cta {
+      display: inline-flex !important; align-items: center !important; gap: 7px !important;
+      margin-top: 14px !important; min-height: 48px !important; padding: 0 20px !important;
+      border-radius: 999px !important; background: #2a78d6 !important;
+      color: #fff !important; font-size: 16px !important; font-weight: 650 !important;
+    }
+    @media (prefers-color-scheme: dark) {
+      .bh-hollister .bh-frame { background: #1a1a19; border-color: rgba(255,255,255,.12); }
+      .bh-hollister .bh-note { color: #c3c2b7; }
+      .bh-hollister .bh-card { background: #1a1a19; color: #f0efec; border-color: rgba(255,255,255,.12); }
+      .bh-hollister .bh-sub { color: #c3c2b7; }
+      .bh-hollister .bh-cta { background: #3987e5; }
+    }
+    /* Phones get a full-screen launch instead of a cramped frame. */
+    @media (max-width: 640px) {
+      .bh-hollister .bh-frame, .bh-hollister .bh-note { display: none !important; }
+      .bh-hollister .bh-card { display: block !important; }
+    }
+  </style>
+
+  <div class="bh-frame">
+    <iframe src="https://jc-ksbw.github.io/budget_game/dist/index.html"
+            title="Balancing Hollister — a city budget game"
+            loading="lazy"></iframe>
+  </div>
+  <p class="bh-note">
+    Prefer it full screen?
+    <a href="https://jc-ksbw.github.io/budget_game/dist/index.html"
+       target="_blank" rel="noopener" style="color:inherit">Open in a new tab</a>.
+  </p>
+
+  <a class="bh-card" href="https://jc-ksbw.github.io/budget_game/dist/index.html"
+     target="_blank" rel="noopener">
+    <span class="bh-bar"><i></i><i></i><i></i><i></i><i></i></span>
+    <span class="bh-body">
+      <span class="bh-kicker">Fiscal emergency declared</span>
+      <span class="bh-title">Balancing Hollister</span>
+      <span class="bh-sub">Close a $6.36&nbsp;million deficit and get three of five council votes. Built on the city&rsquo;s published FY&nbsp;2026&#8209;27 budget.</span>
+      <span class="bh-cta">Play the game &rarr;</span>
+    </span>
+  </a>
+</div>

@@ -1,0 +1,111 @@
+/* ============================================================
+   Balancing Hollister — embed styles.
+   Copy this into your site's CSS, or link the file.
+
+   The game is a viewport-filling app with a sticky header and a
+   bottom tab bar, so the iframe needs an explicit height — it is
+   not a flowing document that can auto-size.
+
+   The fixed-height wrapper with the iframe at 100% is also the
+   workaround for iOS Safari, which otherwise expands an iframe
+   to the height of its content and breaks the sticky header.
+   ============================================================ */
+
+.bh-embed {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  height: 760px;
+  margin-inline: auto;
+  border: 1px solid rgba(11, 11, 11, .12);
+  border-radius: 14px;
+  overflow: hidden;              /* clips the iframe to the radius */
+  background: #f9f9f7;
+  -webkit-overflow-scrolling: touch;
+}
+
+.bh-embed > iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .bh-embed { background: #0d0d0d; border-color: rgba(255, 255, 255, .12); }
+}
+
+/* On a phone, give it the screen. Subtract your own site header's
+   height from the 120px below. */
+@media (max-width: 640px) {
+  .bh-embed {
+    height: calc(100dvh - 120px);
+    min-height: 520px;
+    border-radius: 0;
+    border-inline: 0;
+  }
+}
+
+/* A full-screen link matters on phones: inside an iframe the game
+   cannot reach the device's safe-area insets, so its bottom tab bar
+   can sit under the home indicator. */
+.bh-embed-note {
+  max-width: 900px;
+  margin: 10px auto 0;
+  font: 400 13.5px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: #52514e;
+  text-align: center;
+}
+.bh-embed-note a { color: inherit; }
+@media (prefers-color-scheme: dark) { .bh-embed-note { color: #c3c2b7; } }
+
+/* ============================================================
+   Phone alternative: a launch card instead of a cramped iframe.
+
+   On a phone an embedded iframe gives the game about 540px of a
+   664px screen, puts a scroll inside a scroll, and cannot reach
+   the device's safe-area insets. A full-screen launch is better.
+   Pure CSS — the iframe simply isn't shown below 640px.
+   ============================================================ */
+
+.bh-launch { display: none; }
+
+@media (max-width: 640px) {
+  .bh-embed, .bh-embed-note { display: none; }
+  .bh-launch { display: block; }
+}
+
+.bh-launch-card {
+  display: block; text-decoration: none; color: inherit;
+  border: 1px solid rgba(11, 11, 11, .12);
+  border-radius: 14px; overflow: hidden;
+  background: #fcfcfb;
+  font: 400 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.bh-launch-bar { display: flex; height: 8px; }
+.bh-launch-bar i { flex: 1; }
+.bh-launch-bar i:nth-child(1) { background: #2a78d6; flex: 30; }
+.bh-launch-bar i:nth-child(2) { background: #eb6834; flex: 30; }
+.bh-launch-bar i:nth-child(3) { background: #1baf7a; flex: 12; }
+.bh-launch-bar i:nth-child(4) { background: #eda100; flex: 11; }
+.bh-launch-bar i:nth-child(5) { background: #e87ba4; flex: 17; }
+.bh-launch-body { padding: 16px; }
+.bh-launch-kicker {
+  font-size: 11px; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: #d03b3b;
+}
+.bh-launch-title {
+  font-size: 21px; font-weight: 650; letter-spacing: -.02em; margin: 6px 0 4px;
+}
+.bh-launch-sub { font-size: 14px; color: #52514e; }
+.bh-launch-cta {
+  display: inline-flex; align-items: center; gap: 7px;
+  margin-top: 14px; min-height: 48px; padding: 0 20px;
+  border-radius: 999px; background: #2a78d6; color: #fff;
+  font-size: 16px; font-weight: 650;
+}
+@media (prefers-color-scheme: dark) {
+  .bh-launch-card { background: #1a1a19; border-color: rgba(255,255,255,.12); }
+  .bh-launch-sub { color: #c3c2b7; }
+  .bh-launch-cta { background: #3987e5; }
+}

@@ -537,6 +537,55 @@ table.dt .neg { color: var(--critical); }
 .verdict.is-critical .verdict-icon { color: var(--critical); }
 .verdict b { font-weight: 650; }
 
+/* ---------- about sheet ---------- */
+/* A real dialog, not alert(): alert() is blocked in cross-origin iframes,
+   and this page is meant to be embeddable. */
+.sheet {
+  width: min(560px, calc(100vw - 24px));
+  max-height: min(82dvh, 720px);
+  padding: 0; border: 1px solid var(--hairline);
+  border-radius: var(--radius); background: var(--surface-1); color: var(--text-1);
+  box-shadow: var(--shadow-2); overflow: hidden;
+  margin: auto;
+}
+.sheet::backdrop { background: rgba(11, 11, 11, .5); }
+.sheet-head {
+  display: flex; align-items: center; gap: 12px;
+  padding: 15px 16px; border-bottom: 1px solid var(--hairline);
+  position: sticky; top: 0; background: var(--surface-1); z-index: 2;
+}
+.sheet-head h2 { font-size: 17px; flex: 1; }
+.sheet-close {
+  width: 38px; height: 38px; flex: none; border-radius: 50%;
+  background: var(--surface-2); color: var(--text-1);
+  display: grid; place-items: center; font-size: 19px; line-height: 1;
+}
+.sheet-close:active { background: var(--surface-3); }
+.sheet-body { padding: 4px 16px 18px; overflow-y: auto; max-height: calc(82dvh - 70px); }
+.sheet-body h3 {
+  font-size: 11.5px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--muted); margin: 16px 0 7px;
+}
+.sheet-body h3:first-child { margin-top: 12px; }
+.sheet-body ul { margin: 0; padding-left: 18px; }
+.sheet-body li { font-size: 13.5px; color: var(--text-2); margin-bottom: 5px; line-height: 1.45; }
+.sheet-body li b { color: var(--text-1); font-weight: 650; font-variant-numeric: tabular-nums; }
+.sheet-tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 650; padding: 2px 8px; border-radius: 6px;
+  vertical-align: middle; margin-left: 6px;
+}
+.sheet-tag.is-official { background: color-mix(in srgb, var(--good) 18%, var(--surface-2)); color: var(--good-ink); }
+.sheet-tag.is-est { background: color-mix(in srgb, var(--warning) 26%, var(--surface-2)); color: var(--text-1); }
+.sheet-foot {
+  padding: 12px 16px 16px; border-top: 1px solid var(--hairline);
+  font-size: 12.5px; color: var(--muted);
+}
+
+@media (min-width: 600px) {
+  .sheet-body { max-height: calc(82dvh - 76px); }
+}
+
 /* ---------- misc ---------- */
 .callout {
   padding: 13px 14px; border-radius: var(--radius); font-size: 13.5px;
@@ -703,6 +752,43 @@ table.dt .neg { color: var(--critical); }
   </section>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <dialog class="sheet" id="about-sheet" aria-labelledby="about-title">
+    <div class="sheet-head">
+      <h2 id="about-title">Where these numbers come from</h2>
+      <button class="sheet-close" id="about-close" aria-label="Close">&times;</button>
+    </div>
+    <div class="sheet-body">
+      <h3>From the city's approved budget <span class="sheet-tag is-official">Official</span></h3>
+      <ul>
+        <li>General Fund revenue <b>$50,224,900</b></li>
+        <li>General Fund expense <b>$56,588,184</b></li>
+        <li>General Fund deficit <b>$6,363,284</b></li>
+        <li>Personnel <b>$34,954,900</b> of that General Fund</li>
+        <li>Every revenue line on the Impact tab</li>
+        <li>Every department total on the Budget tab &mdash; the city's own cost centres grouped into its named departments, summing exactly to the published total</li>
+        <li>The <b>$1,200,000</b> contingency and <b>$500,000</b> events lines</li>
+        <li>Water Enterprise Fund deficit <b>$10,660,644</b></li>
+      </ul>
+
+      <h3>From reporting on council actions <span class="sheet-tag is-official">Official</span></h3>
+      <ul>
+        <li>Fiscal emergency declared <b>October 2, 2026</b></li>
+        <li><b>$18M</b> interfund loan from impact fee funds &mdash; <b>$11M</b> to the General Fund, 4% interest, repayable by June 30, 2027</li>
+        <li><b>$178</b> in the General Fund bank account the week of September 21, 2026</li>
+        <li><b>20%</b> General Fund reserve policy target</li>
+      </ul>
+
+      <h3>Game-design estimates <span class="sheet-tag is-est">Not city figures</span></h3>
+      <ul>
+        <li>What each policy option saves or raises &mdash; except the $11M loan, the $1.2M contingency and the $500K events line, which are real budget lines</li>
+        <li>All five service meters and every movement in them</li>
+        <li>The growth rates behind the three-year outlook</li>
+        <li>The five council members, who are fictional archetypes and not portrayals of any real officeholder</li>
+      </ul>
+    </div>
+    <div class="sheet-foot">Full provenance, including how each department was identified, is in SOURCES.md.</div>
+  </dialog>
 </div>
 
 
@@ -3249,31 +3335,23 @@ $('btn-start').addEventListener('click', () => {
   updateBoard();
 });
 
-$('btn-about-intro').addEventListener('click', () => {
-  alert(
-    'Where these numbers come from\n\n' +
-    'OFFICIAL — City of Hollister FY 2026-27 Approved Budget Document:\n' +
-    '\u2022 General Fund revenue $50,224,900\n' +
-    '\u2022 General Fund expense $56,588,184\n' +
-    '\u2022 General Fund deficit $6,363,284\n' +
-    '\u2022 Every revenue line on the Impact tab\n' +
-    '\u2022 Every department total on the Budget tab (the city\'s cost centres grouped into its named departments; they sum exactly to the published total)\n' +
-    '\u2022 Water Enterprise Fund deficit $10,660,644\n' +
-    '\u2022 Personnel $34,954,900 of the General Fund\n' +
-    '\u2022 The $1.2M contingency and $500K events lines\n\n' +
-    'OFFICIAL — reporting on council actions:\n' +
-    '\u2022 Fiscal emergency declared October 2, 2026\n' +
-    '\u2022 $18M interfund loan from impact fee funds ($11M to the General Fund), 4%, repayable by June 30, 2027\n' +
-    '\u2022 $178 in the General Fund bank account the week of September 21, 2026\n' +
-    '\u2022 20% General Fund reserve policy\n\n' +
-    'GAME-DESIGN ESTIMATES:\n' +
-    '\u2022 What each policy option would save or raise, except the $11M loan, the $1.2M contingency and the $500K events line\n' +
-    '\u2022 All five service meters and their movements\n' +
-    '\u2022 The growth rates in the three-year outlook\n' +
-    '\u2022 The five council members, who are fictional archetypes\n\n' +
-    'See SOURCES.md.'
-  );
-});
+const aboutSheet = $('about-sheet');
+
+function openAbout() {
+  // showModal() gives focus trapping and Esc for free, and unlike alert()
+  // it still works when this page is embedded cross-origin in an iframe.
+  if (typeof aboutSheet.showModal === 'function') aboutSheet.showModal();
+  else aboutSheet.setAttribute('open', '');
+}
+function closeAbout() {
+  if (typeof aboutSheet.close === 'function') aboutSheet.close();
+  else aboutSheet.removeAttribute('open');
+}
+
+$('btn-about-intro').addEventListener('click', openAbout);
+$('about-close').addEventListener('click', closeAbout);
+// Clicking the backdrop lands on the dialog element itself.
+aboutSheet.addEventListener('click', (e) => { if (e.target === aboutSheet) closeAbout(); });
 
 /* boot */
 updateBoard();

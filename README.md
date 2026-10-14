@@ -14,6 +14,12 @@ and reconciles to it exactly: $56,588,184 of spending against $50,224,900 of
 revenue. See [SOURCES.md](SOURCES.md) for what is official and what is a
 game-design estimate.
 
+## Hosting and embedding
+
+See **[HOSTING.md](HOSTING.md)**. Short version: `dist/index.html` is one
+self-contained file — upload it anywhere, then embed it with the stylesheet and
+snippet in [`embed/`](embed/). `embed/example.html` is a working demo.
+
 ## Play it
 
 ```bash

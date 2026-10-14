@@ -627,31 +627,23 @@ $('btn-start').addEventListener('click', () => {
   updateBoard();
 });
 
-$('btn-about-intro').addEventListener('click', () => {
-  alert(
-    'Where these numbers come from\n\n' +
-    'OFFICIAL — City of Hollister FY 2026-27 Approved Budget Document:\n' +
-    '\u2022 General Fund revenue $50,224,900\n' +
-    '\u2022 General Fund expense $56,588,184\n' +
-    '\u2022 General Fund deficit $6,363,284\n' +
-    '\u2022 Every revenue line on the Impact tab\n' +
-    '\u2022 Every department total on the Budget tab (the city\'s cost centres grouped into its named departments; they sum exactly to the published total)\n' +
-    '\u2022 Water Enterprise Fund deficit $10,660,644\n' +
-    '\u2022 Personnel $34,954,900 of the General Fund\n' +
-    '\u2022 The $1.2M contingency and $500K events lines\n\n' +
-    'OFFICIAL — reporting on council actions:\n' +
-    '\u2022 Fiscal emergency declared October 2, 2026\n' +
-    '\u2022 $18M interfund loan from impact fee funds ($11M to the General Fund), 4%, repayable by June 30, 2027\n' +
-    '\u2022 $178 in the General Fund bank account the week of September 21, 2026\n' +
-    '\u2022 20% General Fund reserve policy\n\n' +
-    'GAME-DESIGN ESTIMATES:\n' +
-    '\u2022 What each policy option would save or raise, except the $11M loan, the $1.2M contingency and the $500K events line\n' +
-    '\u2022 All five service meters and their movements\n' +
-    '\u2022 The growth rates in the three-year outlook\n' +
-    '\u2022 The five council members, who are fictional archetypes\n\n' +
-    'See SOURCES.md.'
-  );
-});
+const aboutSheet = $('about-sheet');
+
+function openAbout() {
+  // showModal() gives focus trapping and Esc for free, and unlike alert()
+  // it still works when this page is embedded cross-origin in an iframe.
+  if (typeof aboutSheet.showModal === 'function') aboutSheet.showModal();
+  else aboutSheet.setAttribute('open', '');
+}
+function closeAbout() {
+  if (typeof aboutSheet.close === 'function') aboutSheet.close();
+  else aboutSheet.removeAttribute('open');
+}
+
+$('btn-about-intro').addEventListener('click', openAbout);
+$('about-close').addEventListener('click', closeAbout);
+// Clicking the backdrop lands on the dialog element itself.
+aboutSheet.addEventListener('click', (e) => { if (e.target === aboutSheet) closeAbout(); });
 
 /* boot */
 updateBoard();

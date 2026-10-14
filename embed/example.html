@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Embed example — Balancing Hollister</title>
+<link rel="stylesheet" href="embed.css">
+<style>
+  /* Stand-in for your site's own chrome. Not part of the embed. */
+  :root { color-scheme: light dark; }
+  body {
+    margin: 0; background: #ffffff; color: #111;
+    font: 400 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) { body { background: #111; color: #eee; } }
+  .site-header {
+    padding: 14px 20px; border-bottom: 1px solid rgba(128,128,128,.25);
+    font-weight: 700; letter-spacing: -.01em;
+  }
+  main { padding: 24px 20px 40px; max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 26px; margin: 0 0 6px; letter-spacing: -.02em; }
+  .lede { color: #666; margin: 0 0 20px; }
+  @media (prefers-color-scheme: dark) { .lede { color: #aaa; } }
+  .site-footer {
+    padding: 20px; border-top: 1px solid rgba(128,128,128,.25);
+    font-size: 13px; color: #777; text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">Your Site</header>
+
+<main>
+  <h1>Balance the city budget</h1>
+  <p class="lede">
+    Hollister declared a fiscal emergency in October 2026 with $178 in its
+    general fund bank account. Close the $6.36&nbsp;million deficit — and get
+    three of five council votes.
+  </p>
+
+  <!-- ============ THE EMBED — copy from here ============ -->
+  <div class="bh-embed">
+    <iframe
+      src="../dist/index.html"
+      title="Balancing Hollister — a city budget game"
+      loading="lazy"></iframe>
+  </div>
+  <p class="bh-embed-note">
+    Prefer it full screen?
+    <a href="../dist/index.html" target="_blank" rel="noopener">Open in a new tab</a>.
+  </p>
+
+  <!-- Shown instead of the iframe below 640px wide. -->
+  <div class="bh-launch">
+    <a class="bh-launch-card" href="../dist/index.html">
+      <span class="bh-launch-bar"><i></i><i></i><i></i><i></i><i></i></span>
+      <span class="bh-launch-body">
+        <span class="bh-launch-kicker">Fiscal emergency declared</span>
+        <span class="bh-launch-title" style="display:block">Balancing Hollister</span>
+        <span class="bh-launch-sub" style="display:block">
+          Close a $6.36&nbsp;million deficit and get three of five council votes.
+          Built on the city's published FY&nbsp;2026&#8209;27 budget.
+        </span>
+        <span class="bh-launch-cta">Play the game &rarr;</span>
+      </span>
+    </a>
+  </div>
+  <!-- ============ to here ============ -->
+</main>
+
+<footer class="site-footer">Your site footer</footer>
+
+</body>
+</html>

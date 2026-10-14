@@ -531,6 +531,55 @@ table.dt .neg { color: var(--critical); }
 .verdict.is-critical .verdict-icon { color: var(--critical); }
 .verdict b { font-weight: 650; }
 
+/* ---------- about sheet ---------- */
+/* A real dialog, not alert(): alert() is blocked in cross-origin iframes,
+   and this page is meant to be embeddable. */
+.sheet {
+  width: min(560px, calc(100vw - 24px));
+  max-height: min(82dvh, 720px);
+  padding: 0; border: 1px solid var(--hairline);
+  border-radius: var(--radius); background: var(--surface-1); color: var(--text-1);
+  box-shadow: var(--shadow-2); overflow: hidden;
+  margin: auto;
+}
+.sheet::backdrop { background: rgba(11, 11, 11, .5); }
+.sheet-head {
+  display: flex; align-items: center; gap: 12px;
+  padding: 15px 16px; border-bottom: 1px solid var(--hairline);
+  position: sticky; top: 0; background: var(--surface-1); z-index: 2;
+}
+.sheet-head h2 { font-size: 17px; flex: 1; }
+.sheet-close {
+  width: 38px; height: 38px; flex: none; border-radius: 50%;
+  background: var(--surface-2); color: var(--text-1);
+  display: grid; place-items: center; font-size: 19px; line-height: 1;
+}
+.sheet-close:active { background: var(--surface-3); }
+.sheet-body { padding: 4px 16px 18px; overflow-y: auto; max-height: calc(82dvh - 70px); }
+.sheet-body h3 {
+  font-size: 11.5px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--muted); margin: 16px 0 7px;
+}
+.sheet-body h3:first-child { margin-top: 12px; }
+.sheet-body ul { margin: 0; padding-left: 18px; }
+.sheet-body li { font-size: 13.5px; color: var(--text-2); margin-bottom: 5px; line-height: 1.45; }
+.sheet-body li b { color: var(--text-1); font-weight: 650; font-variant-numeric: tabular-nums; }
+.sheet-tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 650; padding: 2px 8px; border-radius: 6px;
+  vertical-align: middle; margin-left: 6px;
+}
+.sheet-tag.is-official { background: color-mix(in srgb, var(--good) 18%, var(--surface-2)); color: var(--good-ink); }
+.sheet-tag.is-est { background: color-mix(in srgb, var(--warning) 26%, var(--surface-2)); color: var(--text-1); }
+.sheet-foot {
+  padding: 12px 16px 16px; border-top: 1px solid var(--hairline);
+  font-size: 12.5px; color: var(--muted);
+}
+
+@media (min-width: 600px) {
+  .sheet-body { max-height: calc(82dvh - 76px); }
+}
+
 /* ---------- misc ---------- */
 .callout {
   padding: 13px 14px; border-radius: var(--radius); font-size: 13.5px;

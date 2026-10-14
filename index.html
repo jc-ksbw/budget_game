@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#fcfcfb" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1a1a19" media="(prefers-color-scheme: dark)">
+<meta name="description" content="Balance the City of Hollister's general fund during a declared fiscal emergency. A playable budget simulator built on real reported figures.">
+<title>Balancing Hollister</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚖️</text></svg>">
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ══════════ BRIEFING ══════════ -->
+  <section id="screen-intro" class="screen is-active">
+    <button class="theme-toggle" id="theme-toggle" aria-label="Switch colour theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
+    </button>
+
+    <div class="intro">
+      <div class="intro-kicker">Fiscal emergency declared</div>
+
+      <h1>Balancing<br>Hollister
+        <small>City of Hollister · San Benito County, California · FY 2026&#8209;27</small>
+      </h1>
+
+      <p class="intro-lede">
+        On <strong>October 2, 2026</strong>, the Hollister City Council declared a fiscal
+        emergency. The week of September 21, the city's general fund bank account held
+        <strong>$178</strong>.
+      </p>
+      <p class="intro-lede">
+        You are the City Manager. The adopted budget carries a <strong>$6.4 million</strong>
+        general fund deficit. Close it &mdash; and get three of five council votes.
+      </p>
+
+      <div class="fact-grid">
+        <div class="fact">
+          <div class="fact-v is-critical">$6.4M</div>
+          <div class="fact-l">General fund deficit you inherit</div>
+        </div>
+        <div class="fact">
+          <div class="fact-v">$48.5M</div>
+          <div class="fact-l">General fund spending</div>
+        </div>
+        <div class="fact">
+          <div class="fact-v">$42.1M</div>
+          <div class="fact-l">Recurring revenue</div>
+        </div>
+        <div class="fact">
+          <div class="fact-v is-critical">$178</div>
+          <div class="fact-l">In the bank, week of Sept 21</div>
+        </div>
+      </div>
+
+      <div class="callout is-warning">
+        <b>One rule worth knowing before you start.</b> Borrowing and selling things
+        balance a budget for exactly one year. Only recurring savings and recurring
+        revenue close a structural gap &mdash; and that is what you are graded on.
+      </div>
+
+      <button class="btn" id="btn-start">Take office</button>
+      <button class="btn-quiet" id="btn-about-intro">Where these numbers come from</button>
+    </div>
+  </section>
+
+  <!-- ══════════ GAME ══════════ -->
+  <section id="screen-game" class="screen">
+
+    <header class="board" role="status" aria-live="polite">
+      <div class="board-top">
+        <div>
+          <div class="board-label" id="board-label">Still to close</div>
+          <div class="board-gap is-gap num" id="board-gap">$6.4M</div>
+        </div>
+        <div class="board-sub">
+          <div>Spending <b class="num" id="board-exp">$48.5M</b></div>
+          <div>Revenue <b class="num" id="board-rev">$42.1M</b></div>
+        </div>
+      </div>
+      <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Share of the deficit closed">
+        <div class="progress-fill" id="board-progress"></div>
+      </div>
+    </header>
+
+    <main>
+      <div class="panel is-active" id="panel-budget"  role="tabpanel" aria-labelledby="tab-budget"></div>
+      <div class="panel"           id="panel-cuts"    role="tabpanel" aria-labelledby="tab-cuts"></div>
+      <div class="panel"           id="panel-revenue" role="tabpanel" aria-labelledby="tab-revenue"></div>
+      <div class="panel"           id="panel-impact"  role="tabpanel" aria-labelledby="tab-impact"></div>
+      <div class="panel"           id="panel-council" role="tabpanel" aria-labelledby="tab-council"></div>
+    </main>
+
+    <nav class="nav" role="tablist" aria-label="Budget sections">
+      <button class="nav-btn" id="tab-budget" role="tab" aria-selected="true" data-panel="budget">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+        <span>Budget</span>
+      </button>
+      <button class="nav-btn" id="tab-cuts" role="tab" aria-selected="false" data-panel="cuts">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.6"/><circle cx="6" cy="18" r="2.6"/><path d="M20 4L8.6 16.4M8.6 7.6L20 20"/></svg>
+        <span>Cuts</span><span class="nav-badge" id="badge-cuts" hidden>0</span>
+      </button>
+      <button class="nav-btn" id="tab-revenue" role="tab" aria-selected="false" data-panel="revenue">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 6.5C17 4.6 14.8 3.5 12 3.5S7 4.6 7 6.5s2.2 2.8 5 3.4 5 1.5 5 3.6-2.2 3-5 3-5-1.1-5-3"/></svg>
+        <span>Revenue</span><span class="nav-badge" id="badge-revenue" hidden>0</span>
+      </button>
+      <button class="nav-btn" id="tab-impact" role="tab" aria-selected="false" data-panel="impact">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 21H3V3"/><path d="M7 15l4-5 3.5 3L21 6"/></svg>
+        <span>Impact</span>
+      </button>
+      <button class="nav-btn" id="tab-council" role="tab" aria-selected="false" data-panel="council">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M4 7h16M6.5 7l-3 6a3.5 3.5 0 007 0zM17.5 7l-3 6a3.5 3.5 0 007 0z"/></svg>
+        <span>Council</span>
+      </button>
+    </nav>
+  </section>
+
+  <!-- ══════════ RESULT ══════════ -->
+  <section id="screen-result" class="screen">
+    <div class="panel is-active" id="panel-result"></div>
+  </section>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</div>
+
+<script type="module" src="assets/js/app.js"></script>
+</body>
+</html>

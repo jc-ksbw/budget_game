@@ -1,0 +1,3250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#fcfcfb" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1a1a19" media="(prefers-color-scheme: dark)">
+<meta name="description" content="Balance the City of Hollister's general fund during a declared fiscal emergency. A playable budget simulator built on real reported figures.">
+<title>Balancing Hollister</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚖️</text></svg>">
+<style>
+/* ============================================================
+   Balancing Hollister — phone-first stylesheet
+   Palette slots follow the validated default data-viz palette.
+   ============================================================ */
+
+:root {
+  color-scheme: light;
+
+  /* surfaces & ink */
+  --plane:        #f9f9f7;
+  --surface-1:    #fcfcfb;
+  --surface-2:    #f2f2ee;
+  --surface-3:    #e9e9e3;
+  --text-1:       #0b0b0b;
+  --text-2:       #52514e;
+  --muted:        #898781;
+  --grid:         #e1e0d9;
+  --axis:         #c3c2b7;
+  --hairline:     rgba(11, 11, 11, 0.10);
+  --hairline-2:   rgba(11, 11, 11, 0.06);
+
+  /* categorical series (fixed order — never cycled) */
+  --series-1: #2a78d6;  /* blue    */
+  --series-2: #eb6834;  /* orange  */
+  --series-3: #1baf7a;  /* aqua    */
+  --series-4: #eda100;  /* yellow  */
+  --series-5: #e87ba4;  /* magenta */
+  --series-6: #008300;  /* green   */
+  --series-7: #6250d6;  /* violet  */
+  --series-8: #e34948;  /* red     */
+
+  /* status (fixed, never themed) */
+  --good:     #0ca30c;
+  --warning:  #fab219;
+  --serious:  #ec835a;
+  --critical: #d03b3b;
+  --good-ink: #006300;
+
+  /* diverging poles */
+  --pos: #2a78d6;
+  --neg: #d03b3b;
+
+  --accent:      #2a78d6;
+  --accent-ink:  #1c5cab;
+  --on-accent:   #ffffff;
+
+  --radius:   14px;
+  --radius-s: 10px;
+  --tap:      48px;
+
+  --head-h: 112px;
+  --nav-h:  60px;
+
+  --shadow-1: 0 1px 2px rgba(11,11,11,.06), 0 2px 8px rgba(11,11,11,.04);
+  --shadow-2: 0 2px 6px rgba(11,11,11,.09), 0 12px 28px rgba(11,11,11,.10);
+
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --plane:      #0d0d0d;
+    --surface-1:  #1a1a19;
+    --surface-2:  #212120;
+    --surface-3:  #2c2c2a;
+    --text-1:     #f0efec;
+    --text-2:     #c3c2b7;
+    --muted:      #898781;
+    --grid:       #2c2c2a;
+    --axis:       #383835;
+    --hairline:   rgba(255,255,255,0.10);
+    --hairline-2: rgba(255,255,255,0.06);
+    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+    --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+    --good-ink: #0ca30c;
+    --pos: #3987e5; --neg: #d03b3b;
+    --accent: #3987e5; --accent-ink: #86b6ef;
+    --shadow-1: 0 1px 2px rgba(0,0,0,.4), 0 2px 8px rgba(0,0,0,.3);
+    --shadow-2: 0 2px 6px rgba(0,0,0,.5), 0 12px 28px rgba(0,0,0,.45);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --plane:      #0d0d0d;
+  --surface-1:  #1a1a19;
+  --surface-2:  #212120;
+  --surface-3:  #2c2c2a;
+  --text-1:     #f0efec;
+  --text-2:     #c3c2b7;
+  --muted:      #898781;
+  --grid:       #2c2c2a;
+  --axis:       #383835;
+  --hairline:   rgba(255,255,255,0.10);
+  --hairline-2: rgba(255,255,255,0.06);
+  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+  --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+  --good-ink: #0ca30c;
+  --pos: #3987e5; --neg: #d03b3b;
+  --accent: #3987e5; --accent-ink: #86b6ef;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.4), 0 2px 8px rgba(0,0,0,.3);
+  --shadow-2: 0 2px 6px rgba(0,0,0,.5), 0 12px 28px rgba(0,0,0,.45);
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--sans);
+  background: var(--plane);
+  color: var(--text-1);
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-x: hidden;
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; border: 0; background: none; touch-action: manipulation; }
+h1, h2, h3, h4 { margin: 0; line-height: 1.25; font-weight: 650; letter-spacing: -0.01em; }
+p { margin: 0 0 .75em; }
+p:last-child { margin-bottom: 0; }
+
+.num { font-variant-numeric: tabular-nums; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ---------- shell ---------- */
+.app { max-width: 720px; margin: 0 auto; min-height: 100dvh; position: relative; }
+
+.screen { display: none; }
+.screen.is-active { display: block; }
+
+/* ---------- intro / briefing ---------- */
+.intro {
+  min-height: 100dvh;
+  padding: calc(env(safe-area-inset-top) + 28px) 20px calc(env(safe-area-inset-bottom) + 28px);
+  display: flex; flex-direction: column; gap: 20px;
+  justify-content: center;
+  /* never centre content taller than the viewport out of reach */
+  justify-content: safe center;
+}
+.intro-kicker {
+  font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--critical); display: flex; align-items: center; gap: 8px;
+}
+.intro-kicker::before {
+  content: ""; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--critical); flex: none;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: .35 } }
+@media (prefers-reduced-motion: reduce) { .intro-kicker::before { animation: none } }
+
+.intro h1 { font-size: clamp(30px, 9vw, 46px); letter-spacing: -0.03em; }
+.intro h1 small {
+  display: block; font-size: 15px; font-weight: 500; color: var(--text-2);
+  letter-spacing: 0; margin-top: 8px;
+}
+.intro-lede { font-size: 17px; color: var(--text-2); }
+.intro-lede strong { color: var(--text-1); }
+
+.fact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.fact {
+  background: var(--surface-1); border: 1px solid var(--hairline);
+  border-radius: var(--radius); padding: 14px;
+}
+.fact-v { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+.fact-v.is-critical { color: var(--critical); }
+.fact-l { font-size: 12.5px; color: var(--text-2); margin-top: 3px; line-height: 1.35; }
+
+/* ---------- buttons ---------- */
+.btn {
+  min-height: var(--tap); padding: 0 22px; border-radius: 999px;
+  background: var(--accent); color: var(--on-accent);
+  font-weight: 650; font-size: 16px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; transition: transform .12s ease, filter .12s ease;
+}
+.btn:active { transform: scale(.975); filter: brightness(.94); }
+.btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+.btn-ghost {
+  background: var(--surface-1); color: var(--text-1);
+  border: 1px solid var(--hairline);
+}
+.btn-quiet {
+  background: none; color: var(--text-2); min-height: 44px;
+  text-decoration: underline; text-underline-offset: 3px; font-size: 14.5px; font-weight: 500;
+}
+.btn-row { display: flex; gap: 10px; }
+.btn-row .btn { flex: 1; }
+
+/* ---------- sticky scoreboard ---------- */
+.board {
+  position: sticky; top: 0; z-index: 40;
+  background: var(--surface-1);
+  border-bottom: 1px solid var(--hairline);
+  padding: calc(env(safe-area-inset-top) + 10px) 16px 10px;
+  box-shadow: var(--shadow-1);
+}
+.board-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.board-label {
+  font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+}
+.board-gap {
+  font-size: 30px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.05;
+  transition: color .25s ease;
+}
+.board-gap.is-gap     { color: var(--critical); }
+.board-gap.is-close   { color: var(--serious); }
+.board-gap.is-balanced{ color: var(--good-ink); }
+.board-sub { font-size: 12.5px; color: var(--text-2); text-align: right; }
+.board-sub b { color: var(--text-1); font-weight: 650; }
+
+.progress {
+  margin-top: 9px; height: 8px; border-radius: 999px;
+  background: var(--surface-3); overflow: hidden; position: relative;
+}
+.progress-fill {
+  height: 100%; border-radius: 999px; background: var(--accent);
+  width: 0%; transition: width .35s cubic-bezier(.4,0,.2,1), background-color .3s ease;
+}
+.progress-fill.is-balanced { background: var(--good); }
+.progress-fill.is-over     { background: var(--series-7); }
+
+/* ---------- tab bar ---------- */
+.nav {
+  position: sticky; bottom: 0; z-index: 40;
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  background: var(--surface-1);
+  border-top: 1px solid var(--hairline);
+  padding-bottom: env(safe-area-inset-bottom);
+  box-shadow: 0 -1px 2px rgba(11,11,11,.05);
+}
+.nav-btn {
+  min-height: var(--nav-h); display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 3px;
+  color: var(--muted); font-size: 10.5px; font-weight: 600;
+  letter-spacing: .01em; position: relative; padding: 6px 2px;
+}
+.nav-btn svg { width: 22px; height: 22px; }
+.nav-btn[aria-selected="true"] { color: var(--accent); }
+.nav-btn[aria-selected="true"]::before {
+  content: ""; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 30px; height: 3px; border-radius: 0 0 3px 3px; background: var(--accent);
+}
+.nav-badge {
+  position: absolute; top: 7px; right: calc(50% - 20px);
+  min-width: 17px; height: 17px; padding: 0 4px; border-radius: 999px;
+  background: var(--accent); color: var(--on-accent);
+  font-size: 10px; font-weight: 700; line-height: 17px; text-align: center;
+}
+
+/* ---------- panels ---------- */
+.panel { padding: 16px 16px 28px; display: none; }
+.panel.is-active { display: block; animation: fade .22s ease; }
+@keyframes fade { from { opacity: 0; transform: translateY(5px) } to { opacity: 1; transform: none } }
+@media (prefers-reduced-motion: reduce) { .panel.is-active { animation: none } }
+
+.panel-head { margin-bottom: 14px; }
+.panel-head h2 { font-size: 21px; letter-spacing: -0.02em; }
+.panel-head p { font-size: 14px; color: var(--text-2); margin-top: 5px; }
+
+.card {
+  background: var(--surface-1); border: 1px solid var(--hairline);
+  border-radius: var(--radius); padding: 15px; margin-bottom: 12px;
+}
+.card-title {
+  font-size: 15px; font-weight: 650; margin-bottom: 3px;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+}
+.card-note { font-size: 13px; color: var(--text-2); }
+
+/* ---------- department sliders ---------- */
+.dept { padding: 14px 0; border-bottom: 1px solid var(--hairline-2); }
+.dept:last-child { border-bottom: 0; padding-bottom: 2px; }
+
+.dept-head { display: flex; align-items: center; gap: 10px; margin-bottom: 3px; }
+.dept-swatch { width: 11px; height: 11px; border-radius: 3px; flex: none; }
+.dept-name { font-size: 15.5px; font-weight: 650; flex: 1; min-width: 0; }
+.dept-amt { font-size: 15.5px; font-weight: 700; letter-spacing: -0.01em; }
+
+.dept-meta {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; margin-left: 21px; margin-bottom: 9px;
+}
+.dept-blurb { font-size: 12.5px; color: var(--muted); flex: 1; min-width: 0; }
+.dept-delta { font-size: 12.5px; font-weight: 650; white-space: nowrap; }
+.dept-delta.is-cut  { color: var(--pos); }
+.dept-delta.is-add  { color: var(--neg); }
+.dept-delta.is-flat { color: var(--muted); }
+
+.slider-row { display: flex; align-items: center; gap: 8px; }
+.step {
+  width: 40px; height: 40px; flex: none; border-radius: 10px;
+  background: var(--surface-2); border: 1px solid var(--hairline);
+  display: grid; place-items: center; color: var(--text-1);
+  font-size: 19px; font-weight: 600; line-height: 1;
+}
+.step:active { background: var(--surface-3); transform: scale(.94); }
+.step:disabled { opacity: .3; }
+
+.slider {
+  flex: 1; min-width: 0; height: 40px; position: relative;
+  touch-action: none; display: flex; align-items: center;
+}
+.slider-track {
+  position: absolute; inset-inline: 0; height: 7px; border-radius: 999px;
+  background: var(--surface-3); overflow: hidden;
+}
+.slider-base {
+  position: absolute; top: 0; bottom: 0; width: 2px;
+  background: var(--axis); z-index: 1;
+}
+.slider-fill { position: absolute; top: 0; bottom: 0; border-radius: 999px; }
+.slider-thumb {
+  position: absolute; width: 28px; height: 28px; border-radius: 50%;
+  background: var(--surface-1); border: 2.5px solid var(--accent);
+  box-shadow: var(--shadow-1); z-index: 3;
+  transform: translateX(-50%); pointer-events: none;
+}
+.slider.is-dragging .slider-thumb { transform: translateX(-50%) scale(1.18); }
+.slider:focus-visible { outline: none; }
+.slider:focus-visible .slider-thumb { box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 30%, transparent); }
+
+.dept-scale {
+  position: relative; display: flex; justify-content: space-between;
+  font-size: 11px; color: var(--muted);
+  /* margins match the track: 40px stepper + 8px gap on each side */
+  margin: 5px 48px 0;
+}
+.dept-scale-base { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+.dept-warn {
+  font-size: 12.5px; margin: 8px 0 0 21px; padding: 8px 10px;
+  border-radius: var(--radius-s); background: var(--surface-2);
+  color: var(--text-2); border-left: 3px solid var(--serious);
+}
+
+/* ---------- action cards ---------- */
+.filter-row {
+  display: flex; gap: 7px; margin-bottom: 13px;
+  overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  padding-bottom: 2px;
+}
+.filter-row::-webkit-scrollbar { display: none; }
+.chip {
+  min-height: 38px; padding: 0 15px; border-radius: 999px; white-space: nowrap;
+  background: var(--surface-1); border: 1px solid var(--hairline);
+  color: var(--text-2); font-size: 14px; font-weight: 600; flex: none;
+}
+.chip[aria-pressed="true"] {
+  background: var(--accent); border-color: var(--accent); color: var(--on-accent);
+}
+
+.action {
+  width: 100%; text-align: left; display: block;
+  background: var(--surface-1); border: 1px solid var(--hairline);
+  border-radius: var(--radius); padding: 14px; margin-bottom: 10px;
+  transition: border-color .15s ease, background-color .15s ease, transform .1s ease;
+  position: relative;
+}
+.action:active { transform: scale(.99); }
+.action[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 7%, var(--surface-1));
+}
+.action-top { display: flex; align-items: flex-start; gap: 11px; }
+.action-check {
+  width: 24px; height: 24px; border-radius: 7px; flex: none; margin-top: 1px;
+  border: 2px solid var(--axis); display: grid; place-items: center;
+  transition: background-color .15s ease, border-color .15s ease;
+}
+.action[aria-pressed="true"] .action-check {
+  background: var(--accent); border-color: var(--accent);
+}
+.action-check svg { width: 14px; height: 14px; opacity: 0; color: var(--on-accent); }
+.action[aria-pressed="true"] .action-check svg { opacity: 1; }
+.action-body { flex: 1; min-width: 0; }
+.action-name { font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; }
+.action-desc { font-size: 13px; color: var(--text-2); margin-top: 3px; }
+.action-amt {
+  font-size: 16px; font-weight: 700; color: var(--good-ink);
+  white-space: nowrap; letter-spacing: -0.01em; flex: none;
+}
+
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; margin-left: 35px; }
+.tag {
+  font-size: 11px; font-weight: 650; padding: 3px 8px; border-radius: 6px;
+  background: var(--surface-2); color: var(--text-2);
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.tag.is-onetime { background: color-mix(in srgb, var(--warning) 20%, var(--surface-2)); color: var(--text-1); }
+.tag.is-ballot  { background: color-mix(in srgb, var(--series-7) 16%, var(--surface-2)); color: var(--text-1); }
+.tag.is-real    { background: color-mix(in srgb, var(--series-3) 18%, var(--surface-2)); color: var(--text-1); }
+.tag.is-harm    { color: var(--text-2); }
+.tag-dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+
+.action-more {
+  margin: 10px 0 0 35px; padding: 10px 11px; border-radius: var(--radius-s);
+  background: var(--surface-2); font-size: 13px; color: var(--text-2);
+  border-left: 3px solid var(--axis);
+}
+.action-more b { color: var(--text-1); font-weight: 650; }
+.action-more.is-real { border-left-color: var(--series-3); }
+
+/* ---------- meters ---------- */
+.meter { padding: 11px 0; border-bottom: 1px solid var(--hairline-2); }
+.meter:last-child { border-bottom: 0; padding-bottom: 0; }
+.meter-top { display: flex; align-items: center; gap: 9px; margin-bottom: 7px; }
+.meter-icon { width: 18px; height: 18px; flex: none; color: var(--text-2); }
+.meter-name { font-size: 14.5px; font-weight: 600; flex: 1; }
+.meter-val { font-size: 13.5px; font-weight: 700; }
+.meter-track {
+  height: 9px; border-radius: 999px; background: var(--surface-3);
+  overflow: hidden; position: relative;
+}
+.meter-fill { height: 100%; border-radius: 999px; transition: width .4s cubic-bezier(.4,0,.2,1); }
+.meter-ghost {
+  position: absolute; top: 0; bottom: 0; width: 2px;
+  background: var(--axis); opacity: .8;
+}
+.meter-note { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+/* ---------- charts ---------- */
+.chart-wrap { margin: 2px -3px 0; }
+.chart-wrap svg { display: block; width: 100%; height: auto; overflow: visible; }
+/* Labels must never swallow a tap meant for the mark underneath. */
+.chart-wrap svg text { pointer-events: none; user-select: none; }
+.chart-wrap svg [role="button"] { outline: none; }
+.chart-wrap svg [role="button"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.chart-title { font-size: 15px; font-weight: 650; }
+.chart-sub { font-size: 12.5px; color: var(--text-2); margin-top: 3px; margin-bottom: 12px; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 8px 14px; margin-top: 12px; }
+.legend-item {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12.5px; color: var(--text-2);
+}
+.legend-key { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.legend-key.is-line { width: 14px; height: 2.5px; border-radius: 2px; }
+
+.readout {
+  margin-top: 11px; padding: 11px 12px; border-radius: var(--radius-s);
+  background: var(--surface-2); font-size: 13.5px; min-height: 44px;
+  display: flex; align-items: center; gap: 9px;
+}
+.readout-key { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.readout b { font-weight: 650; }
+.readout.is-empty { color: var(--muted); font-size: 12.5px; }
+
+.table-toggle { margin-top: 10px; }
+details.data-table { margin-top: 10px; }
+details.data-table > summary {
+  min-height: 44px; display: flex; align-items: center; gap: 7px;
+  font-size: 13.5px; color: var(--text-2); font-weight: 600;
+  cursor: pointer; list-style: none;
+}
+details.data-table > summary::-webkit-details-marker { display: none; }
+details.data-table > summary::before {
+  content: "▸"; transition: transform .2s ease; display: inline-block; color: var(--muted);
+}
+details.data-table[open] > summary::before { transform: rotate(90deg); }
+table.dt { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 4px; }
+table.dt th, table.dt td { padding: 7px 6px; text-align: right; border-bottom: 1px solid var(--hairline-2); }
+table.dt th:first-child, table.dt td:first-child { text-align: left; }
+table.dt th { color: var(--muted); font-weight: 600; font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; }
+table.dt td { font-variant-numeric: tabular-nums; }
+table.dt tr:last-child td { border-bottom: 0; }
+table.dt .pos { color: var(--good-ink); }
+table.dt .neg { color: var(--critical); }
+
+/* ---------- council ---------- */
+.cm {
+  display: flex; gap: 12px; padding: 13px 0;
+  border-bottom: 1px solid var(--hairline-2); align-items: flex-start;
+}
+.cm:last-child { border-bottom: 0; padding-bottom: 0; }
+.cm-face {
+  width: 42px; height: 42px; border-radius: 50%; flex: none;
+  display: grid; place-items: center; font-size: 17px; font-weight: 700;
+  background: var(--surface-2); color: var(--text-2);
+  border: 2px solid var(--hairline);
+}
+.cm-face.is-yes { border-color: var(--good); color: var(--good-ink); background: color-mix(in srgb, var(--good) 12%, var(--surface-1)); }
+.cm-face.is-no  { border-color: var(--critical); color: var(--critical); background: color-mix(in srgb, var(--critical) 11%, var(--surface-1)); }
+.cm-body { flex: 1; min-width: 0; }
+.cm-name { font-size: 14.5px; font-weight: 650; }
+.cm-role { font-size: 12px; color: var(--muted); }
+.cm-line { font-size: 13px; color: var(--text-2); margin-top: 5px; font-style: italic; }
+.cm-vote { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.cm-vote.is-yes { color: var(--good-ink); }
+.cm-vote.is-no  { color: var(--critical); }
+
+.tally {
+  display: flex; align-items: center; gap: 13px; padding: 15px;
+  border-radius: var(--radius); margin-bottom: 12px;
+  background: var(--surface-2); border: 1px solid var(--hairline);
+}
+.tally-score { font-size: 30px; font-weight: 700; letter-spacing: -0.03em; }
+.tally-score.is-pass { color: var(--good-ink); }
+.tally-score.is-fail { color: var(--critical); }
+.tally-text { font-size: 13.5px; color: var(--text-2); }
+.tally-text b { color: var(--text-1); display: block; font-size: 15px; font-weight: 650; margin-bottom: 2px; }
+
+/* ---------- result ---------- */
+.grade-card {
+  text-align: center; padding: 26px 18px;
+  background: var(--surface-1); border: 1px solid var(--hairline);
+  border-radius: var(--radius); margin-bottom: 12px;
+}
+.grade {
+  font-size: 62px; font-weight: 750; line-height: 1; letter-spacing: -0.04em;
+}
+.grade-label { font-size: 17px; font-weight: 650; margin-top: 9px; }
+.grade-sub { font-size: 14px; color: var(--text-2); margin-top: 7px; }
+
+.verdict-list { display: grid; gap: 9px; }
+.verdict {
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: 13.5px; padding: 11px 12px; border-radius: var(--radius-s);
+  background: var(--surface-2); line-height: 1.45;
+}
+.verdict-icon { width: 18px; height: 18px; flex: none; margin-top: 1px; }
+.verdict.is-good     .verdict-icon { color: var(--good); }
+.verdict.is-warning  .verdict-icon { color: var(--warning); }
+.verdict.is-serious  .verdict-icon { color: var(--serious); }
+.verdict.is-critical .verdict-icon { color: var(--critical); }
+.verdict b { font-weight: 650; }
+
+/* ---------- misc ---------- */
+.callout {
+  padding: 13px 14px; border-radius: var(--radius); font-size: 13.5px;
+  background: var(--surface-2); border-left: 3px solid var(--accent);
+  color: var(--text-2); margin-bottom: 12px; line-height: 1.5;
+}
+.callout b { color: var(--text-1); font-weight: 650; }
+.callout.is-warning { border-left-color: var(--warning); }
+.callout.is-critical { border-left-color: var(--critical); }
+
+.toast {
+  position: fixed; left: 50%; bottom: calc(var(--nav-h) + env(safe-area-inset-bottom) + 14px);
+  transform: translate(-50%, 16px); z-index: 60;
+  background: var(--text-1); color: var(--plane);
+  padding: 11px 17px; border-radius: 999px; font-size: 13.5px; font-weight: 600;
+  box-shadow: var(--shadow-2); opacity: 0; pointer-events: none;
+  transition: opacity .22s ease, transform .22s ease; max-width: calc(100vw - 32px);
+}
+.toast.is-on { opacity: 1; transform: translate(-50%, 0); }
+
+.theme-toggle {
+  position: absolute; top: calc(env(safe-area-inset-top) + 10px); right: 14px;
+  width: 40px; height: 40px; border-radius: 50%; z-index: 50;
+  background: var(--surface-1); border: 1px solid var(--hairline);
+  display: grid; place-items: center; color: var(--text-2);
+}
+.theme-toggle svg { width: 19px; height: 19px; }
+
+.source-note {
+  font-size: 11.5px; color: var(--muted); line-height: 1.5;
+  padding: 12px 14px; background: var(--surface-2);
+  border-radius: var(--radius-s); margin-top: 10px;
+}
+.source-note b { color: var(--text-2); }
+
+/* ---------- wider screens ---------- */
+@media (min-width: 600px) {
+  .fact-grid { grid-template-columns: repeat(4, 1fr); }
+  .panel { padding: 22px 22px 34px; }
+  .board { padding-inline: 22px; }
+  .board-gap { font-size: 34px; }
+  .nav-btn { flex-direction: row; gap: 8px; font-size: 13px; }
+  .nav-btn svg { width: 19px; height: 19px; }
+  .nav-badge { right: 8px; top: 10px; }
+}
+@media (min-width: 860px) {
+  .app { max-width: 920px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
+  .two-col > .card { margin-bottom: 0; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ══════════ BRIEFING ══════════ -->
+  <section id="screen-intro" class="screen is-active">
+    <button class="theme-toggle" id="theme-toggle" aria-label="Switch colour theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
+    </button>
+
+    <div class="intro">
+      <div class="intro-kicker">Fiscal emergency declared</div>
+
+      <h1>Balancing<br>Hollister
+        <small>City of Hollister · San Benito County, California · FY 2026&#8209;27</small>
+      </h1>
+
+      <p class="intro-lede">
+        On <strong>October 2, 2026</strong>, the Hollister City Council declared a fiscal
+        emergency. The week of September 21, the city's general fund bank account held
+        <strong>$178</strong>.
+      </p>
+      <p class="intro-lede">
+        You are the City Manager. The adopted budget carries a <strong>$6.4 million</strong>
+        general fund deficit. Close it &mdash; and get three of five council votes.
+      </p>
+
+      <div class="fact-grid">
+        <div class="fact">
+          <div class="fact-v is-critical">$6.4M</div>
+          <div class="fact-l">General fund deficit you inherit</div>
+        </div>
+        <div class="fact">
+          <div class="fact-v">$48.5M</div>
+          <div class="fact-l">General fund spending</div>
+        </div>
+        <div class="fact">
+          <div class="fact-v">$42.1M</div>
+          <div class="fact-l">Recurring revenue</div>
+        </div>
+        <div class="fact">
+          <div class="fact-v is-critical">$178</div>
+          <div class="fact-l">In the bank, week of Sept 21</div>
+        </div>
+      </div>
+
+      <div class="callout is-warning">
+        <b>One rule worth knowing before you start.</b> Borrowing and selling things
+        balance a budget for exactly one year. Only recurring savings and recurring
+        revenue close a structural gap &mdash; and that is what you are graded on.
+      </div>
+
+      <button class="btn" id="btn-start">Take office</button>
+      <button class="btn-quiet" id="btn-about-intro">Where these numbers come from</button>
+    </div>
+  </section>
+
+  <!-- ══════════ GAME ══════════ -->
+  <section id="screen-game" class="screen">
+
+    <header class="board" role="status" aria-live="polite">
+      <div class="board-top">
+        <div>
+          <div class="board-label" id="board-label">Still to close</div>
+          <div class="board-gap is-gap num" id="board-gap">$6.4M</div>
+        </div>
+        <div class="board-sub">
+          <div>Spending <b class="num" id="board-exp">$48.5M</b></div>
+          <div>Revenue <b class="num" id="board-rev">$42.1M</b></div>
+        </div>
+      </div>
+      <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Share of the deficit closed">
+        <div class="progress-fill" id="board-progress"></div>
+      </div>
+    </header>
+
+    <main>
+      <div class="panel is-active" id="panel-budget"  role="tabpanel" aria-labelledby="tab-budget"></div>
+      <div class="panel"           id="panel-cuts"    role="tabpanel" aria-labelledby="tab-cuts"></div>
+      <div class="panel"           id="panel-revenue" role="tabpanel" aria-labelledby="tab-revenue"></div>
+      <div class="panel"           id="panel-impact"  role="tabpanel" aria-labelledby="tab-impact"></div>
+      <div class="panel"           id="panel-council" role="tabpanel" aria-labelledby="tab-council"></div>
+    </main>
+
+    <nav class="nav" role="tablist" aria-label="Budget sections">
+      <button class="nav-btn" id="tab-budget" role="tab" aria-selected="true" data-panel="budget">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+        <span>Budget</span>
+      </button>
+      <button class="nav-btn" id="tab-cuts" role="tab" aria-selected="false" data-panel="cuts">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.6"/><circle cx="6" cy="18" r="2.6"/><path d="M20 4L8.6 16.4M8.6 7.6L20 20"/></svg>
+        <span>Cuts</span><span class="nav-badge" id="badge-cuts" hidden>0</span>
+      </button>
+      <button class="nav-btn" id="tab-revenue" role="tab" aria-selected="false" data-panel="revenue">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 6.5C17 4.6 14.8 3.5 12 3.5S7 4.6 7 6.5s2.2 2.8 5 3.4 5 1.5 5 3.6-2.2 3-5 3-5-1.1-5-3"/></svg>
+        <span>Revenue</span><span class="nav-badge" id="badge-revenue" hidden>0</span>
+      </button>
+      <button class="nav-btn" id="tab-impact" role="tab" aria-selected="false" data-panel="impact">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 21H3V3"/><path d="M7 15l4-5 3.5 3L21 6"/></svg>
+        <span>Impact</span>
+      </button>
+      <button class="nav-btn" id="tab-council" role="tab" aria-selected="false" data-panel="council">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M4 7h16M6.5 7l-3 6a3.5 3.5 0 007 0zM17.5 7l-3 6a3.5 3.5 0 007 0z"/></svg>
+        <span>Council</span>
+      </button>
+    </nav>
+  </section>
+
+  <!-- ══════════ RESULT ══════════ -->
+  <section id="screen-result" class="screen">
+    <div class="panel is-active" id="panel-result"></div>
+  </section>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</div>
+
+<script type="module">
+/* data */
+
+/* GENERATED by build.js — edit data/*.json instead. */
+const BUDGET = {
+  "meta": {
+    "city": "City of Hollister",
+    "county": "San Benito County",
+    "state": "California",
+    "fiscalYear": "FY 2026-27",
+    "asOf": "2026-10-14",
+    "fund": "General Fund",
+    "currency": "USD",
+    "dataNote": "Fund-level and citywide totals are sourced from reporting on adopted City of Hollister budgets and council actions (see SOURCES.md). Department- and line-item-level splits marked confidence:'modeled' are ESTIMATES allocated from those verified aggregates, because the city's line-item budget PDFs were not reachable from the build environment. They are realistic and internally consistent, not official.",
+    "confidenceLegend": {
+      "verified": "Figure reported in a cited source.",
+      "derived": "Arithmetic from verified figures.",
+      "modeled": "Estimated allocation consistent with verified aggregates. Not official."
+    }
+  },
+
+  "verifiedAnchors": [
+    { "label": "Total appropriations, all funds, FY 2025-26 adopted", "value": 130985106, "confidence": "verified" },
+    { "label": "General Fund expense, FY 2025-26 adopted", "value": 46474571, "confidence": "verified" },
+    { "label": "General Fund balance, FY 2025-26 adopted", "value": 7798926, "confidence": "verified" },
+    { "label": "General Fund balance as % of GF expenditures, FY 2025-26", "value": 16.8, "unit": "percent", "confidence": "verified" },
+    { "label": "General Fund deficit, FY 2026-27 adopted", "value": 6400000, "confidence": "verified" },
+    { "label": "Water Fund deficit, FY 2026-27 adopted", "value": 10700000, "confidence": "verified" },
+    { "label": "Combined GF + Water deficit at adoption", "value": 17100000, "confidence": "verified" },
+    { "label": "Interfund loan from impact fee funds, approved Oct 2 2026", "value": 18000000, "confidence": "verified" },
+    { "label": "  - portion loaned to General Fund", "value": 11000000, "confidence": "verified" },
+    { "label": "  - portion loaned to Water Fund", "value": 7000000, "confidence": "verified" },
+    { "label": "Interfund loan interest rate", "value": 4.0, "unit": "percent", "confidence": "verified" },
+    { "label": "Interfund loan repayment deadline", "value": "2027-06-30", "unit": "date", "confidence": "verified" },
+    { "label": "General Fund bank balance, week of Sept 21 2026", "value": 178, "confidence": "verified" },
+    { "label": "Remaining ongoing GF structural deficit after loan", "value": 2000000, "confidence": "verified" },
+    { "label": "Remaining ongoing Water Fund deficit after loan", "value": 3400000, "confidence": "verified" },
+    { "label": "Budgeted vacant positions eliminated, FY 2025-26", "value": 31, "unit": "positions", "confidence": "verified" },
+    { "label": "Estimated annual savings from those eliminations", "value": 6000000, "confidence": "verified" },
+    { "label": "Full-time employees, FY 2025-26", "value": 191, "unit": "positions", "confidence": "verified" },
+    { "label": "Appropriations limit, FY 2024-25", "value": 26603506, "confidence": "verified" },
+    { "label": "Prop 172 public-safety sales tax, annual", "value": 262500, "unit": "midpoint of reported $250K-$275K", "confidence": "verified" },
+    { "label": "Water overspend over prior decade (city manager)", "value": 26000000, "confidence": "verified" },
+    { "label": "Capital improvement plan, next fiscal year", "value": 35000000, "confidence": "verified" }
+  ],
+
+  "citywideShares": {
+    "note": "Reported shares of the total city budget, FY 2025-26.",
+    "confidence": "verified",
+    "shares": [
+      { "label": "Quality of life", "percent": 49 },
+      { "label": "Public safety", "percent": 23 },
+      { "label": "Administration", "percent": 22 },
+      { "label": "Development services", "percent": 6 }
+    ]
+  },
+
+  "generalFund": {
+    "expenditureTotal": 48500000,
+    "revenueTotal": 42100000,
+    "structuralDeficit": 6400000,
+    "reservePolicyPercent": 20,
+    "currentReserve": 0,
+    "confidence": "modeled",
+
+    "departments": [
+      {
+        "id": "police", "name": "Police", "short": "Police",
+        "baseline": 17200000, "minPct": 70, "maxPct": 115,
+        "positions": 62,
+        "blurb": "Patrol, investigations, dispatch, records and animal control.",
+        "cutEffects": { "safety": 1.00, "infrastructure": 0.00, "community": 0.15, "workforce": 0.45, "trust": 0.70 },
+        "cutNarrative": "Slower response times, thinner patrol coverage overnight, longer case backlogs.",
+        "raiseNarrative": "Fills sworn vacancies and restores overnight patrol strength.",
+        "confidence": "modeled"
+      },
+      {
+        "id": "fire", "name": "Fire & Emergency Services", "short": "Fire",
+        "baseline": 9800000, "minPct": 70, "maxPct": 115,
+        "positions": 33,
+        "blurb": "Fire suppression, medical first response, prevention and inspection.",
+        "cutEffects": { "safety": 1.00, "infrastructure": 0.00, "community": 0.10, "workforce": 0.45, "trust": 0.75 },
+        "cutNarrative": "Browned-out engine companies and longer medical response intervals.",
+        "raiseNarrative": "Adds firefighter positions and shortens response intervals.",
+        "confidence": "modeled"
+      },
+      {
+        "id": "publicworks", "name": "Public Works & Streets", "short": "Streets",
+        "baseline": 4600000, "minPct": 50, "maxPct": 120,
+        "positions": 28,
+        "blurb": "Street repair, signals, striping, storm drains, city facilities and fleet.",
+        "cutEffects": { "safety": 0.20, "infrastructure": 1.00, "community": 0.30, "workforce": 0.35, "trust": 0.45 },
+        "cutNarrative": "Pothole backlog grows and the pavement condition index keeps sliding.",
+        "raiseNarrative": "Clears the pothole backlog and resumes the slurry seal program.",
+        "confidence": "modeled"
+      },
+      {
+        "id": "parks", "name": "Parks & Recreation", "short": "Parks",
+        "baseline": 3100000, "minPct": 30, "maxPct": 120,
+        "positions": 19,
+        "blurb": "Parks maintenance, youth and senior programs, pool, community events.",
+        "cutEffects": { "safety": 0.05, "infrastructure": 0.25, "community": 1.00, "workforce": 0.30, "trust": 0.50 },
+        "cutNarrative": "Reduced program hours, browner turf, shorter pool season.",
+        "raiseNarrative": "Restores youth programming and park maintenance cycles.",
+        "confidence": "modeled"
+      },
+      {
+        "id": "commdev", "name": "Community Development", "short": "Dev Svcs",
+        "baseline": 3400000, "minPct": 50, "maxPct": 120,
+        "positions": 17,
+        "blurb": "Planning, building inspection, permits, code enforcement, engineering.",
+        "cutEffects": { "safety": 0.10, "infrastructure": 0.35, "community": 0.35, "workforce": 0.30, "trust": 0.40 },
+        "cutNarrative": "Permit turnaround slows, which quietly drags on future fee revenue.",
+        "raiseNarrative": "Faster permits and inspections; development revenue picks up.",
+        "confidence": "modeled"
+      },
+      {
+        "id": "admin", "name": "Administration & Finance", "short": "Admin",
+        "baseline": 5900000, "minPct": 60, "maxPct": 115,
+        "positions": 24,
+        "blurb": "City Manager, Clerk, Finance, HR, IT. Also where the overdue audits live.",
+        "cutEffects": { "safety": 0.05, "infrastructure": 0.10, "community": 0.10, "workforce": 0.55, "trust": 0.30 },
+        "cutNarrative": "Thinner finance staff. The overdue audits slip further, which lenders notice.",
+        "raiseNarrative": "Staffs up finance to clear the audit backlog and rebuild bank reconciliations.",
+        "confidence": "modeled"
+      },
+      {
+        "id": "attorney", "name": "City Attorney", "short": "Legal",
+        "baseline": 900000, "minPct": 70, "maxPct": 115,
+        "positions": 3,
+        "blurb": "Contracted legal services, litigation defense, ordinance drafting.",
+        "cutEffects": { "safety": 0.05, "infrastructure": 0.05, "community": 0.05, "workforce": 0.15, "trust": 0.20 },
+        "cutNarrative": "Less outside counsel capacity right when the city is signing loan agreements.",
+        "raiseNarrative": "Adds counsel capacity for the interfund loan and labor negotiations.",
+        "confidence": "modeled"
+      },
+      {
+        "id": "nondept", "name": "Non-Departmental & Debt", "short": "Debt",
+        "baseline": 3600000, "minPct": 90, "maxPct": 110,
+        "positions": 0,
+        "blurb": "Debt service, insurance, liability, citywide transfers. Mostly contractual.",
+        "cutEffects": { "safety": 0.10, "infrastructure": 0.10, "community": 0.10, "workforce": 0.10, "trust": 0.60 },
+        "cutNarrative": "You can defer very little here without missing a contractual payment.",
+        "raiseNarrative": "Pays down obligations ahead of schedule.",
+        "confidence": "modeled"
+      }
+    ],
+
+    "revenues": [
+      { "id": "proptax",   "name": "Property tax",             "amount": 11200000, "growth": 0.035, "confidence": "modeled" },
+      { "id": "salestax",  "name": "Sales tax (Bradley-Burns)", "amount": 8900000, "growth": 0.015, "confidence": "modeled" },
+      { "id": "measurew",  "name": "Measure W local sales tax", "amount": 7400000, "growth": 0.015, "confidence": "modeled" },
+      { "id": "charges",   "name": "Charges for services",      "amount": 4100000, "growth": 0.020, "confidence": "modeled" },
+      { "id": "permits",   "name": "Licenses & permits",        "amount": 2200000, "growth": 0.010, "confidence": "modeled" },
+      { "id": "intergov",  "name": "Intergovernmental",         "amount": 2100000, "growth": 0.010, "confidence": "modeled" },
+      { "id": "transfers", "name": "Transfers in & other",      "amount": 1600000, "growth": 0.000, "confidence": "modeled" },
+      { "id": "franchise", "name": "Franchise fees",            "amount": 1500000, "growth": 0.015, "confidence": "modeled" },
+      { "id": "tot",       "name": "Transient occupancy tax",   "amount": 1300000, "growth": 0.025, "confidence": "modeled" },
+      { "id": "interest",  "name": "Interest & rents",          "amount": 800000,  "growth": 0.010, "confidence": "modeled" },
+      { "id": "biztax",    "name": "Business license tax",      "amount": 600000,  "growth": 0.015, "confidence": "modeled" },
+      { "id": "fines",     "name": "Fines & forfeitures",       "amount": 400000,  "growth": 0.005, "confidence": "modeled" }
+    ]
+  },
+
+  "projection": {
+    "note": "Baseline growth assumptions for the three-year outlook.",
+    "revenueGrowth": 0.022,
+    "expenditureGrowth": 0.042,
+    "expenditureGrowthNote": "Salary steps, CalPERS rate increases and insurance renewals outrun revenue growth. This is the structural problem.",
+    "years": ["FY 2026-27", "FY 2027-28", "FY 2028-29"]
+  }
+};
+const ACTIONS = {
+  "meta": {
+    "note": "Policy options. Dollar amounts are MODELED estimates sized to be realistic for a city of Hollister's size, except where confidence is 'verified'. Meter effects are game-design values, not forecasts.",
+    "meters": [
+      {
+        "id": "safety",
+        "name": "Public Safety",
+        "icon": "shield",
+        "start": 70
+      },
+      {
+        "id": "infrastructure",
+        "name": "Streets & Infrastructure",
+        "icon": "road",
+        "start": 52
+      },
+      {
+        "id": "community",
+        "name": "Parks & Community",
+        "icon": "tree",
+        "start": 60
+      },
+      {
+        "id": "workforce",
+        "name": "City Workforce",
+        "icon": "people",
+        "start": 62
+      },
+      {
+        "id": "trust",
+        "name": "Public Trust",
+        "icon": "scale",
+        "start": 44
+      }
+    ]
+  },
+  "council": [
+    {
+      "id": "hawk",
+      "name": "The Fiscal Hawk",
+      "role": "Fiscal conservative",
+      "line": "I want this fixed, not postponed.",
+      "weights": {
+        "structural": 2.4,
+        "onetimeReliance": -2.6,
+        "newTaxes": -1.5,
+        "reserve": 1.5,
+        "safety": 0.3,
+        "infrastructure": 0.2,
+        "community": 0,
+        "workforce": -0.1,
+        "trust": 0.5
+      },
+      "yesLine": "This one actually closes the gap. I'll support it.",
+      "noLine": "This is a bridge loan with a bow on it. That's a no."
+    },
+    {
+      "id": "safety",
+      "name": "The Public Safety Advocate",
+      "role": "Police & fire first",
+      "line": "Response times are not a line item to me.",
+      "weights": {
+        "structural": 0.6,
+        "onetimeReliance": -0.4,
+        "newTaxes": 0.2,
+        "reserve": 0.3,
+        "safety": 2.8,
+        "infrastructure": 0.2,
+        "community": 0.1,
+        "workforce": 0.5,
+        "trust": 0.4
+      },
+      "yesLine": "You protected the people who answer the calls. Yes.",
+      "noLine": "You cut the engine companies. I can't vote for that."
+    },
+    {
+      "id": "neighbor",
+      "name": "The Neighborhood Voice",
+      "role": "Parks, library, programs",
+      "line": "A city people leave isn't saving money.",
+      "weights": {
+        "structural": 0.5,
+        "onetimeReliance": -0.3,
+        "newTaxes": 0.6,
+        "reserve": 0.1,
+        "safety": 0.4,
+        "infrastructure": 1,
+        "community": 2.6,
+        "workforce": 0.4,
+        "trust": 0.8
+      },
+      "yesLine": "The neighborhoods can live with this. Yes.",
+      "noLine": "You closed the pool and the library. No."
+    },
+    {
+      "id": "business",
+      "name": "The Business Voice",
+      "role": "Permits, fees, growth",
+      "line": "Don't balance this on the people who build here.",
+      "weights": {
+        "structural": 1.2,
+        "onetimeReliance": -0.8,
+        "newTaxes": -1.5,
+        "reserve": 0.6,
+        "safety": 0.5,
+        "infrastructure": 0.9,
+        "community": 0.2,
+        "workforce": -0.2,
+        "trust": 0.4,
+        "bizBurden": -1.6
+      },
+      "yesLine": "You found savings before you found my wallet. Yes.",
+      "noLine": "Every answer here was a new tax or a new fee. No."
+    },
+    {
+      "id": "labor",
+      "name": "The Labor Ally",
+      "role": "City employees",
+      "line": "These are people, not positions.",
+      "weights": {
+        "structural": 0.5,
+        "onetimeReliance": 0.1,
+        "newTaxes": 0.9,
+        "reserve": 0,
+        "safety": 0.5,
+        "infrastructure": 0.3,
+        "community": 0.5,
+        "workforce": 2.7,
+        "trust": 0.5
+      },
+      "yesLine": "Nobody lost a livelihood over this. Yes.",
+      "noLine": "You balanced this on layoffs. Absolutely not."
+    }
+  ],
+  "actions": [
+    {
+      "id": "voluntary-separation",
+      "name": "Voluntary separation incentives",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 1400000,
+      "desc": "Pay retirement and resignation incentives instead of ordering layoffs.",
+      "consequence": "Institutional knowledge walks out the door. You backfill the critical posts later at a premium.",
+      "effects": {
+        "workforce": -8,
+        "trust": -2
+      },
+      "realWorld": true,
+      "realNote": "This is the approach Hollister actually took for FY 2026-27."
+    },
+    {
+      "id": "freeze-vacancies",
+      "name": "Freeze all vacant positions",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 2200000,
+      "desc": "Hold every unfilled position citywide, including sworn vacancies.",
+      "consequence": "Cheapest real money on the board. It also quietly shrinks the city by attrition.",
+      "effects": {
+        "safety": -7,
+        "community": -4,
+        "workforce": -6,
+        "trust": -2
+      },
+      "realWorld": true,
+      "realNote": "Hollister eliminated 31 budgeted vacant positions in FY 2025-26 for about $6M."
+    },
+    {
+      "id": "layoffs-nonsafety",
+      "name": "Lay off 12 non-safety positions",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 1600000,
+      "desc": "Reduction in force across administration, parks and public works.",
+      "consequence": "Fast, certain savings. It costs you the room and most of your workforce goodwill.",
+      "effects": {
+        "workforce": -20,
+        "trust": -10,
+        "community": -8,
+        "infrastructure": -6
+      }
+    },
+    {
+      "id": "four-day-week",
+      "name": "Four-day City Hall week",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 450000,
+      "desc": "Close City Hall on Fridays and move staff to a 36-hour schedule.",
+      "consequence": "Utilities and overtime drop. Residents find the counter closed when they need it.",
+      "effects": {
+        "trust": -4,
+        "community": -4,
+        "workforce": 4
+      }
+    },
+    {
+      "id": "overtime-reform",
+      "name": "Overtime and scheduling reform",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 640000,
+      "desc": "Rebuild shift schedules to cut callback and mandatory overtime.",
+      "consequence": "Real savings without a layoff, but it needs union agreement and a year to land.",
+      "effects": {
+        "safety": -4,
+        "workforce": -5
+      }
+    },
+    {
+      "id": "contract-parks",
+      "name": "Contract out park maintenance",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 520000,
+      "desc": "Move turf, landscape and restroom maintenance to a private contractor.",
+      "consequence": "Cheaper per acre. Response to problems gets slower and less accountable.",
+      "effects": {
+        "community": -8,
+        "workforce": -7
+      }
+    },
+    {
+      "id": "defer-streets",
+      "name": "Defer street maintenance one year",
+      "category": "cuts",
+      "type": "onetime",
+      "amount": 1100000,
+      "desc": "Skip this year's slurry seal and overlay program.",
+      "consequence": "Pavement that fails costs roughly four times as much to rebuild as to maintain. This is a loan from your own streets.",
+      "effects": {
+        "infrastructure": -20,
+        "trust": -4
+      }
+    },
+    {
+      "id": "defer-fleet",
+      "name": "Defer fleet and equipment replacement",
+      "category": "cuts",
+      "type": "onetime",
+      "amount": 700000,
+      "desc": "Keep patrol cars, engines and street sweepers one more year.",
+      "consequence": "Maintenance costs climb and an engine out of service is a response time problem.",
+      "effects": {
+        "safety": -6,
+        "infrastructure": -10,
+        "workforce": -2
+      }
+    },
+    {
+      "id": "travel-training",
+      "name": "Suspend non-essential travel and training",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 160000,
+      "desc": "Cancel conferences and discretionary professional development.",
+      "consequence": "Small money. Certifications lapse and recruitment gets harder.",
+      "effects": {
+        "workforce": -3
+      }
+    },
+    {
+      "id": "library-hours",
+      "name": "Cut library and community center hours",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 280000,
+      "desc": "Drop to four open days a week and end evening hours.",
+      "consequence": "Highly visible. It is the cut residents notice first and remember longest.",
+      "effects": {
+        "community": -12,
+        "trust": -4
+      }
+    },
+    {
+      "id": "admin-hiring-freeze",
+      "name": "Freeze administrative hiring",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 780000,
+      "desc": "No backfills in finance, HR, IT or the clerk's office.",
+      "consequence": "It also slows the overdue audit catch-up, and lenders are watching that.",
+      "effects": {
+        "workforce": -5,
+        "trust": -3
+      }
+    },
+    {
+      "id": "fire-jpa",
+      "name": "Move to a regional fire services JPA",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 900000,
+      "desc": "Shift fire operations into a joint powers authority with neighboring agencies.",
+      "consequence": "Shares overhead across agencies. You also give up direct control of your own fire service.",
+      "effects": {
+        "safety": -7,
+        "workforce": -6,
+        "trust": -6
+      }
+    },
+    {
+      "id": "energy-retrofit",
+      "name": "Energy retrofit and solar agreement",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 210000,
+      "desc": "LED conversion and a solar power purchase agreement on city facilities.",
+      "consequence": "Low risk, no service loss. It takes about a year to show up in the numbers.",
+      "effects": {
+        "infrastructure": 3
+      }
+    },
+    {
+      "id": "debt-restructure",
+      "name": "Restructure outstanding debt",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 380000,
+      "desc": "Refinance and re-amortize existing obligations to lower annual payments.",
+      "consequence": "Lower payments now, more interest paid in total. A fiscal emergency does not get you good terms.",
+      "effects": {
+        "trust": -2
+      }
+    },
+    {
+      "id": "cm-office-cut",
+      "name": "Cut the City Manager's office budget",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 190000,
+      "desc": "Reduce executive staffing, car allowances and discretionary accounts.",
+      "consequence": "Small money, large signal. Residents read this one as good faith.",
+      "effects": {
+        "workforce": -2,
+        "trust": 7
+      }
+    },
+    {
+      "id": "fee-cost-recovery",
+      "name": "Full cost-recovery fee study",
+      "category": "revenue",
+      "type": "ongoing",
+      "amount": 900000,
+      "desc": "Reset building, planning and engineering fees to the true cost of service.",
+      "consequence": "Defensible and council-approvable. The development community will fight it.",
+      "effects": {
+        "community": -4,
+        "trust": -3
+      },
+      "taxBurden": 0.2,
+      "bizBurden": 1
+    },
+    {
+      "id": "biz-license-modernize",
+      "name": "Modernize the business license tax",
+      "category": "revenue",
+      "type": "ongoing",
+      "amount": 450000,
+      "desc": "Update a flat-rate schedule that has not changed in decades.",
+      "consequence": "Overdue housekeeping. Small businesses feel it as a rate increase anyway.",
+      "effects": {
+        "trust": -2
+      },
+      "taxBurden": 0.4,
+      "bizBurden": 1
+    },
+    {
+      "id": "ambulance-fee",
+      "name": "First responder fee for medical calls",
+      "category": "revenue",
+      "type": "ongoing",
+      "amount": 400000,
+      "desc": "Bill insurers when fire units respond to medical emergencies.",
+      "consequence": "Common practice statewide. Residents still experience it as a bill for calling 911.",
+      "effects": {
+        "trust": -5,
+        "community": -3
+      },
+      "taxBurden": 0.6,
+      "bizBurden": 0.1
+    },
+    {
+      "id": "citations",
+      "name": "Step up code enforcement and citations",
+      "category": "revenue",
+      "type": "ongoing",
+      "amount": 180000,
+      "desc": "Fund an additional code officer and enforce existing citation authority.",
+      "consequence": "Revenue from enforcement reads as a shakedown whether or not it is one.",
+      "effects": {
+        "trust": -4
+      },
+      "taxBurden": 0.4,
+      "bizBurden": 0.5
+    },
+    {
+      "id": "cell-tower",
+      "name": "Lease rooftop and cell tower rights",
+      "category": "revenue",
+      "type": "ongoing",
+      "amount": 120000,
+      "desc": "Lease space on city water tanks and rooftops to carriers.",
+      "consequence": "Free money, small money. There is no reason not to do this.",
+      "effects": {},
+      "taxBurden": 0,
+      "bizBurden": 0
+    },
+    {
+      "id": "tot-increase",
+      "name": "Raise the hotel tax to 12%",
+      "category": "revenue",
+      "type": "ongoing",
+      "amount": 260000,
+      "desc": "Increase transient occupancy tax from 10% to 12%.",
+      "needsBallot": true,
+      "passChance": 0.74,
+      "consequence": "Visitors pay it, not residents. It is the easiest ballot measure on this board.",
+      "effects": {},
+      "taxBurden": 0.2,
+      "bizBurden": 0.4
+    },
+    {
+      "id": "cannabis-tax",
+      "name": "Cannabis business tax",
+      "category": "revenue",
+      "type": "ongoing",
+      "amount": 350000,
+      "desc": "Tax gross receipts of licensed cannabis businesses.",
+      "needsBallot": true,
+      "passChance": 0.58,
+      "consequence": "Depends entirely on how many operators actually open here.",
+      "effects": {
+        "trust": -2
+      },
+      "taxBurden": 0.5,
+      "bizBurden": 0.6
+    },
+    {
+      "id": "uut",
+      "name": "Utility users tax at 3%",
+      "category": "revenue",
+      "type": "ongoing",
+      "amount": 2800000,
+      "desc": "A 3% tax on electric, gas and telecom bills.",
+      "needsBallot": true,
+      "passChance": 0.33,
+      "consequence": "The largest ongoing revenue available to you. Residents pay it on every bill, every month.",
+      "effects": {
+        "trust": -8
+      },
+      "taxBurden": 1,
+      "bizBurden": 0.7
+    },
+    {
+      "id": "sales-tax-half",
+      "name": "Add a half-cent sales tax",
+      "category": "revenue",
+      "type": "ongoing",
+      "amount": 3700000,
+      "desc": "A half-cent add-on to the local transactions and use tax.",
+      "needsBallot": true,
+      "passChance": 0.41,
+      "consequence": "Hollister is already at 9.25%. Another half cent is a hard ask in a fiscal emergency.",
+      "effects": {
+        "trust": -6
+      },
+      "taxBurden": 1,
+      "bizBurden": 0.8
+    },
+    {
+      "id": "sell-surplus",
+      "name": "Sell surplus city property",
+      "category": "onetime",
+      "type": "onetime",
+      "amount": 2100000,
+      "desc": "Dispose of city-owned parcels no longer used for operations.",
+      "consequence": "You can only sell it once, and you will never buy it back at this price.",
+      "effects": {
+        "infrastructure": -5,
+        "trust": -4
+      }
+    },
+    {
+      "id": "impact-fee-loan",
+      "name": "Borrow $11M from impact fee funds",
+      "category": "onetime",
+      "type": "onetime",
+      "amount": 11000000,
+      "desc": "An interfund loan from restricted impact fee funds to the General Fund.",
+      "consequence": "This is cash, not a fix. It is repayable by June 30, 2027 at 4%, and the capital projects those fees were collected for wait.",
+      "effects": {
+        "trust": -9,
+        "infrastructure": -8
+      },
+      "realWorld": true,
+      "confidence": "verified",
+      "realNote": "On October 2, 2026 the Hollister City Council declared a fiscal emergency and approved exactly this: $18M from impact fee funds, $11M of it to the General Fund."
+    }
+  ]
+};
+
+
+/* charts */
+
+/* ============================================================
+   charts.js — dependency-free SVG charts, phone-first.
+   Rules followed: one axis per chart, categorical hues in fixed
+   order (never cycled), single-series charts use one color,
+   <=24px bars with a 4px rounded data-end, 2px lines, >=8px
+   markers with a 2px surface ring, hairline solid gridlines,
+   2px surface gaps between touching fills, selective direct
+   labels, legend whenever >=2 series, text in text tokens only,
+   and tap-to-reveal readouts (no hover-only information).
+   ============================================================ */
+
+const NS = 'http://www.w3.org/2000/svg';
+
+/* ---------- small helpers ---------- */
+
+function el(name, attrs = {}) {
+  const n = document.createElementNS(NS, name);
+  for (const k in attrs) {
+    if (attrs[k] === null || attrs[k] === undefined) continue;
+    n.setAttribute(k, attrs[k]);
+  }
+  return n;
+}
+
+function txt(x, y, s, attrs = {}) {
+  const t = el('text', Object.assign({
+    x, y,
+    'font-family': 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
+    'font-size': 11,
+  }, attrs));
+  t.textContent = s;
+  return t;
+}
+
+/** Rounded only on the data-end; square at the baseline. */
+function barPath(x, y, w, h, r, end) {
+  if (w <= 0 || h <= 0) return '';
+  if (end === 'right') {
+    const rr = Math.max(0, Math.min(r, w, h / 2));
+    return `M${x},${y} H${x + w - rr} A${rr},${rr} 0 0 1 ${x + w},${y + rr}`
+         + ` V${y + h - rr} A${rr},${rr} 0 0 1 ${x + w - rr},${y + h} H${x} Z`;
+  }
+  if (end === 'left') {
+    const rr = Math.max(0, Math.min(r, w, h / 2));
+    return `M${x + w},${y} H${x + rr} A${rr},${rr} 0 0 0 ${x},${y + rr}`
+         + ` V${y + h - rr} A${rr},${rr} 0 0 0 ${x + rr},${y + h} H${x + w} Z`;
+  }
+  if (end === 'top') {
+    const rr = Math.max(0, Math.min(r, h, w / 2));
+    return `M${x},${y + h} V${y + rr} A${rr},${rr} 0 0 1 ${x + rr},${y}`
+         + ` H${x + w - rr} A${rr},${rr} 0 0 1 ${x + w},${y + rr} V${y + h} Z`;
+  }
+  // bottom
+  const rr = Math.max(0, Math.min(r, h, w / 2));
+  return `M${x},${y} V${y + h - rr} A${rr},${rr} 0 0 0 ${x + rr},${y + h}`
+       + ` H${x + w - rr} A${rr},${rr} 0 0 0 ${x + w},${y + h - rr} V${y} Z`;
+}
+
+function arcPath(cx, cy, r, a0, a1) {
+  const p0 = [cx + r * Math.cos(a0), cy + r * Math.sin(a0)];
+  const p1 = [cx + r * Math.cos(a1), cy + r * Math.sin(a1)];
+  const large = (a1 - a0) > Math.PI ? 1 : 0;
+  return `M${p0[0]},${p0[1]} A${r},${r} 0 ${large} 1 ${p1[0]},${p1[1]}`;
+}
+const fmt = {
+  /** $1.2M / $840K — compact money for axis ticks and labels. */
+  money(v, dp) {
+    const n = Math.abs(v);
+    const sign = v < 0 ? '-' : '';
+    if (n >= 1e6) return `${sign}$${(n / 1e6).toFixed(dp === undefined ? 1 : dp)}M`;
+    if (n >= 1e3) return `${sign}$${Math.round(n / 1e3)}K`;
+    return `${sign}$${Math.round(n)}`;
+  },
+  /** $48,500,000 — exact, for tables and readouts. */
+  full(v) {
+    const sign = v < 0 ? '-' : '';
+    return sign + '$' + Math.round(Math.abs(v)).toLocaleString('en-US');
+  },
+  signed(v) { return (v > 0 ? '+' : v < 0 ? '-' : '') + fmt.money(Math.abs(v)); },
+  pct(v, dp = 0) { return `${v >= 0 ? '' : '-'}${Math.abs(v).toFixed(dp)}%`; },
+};
+
+/** "nice" axis max so ticks land on round numbers. */
+function niceMax(v, ticks = 4) {
+  if (v <= 0) return 1;
+  const raw = v / ticks;
+  const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  const norm = raw / mag;
+  const ladder = [1, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10];
+  const step = (ladder.find((x) => norm <= x) ?? 10) * mag;
+  return step * ticks;
+}
+
+/** The step size itself, for axes that don't start at zero. */
+function niceStep(raw) {
+  if (raw <= 0) return 1;
+  const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  const norm = raw / mag;
+  const ladder = [1, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10];
+  return (ladder.find((x) => norm <= x) ?? 10) * mag;
+}
+
+/* ---------- mount: measures its container and redraws on resize ---------- */
+
+const mounted = new WeakMap();
+
+function mount(host, draw) {
+  const render = () => {
+    const w = Math.max(240, Math.round(host.getBoundingClientRect().width));
+    host.replaceChildren(draw(w));
+  };
+  if (!mounted.has(host)) {
+    mounted.set(host, render);
+    if (typeof ResizeObserver !== 'undefined') {
+      let last = 0;
+      const ro = new ResizeObserver(() => {
+        const w = Math.round(host.getBoundingClientRect().width);
+        if (w && Math.abs(w - last) > 1) { last = w; mounted.get(host)(); }
+      });
+      ro.observe(host);
+    }
+  } else {
+    mounted.set(host, render);
+  }
+  render();
+}
+
+/** A tap/click target that reports back through opts.onPick. */
+function pickable(node, payload, onPick) {
+  if (!onPick) return node;
+  node.style.cursor = 'pointer';
+  node.setAttribute('tabindex', '0');
+  node.setAttribute('role', 'button');
+  const fire = (e) => { e.preventDefault(); e.stopPropagation(); onPick(payload); };
+  node.addEventListener('click', fire);
+  node.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') fire(e);
+  });
+  return node;
+}
+
+/* ============================================================
+   1. Donut — part-to-whole at a glance. <=8 segments, fixed hues.
+   ============================================================ */
+function donut(host, segments, opts = {}) {
+  mount(host, (W) => {
+    const size = Math.min(W, 260);
+    const cx = W / 2, cy = size / 2;
+    const thickness = Math.max(26, Math.min(38, size * 0.15));
+    const r = size / 2 - thickness / 2 - 2;
+
+    const svg = el('svg', {
+      viewBox: `0 0 ${W} ${size}`, width: W, height: size,
+      role: 'img', 'aria-label': opts.ariaLabel || 'Donut chart',
+    });
+
+    const total = segments.reduce((s, d) => s + Math.max(0, d.value), 0) || 1;
+    // 2px surface gap between touching segments, expressed as an angle.
+    const gap = Math.min(0.055, 2 / r);
+    let a = -Math.PI / 2;
+
+    segments.forEach((d) => {
+      const frac = Math.max(0, d.value) / total;
+      const sweep = frac * Math.PI * 2;
+      if (sweep <= 0.0005) return;
+      const a0 = a + gap / 2;
+      const a1 = a + sweep - gap / 2;
+      if (a1 > a0) {
+        const arc = el('path', {
+          d: arcPath(cx, cy, r, a0, a1),
+          fill: 'none', 'stroke-width': thickness, 'stroke-linecap': 'butt',
+        });
+        arc.style.stroke = d.color;
+        arc.style.transition = 'opacity .15s ease';
+        if (opts.dimOthers && opts.active && opts.active !== d.id) arc.style.opacity = '.3';
+        const label = `${d.label}: ${fmt.full(d.value)}, ${(frac * 100).toFixed(1)} percent`;
+        arc.setAttribute('aria-label', label);
+        svg.appendChild(pickable(arc, d, opts.onPick));
+      }
+      a += sweep;
+    });
+
+    // Center: the hero number. Text wears text tokens, never a series color.
+    if (opts.centerValue) {
+      const v = txt(cx, cy - 1, opts.centerValue, {
+        'text-anchor': 'middle', 'font-size': Math.round(size * 0.115),
+        'font-weight': 700, 'letter-spacing': '-0.02em',
+      });
+      v.style.fill = 'var(--text-1)';
+      svg.appendChild(v);
+    }
+    if (opts.centerLabel) {
+      const l = txt(cx, cy + Math.round(size * 0.088), opts.centerLabel, {
+        'text-anchor': 'middle', 'font-size': 11.5, 'font-weight': 600,
+      });
+      l.style.fill = 'var(--muted)';
+      svg.appendChild(l);
+    }
+    return svg;
+  });
+}
+
+/* ============================================================
+   2. Horizontal bars — ranked magnitude. ONE series = ONE color.
+   ============================================================ */
+function barsH(host, items, opts = {}) {
+  mount(host, (W) => {
+    // Category names here are long ("Transient occupancy tax") and a phone is
+    // narrow, so the label gets its own line above a full-width bar rather
+    // than a cramped gutter that it would overrun.
+    const rowH = opts.rowH || 44;
+    const barH = 10;
+    const valueW = 58;
+    const H = items.length * rowH + 2;
+
+    const svg = el('svg', {
+      viewBox: `0 0 ${W} ${H}`, width: W, height: H,
+      role: 'img', 'aria-label': opts.ariaLabel || 'Bar chart',
+    });
+
+    const max = niceMax(Math.max(...items.map((d) => d.value), 1));
+    const labelMax = Math.max(8, Math.floor((W - valueW - 8) / (12.5 * 0.55)));
+
+    items.forEach((d, i) => {
+      const y = i * rowH + 2;
+
+      const label = d.label.length > labelMax ? d.label.slice(0, labelMax - 1) + '…' : d.label;
+      const name = txt(0, y + 13, label, { 'font-size': 12.5 });
+      name.style.fill = 'var(--text-2)';
+      svg.appendChild(name);
+
+      const val = txt(W, y + 13, fmt.money(d.value), {
+        'text-anchor': 'end', 'font-size': 12.5, 'font-weight': 650,
+      });
+      val.style.fill = 'var(--text-1)';
+      val.style.fontVariantNumeric = 'tabular-nums';
+      svg.appendChild(val);
+
+      const w = Math.max(d.value > 0 ? 3 : 0, (d.value / max) * W);
+      const bar = el('path', { d: barPath(0, y + 22, w, barH, 4, 'right') });
+      bar.style.fill = d.color || 'var(--series-1)';
+      svg.appendChild(bar);
+
+      const hit = el('rect', { x: 0, y, width: W, height: rowH, fill: 'transparent' });
+      hit.setAttribute('aria-label', `${d.label}: ${fmt.full(d.value)}`);
+      svg.appendChild(pickable(hit, d, opts.onPick));
+    });
+
+    return svg;
+  });
+}
+
+/* ============================================================
+   3. Diverging bars — change vs baseline. Two poles + neutral zero.
+   ============================================================ */
+function divergingBars(host, items, opts = {}) {
+  mount(host, (W) => {
+    const rowH = 32;
+    const barH = 16;
+    const labelW = Math.min(88, Math.round(W * 0.3));
+    const valueW = 56;
+    const H = items.length * rowH + 20;
+    const plotL = labelW;
+    const plotW = Math.max(40, W - labelW - valueW);
+    const mid = plotL + plotW / 2;
+
+    const svg = el('svg', {
+      viewBox: `0 0 ${W} ${H}`, width: W, height: H,
+      role: 'img', 'aria-label': opts.ariaLabel || 'Change from baseline',
+    });
+
+    const max = niceMax(Math.max(...items.map((d) => Math.abs(d.value)), 1), 2) || 1;
+    const half = plotW / 2;
+
+    // Zero rule — a solid hairline, never dashed.
+    const zero = el('line', { x1: mid, y1: 2, x2: mid, y2: H - 18, 'stroke-width': 1 });
+    zero.style.stroke = 'var(--axis)';
+    svg.appendChild(zero);
+
+    items.forEach((d, i) => {
+      const y = i * rowH + 2;
+      const cy = y + rowH / 2;
+      const len = Math.abs(d.value) / max * half;
+
+      const name = txt(0, cy + 4, d.label, { 'font-size': 12 });
+      name.style.fill = 'var(--text-2)';
+      svg.appendChild(name);
+
+      if (Math.abs(d.value) > 0.5) {
+        const isCut = d.value < 0;
+        const x = isCut ? mid - len : mid;
+        const bar = el('path', {
+          d: barPath(x, cy - barH / 2, len, barH, 4, isCut ? 'left' : 'right'),
+        });
+        bar.style.fill = isCut ? 'var(--pos)' : 'var(--neg)';
+        svg.appendChild(bar);
+      } else {
+        const dot = el('circle', { cx: mid, cy, r: 2.5 });
+        dot.style.fill = 'var(--muted)';
+        svg.appendChild(dot);
+      }
+
+      const val = txt(W - 2, cy + 4, d.value === 0 ? '—' : fmt.signed(d.value), {
+        'text-anchor': 'end', 'font-size': 12, 'font-weight': 650,
+      });
+      val.style.fill = d.value === 0 ? 'var(--muted)' : 'var(--text-1)';
+      val.style.fontVariantNumeric = 'tabular-nums';
+      svg.appendChild(val);
+
+      const hit = el('rect', { x: 0, y, width: W, height: rowH, fill: 'transparent' });
+      hit.setAttribute('aria-label', `${d.label}: ${d.value === 0 ? 'unchanged' : fmt.full(d.value)}`);
+      svg.appendChild(pickable(hit, d, opts.onPick));
+    });
+
+    const lo = txt(plotL + 4, H - 4, opts.leftLabel || 'Cut', { 'font-size': 10.5, 'font-weight': 600 });
+    lo.style.fill = 'var(--muted)';
+    const hi = txt(plotL + plotW - 4, H - 4, opts.rightLabel || 'Increase', {
+      'font-size': 10.5, 'text-anchor': 'end', 'font-weight': 600,
+    });
+    hi.style.fill = 'var(--muted)';
+    svg.appendChild(lo); svg.appendChild(hi);
+
+    return svg;
+  });
+}
+
+/* ============================================================
+   4. Multi-line — change over time. ONE y-axis, always.
+   ============================================================ */
+function lines(host, series, categories, opts = {}) {
+  mount(host, (W) => {
+    const padL = 42, padR = 14, padT = 14, padB = 30;
+    const H = opts.height || 190;
+    const plotW = W - padL - padR;
+    const plotH = H - padT - padB;
+
+    const svg = el('svg', {
+      viewBox: `0 0 ${W} ${H}`, width: W, height: H,
+      role: 'img', 'aria-label': opts.ariaLabel || 'Line chart over time',
+    });
+
+    const all = series.flatMap((s) => s.values);
+    const rawMax = Math.max(...all);
+    const rawMin = Math.min(...all);
+
+    // When every value sits in a narrow band far above zero, a zero-based axis
+    // flattens the one thing the chart is for — the gap between the lines. Pad
+    // around the data and snap both ends to round numbers instead.
+    let min, max, step;
+    const ticks = 4;
+    if (opts.zeroBased === false && rawMin > 0 && (rawMax - rawMin) < rawMax * 0.5) {
+      const pad = Math.max((rawMax - rawMin) * 0.45, rawMax * 0.04);
+      step = niceStep(((rawMax + pad) - (rawMin - pad)) / ticks);
+      min = Math.max(0, Math.floor((rawMin - pad) / step) * step);
+      max = min + step * ticks;
+      while (max < rawMax) { max += step; }
+    } else {
+      min = 0;
+      max = niceMax(rawMax, ticks);
+      step = (max - min) / ticks;
+    }
+
+    const X = (i) => padL + (categories.length === 1 ? plotW / 2 : (i / (categories.length - 1)) * plotW);
+    const Y = (v) => padT + plotH - ((v - min) / (max - min || 1)) * plotH;
+
+    // Gridlines: hairline, solid, recessive.
+    for (let v = min; v <= max + 1e-6; v += step) {
+      const y = Y(v);
+      const t = v === min ? 0 : 1;
+      const g = el('line', { x1: padL, y1: y, x2: W - padR, y2: y, 'stroke-width': 1 });
+      g.style.stroke = t === 0 ? 'var(--axis)' : 'var(--grid)';
+      svg.appendChild(g);
+      const lab = txt(padL - 7, y + 3.5, fmt.money(v, v >= 1e6 && v % 1e6 ? 1 : 0), { 'text-anchor': 'end', 'font-size': 10.5 });
+      lab.style.fill = 'var(--muted)';
+      lab.style.fontVariantNumeric = 'tabular-nums';
+      svg.appendChild(lab);
+    }
+
+    categories.forEach((c, i) => {
+      const lab = txt(X(i), H - 9, c, {
+        'text-anchor': i === 0 ? 'start' : i === categories.length - 1 ? 'end' : 'middle',
+        'font-size': 10.5,
+      });
+      lab.style.fill = 'var(--muted)';
+      svg.appendChild(lab);
+    });
+
+    // The band between the two lines IS the deficit. Shade it, and let the
+    // shading change colour where the lines cross so the sign is never
+    // carried by position alone.
+    if (opts.band && series.length === 2) {
+      const [A, B] = series;
+      const quad = (x0, ya0, yb0, x1, ya1, yb1, positive) => {
+        const q = el('path', {
+          d: `M${x0},${ya0} L${x1},${ya1} L${x1},${yb1} L${x0},${yb0} Z`, stroke: 'none',
+        });
+        q.style.fill = positive ? 'var(--pos)' : 'var(--neg)';
+        q.style.opacity = '.14';
+        svg.appendChild(q);
+      };
+      for (let i = 0; i < A.values.length - 1; i++) {
+        const d0 = A.values[i] - B.values[i];
+        const d1 = A.values[i + 1] - B.values[i + 1];
+        const x0 = X(i), x1 = X(i + 1);
+        if (d0 === 0 && d1 === 0) continue;
+        if (d0 >= 0 === d1 >= 0) {
+          quad(x0, Y(A.values[i]), Y(B.values[i]), x1, Y(A.values[i + 1]), Y(B.values[i + 1]), d0 >= 0);
+        } else {
+          const t = d0 / (d0 - d1);
+          const xc = x0 + (x1 - x0) * t;
+          const yc = Y(A.values[i] + (A.values[i + 1] - A.values[i]) * t);
+          quad(x0, Y(A.values[i]), Y(B.values[i]), xc, yc, yc, d0 >= 0);
+          quad(xc, yc, yc, x1, Y(A.values[i + 1]), Y(B.values[i + 1]), d1 >= 0);
+        }
+      }
+    }
+
+    series.forEach((s) => {
+      const d = s.values.map((v, i) => `${i ? 'L' : 'M'}${X(i)},${Y(v)}`).join(' ');
+      const line = el('path', {
+        d, fill: 'none', 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round',
+      });
+      line.style.stroke = s.color;
+      svg.appendChild(line);
+    });
+
+    // Markers carry a 2px surface ring so they stay legible where lines cross.
+    series.forEach((s) => {
+      s.values.forEach((v, i) => {
+        const m = el('circle', { cx: X(i), cy: Y(v), r: 4.5, 'stroke-width': 2 });
+        m.style.fill = s.color;
+        m.style.stroke = 'var(--surface-1)';
+        svg.appendChild(m);
+      });
+    });
+
+    // Direct-label the endpoints only — never a number on every point. When the
+    // lines converge, the labels would overlap; put one above its own marker
+    // and one below rather than stacking them away from their lines.
+    {
+      const ends = series.map((s) => ({ s, i: s.values.length - 1, v: s.values[s.values.length - 1] }));
+      ends.forEach((e) => { e.y = Y(e.v); });
+      const collide = ends.length === 2 && Math.abs(ends[0].y - ends[1].y) < 22;
+      const hiFirst = ends.length === 2 && ends[0].y <= ends[1].y;
+      ends.forEach((e, k) => {
+        let dy = -11;
+        if (collide) dy = (k === 0) === hiFirst ? -11 : 17;
+        const t = txt(X(e.i), e.y + dy, fmt.money(e.v), {
+          'text-anchor': 'end', 'font-size': 11.5, 'font-weight': 650,
+        });
+        t.style.fill = 'var(--text-1)';
+        t.style.fontVariantNumeric = 'tabular-nums';
+        svg.appendChild(t);
+      });
+    }
+
+    // Column-wide hit targets — the whole year, not just the dot.
+    if (opts.onPick) {
+      categories.forEach((c, i) => {
+        const w = plotW / categories.length;
+        const hit = el('rect', {
+          x: padL + i * w - (i === 0 ? padL : 0), y: 0,
+          width: w + (i === 0 || i === categories.length - 1 ? padL : 0), height: H,
+          fill: 'transparent',
+        });
+        svg.appendChild(pickable(hit, {
+          index: i, label: c,
+          values: series.map((s) => ({ name: s.name, value: s.values[i], color: s.color })),
+        }, opts.onPick));
+      });
+    }
+
+    return svg;
+  });
+}
+
+/* ============================================================
+   5. Waterfall — how a total was reached, step by step.
+   ============================================================ */
+function waterfall(host, steps, opts = {}) {
+  mount(host, (W) => {
+    const padT = 18, padB = 46;
+    const H = opts.height || 200;
+    const plotH = H - padT - padB;
+    const n = steps.length;
+    const slot = W / n;
+    const barW = Math.min(24, slot - 10);
+
+    const svg = el('svg', {
+      viewBox: `0 0 ${W} ${H}`, width: W, height: H,
+      role: 'img', 'aria-label': opts.ariaLabel || 'Waterfall chart',
+    });
+
+    // Running totals.
+    let run = 0;
+    const bars = steps.map((s) => {
+      if (s.total) { const b = { ...s, from: 0, to: s.value }; run = s.value; return b; }
+      const from = run; run += s.value;
+      return { ...s, from, to: run };
+    });
+
+    const lo = Math.min(0, ...bars.map((b) => Math.min(b.from, b.to)));
+    const hi = Math.max(0, ...bars.map((b) => Math.max(b.from, b.to)));
+    const span = (hi - lo) || 1;
+    const Y = (v) => padT + plotH - ((v - lo) / span) * plotH;
+
+    const zeroY = Y(0);
+    const zero = el('line', { x1: 0, y1: zeroY, x2: W, y2: zeroY, 'stroke-width': 1 });
+    zero.style.stroke = 'var(--axis)';
+    svg.appendChild(zero);
+
+    bars.forEach((b, i) => {
+      const cx = slot * i + slot / 2;
+      const x = cx - barW / 2;
+      const yTop = Math.min(Y(b.from), Y(b.to));
+      const h = Math.max(2, Math.abs(Y(b.to) - Y(b.from)));
+      const rising = b.to >= b.from;
+
+      const p = el('path', {
+        d: barPath(x, yTop, barW, h, 4, b.total ? 'top' : (rising ? 'top' : 'bottom')),
+      });
+      p.style.fill = b.total ? 'var(--series-7)' : (b.value < 0 ? 'var(--pos)' : 'var(--neg)');
+      svg.appendChild(p);
+
+      // Connector to the next bar — hairline, solid.
+      if (i < bars.length - 1 && !bars[i + 1].total) {
+        const y = Y(b.to);
+        const c = el('line', {
+          x1: cx + barW / 2, y1: y, x2: slot * (i + 1) + slot / 2 - barW / 2, y2: y,
+          'stroke-width': 1,
+        });
+        c.style.stroke = 'var(--grid)';
+        svg.appendChild(c);
+      }
+
+      const vt = txt(cx, yTop - 6, b.total ? fmt.money(b.value) : fmt.signed(-b.value), {
+        'text-anchor': 'middle', 'font-size': 11, 'font-weight': 650,
+      });
+      vt.style.fill = 'var(--text-1)';
+      vt.style.fontVariantNumeric = 'tabular-nums';
+      svg.appendChild(vt);
+
+      // Two-line wrapped category label.
+      const words = String(b.label).split(' ');
+      const l1 = [], l2 = [];
+      let cur = l1;
+      words.forEach((wd) => {
+        if (cur === l1 && l1.join(' ').length + wd.length > 9) cur = l2;
+        cur.push(wd);
+      });
+      [l1.join(' '), l2.join(' ')].forEach((line, k) => {
+        if (!line) return;
+        const t = txt(cx, H - 28 + k * 12, line, { 'text-anchor': 'middle', 'font-size': 10 });
+        t.style.fill = 'var(--muted)';
+        svg.appendChild(t);
+      });
+
+      const hit = el('rect', { x: slot * i, y: 0, width: slot, height: H, fill: 'transparent' });
+      hit.setAttribute('aria-label', `${b.label}: ${fmt.full(Math.abs(b.value))}`);
+      svg.appendChild(pickable(hit, b, opts.onPick));
+    });
+
+    return svg;
+  });
+}
+
+/* ============================================================
+   6. Stacked comparison bar — two totals side by side.
+   ============================================================ */
+function stackPair(host, pair, opts = {}) {
+  mount(host, (W) => {
+    const H = opts.height || 148;
+    const labelH = 22;
+    const barH = Math.min(24, (H - labelH * 2 - 16) / 2);
+    const padL = 0;
+    const plotW = W;
+
+    const svg = el('svg', {
+      viewBox: `0 0 ${W} ${H}`, width: W, height: H,
+      role: 'img', 'aria-label': opts.ariaLabel || 'Stacked comparison',
+    });
+
+    const max = Math.max(pair[0].total, pair[1].total) || 1;
+    const GAP = 2; // the 2px surface gap between touching fills
+
+    pair.forEach((row, ri) => {
+      const yLab = ri * (barH + labelH + 14) + 12;
+      const y = yLab + 8;
+
+      const name = txt(padL, yLab, row.label, { 'font-size': 12, 'font-weight': 600 });
+      name.style.fill = 'var(--text-2)';
+      svg.appendChild(name);
+
+      const tot = txt(W, yLab, fmt.money(row.total), {
+        'text-anchor': 'end', 'font-size': 12.5, 'font-weight': 700,
+      });
+      tot.style.fill = 'var(--text-1)';
+      tot.style.fontVariantNumeric = 'tabular-nums';
+      svg.appendChild(tot);
+
+      const fullW = (row.total / max) * plotW;
+      let x = padL;
+      row.parts.forEach((p, pi) => {
+        const w = (p.value / (row.total || 1)) * fullW;
+        const isLast = pi === row.parts.length - 1;
+        const drawW = Math.max(0, isLast ? w : w - GAP);
+        if (drawW <= 0) { x += w; return; }
+        const seg = el('path', {
+          d: barPath(x, y, drawW, barH, 4, isLast ? 'right' : (pi === 0 ? 'left' : 'none')),
+        });
+        seg.style.fill = p.color;
+        seg.setAttribute('aria-label', `${row.label} ${p.label}: ${fmt.full(p.value)}`);
+        svg.appendChild(pickable(seg, { ...p, row: row.label }, opts.onPick));
+        x += w;
+      });
+    });
+
+    return svg;
+  });
+}
+
+
+/* engine */
+
+/* ============================================================
+   engine.js — budget state, consequences, council, scoring.
+   Pure functions over a plain state object. No DOM here.
+   ============================================================ */
+const METER_IDS = ['safety', 'infrastructure', 'community', 'workforce', 'trust'];
+
+/** Points a full 100% cut of one department would move a meter weighted 1.0. */
+const DEPT_METER_SCALE = 60;
+function createState(budget, actions) {
+  const dept = {};
+  budget.generalFund.departments.forEach((d) => { dept[d.id] = 100; });
+  const meters = {};
+  actions.meta.meters.forEach((m) => { meters[m.id] = m.start; });
+  return {
+    deptPct: dept,
+    chosen: new Set(),
+    startMeters: meters,
+    ballotResults: null,   // filled in at submission
+    submitted: false,
+  };
+}
+
+/* ---------- money ---------- */
+function totals(state, budget, actions) {
+  const depts = budget.generalFund.departments;
+  const baseExp = depts.reduce((s, d) => s + d.baseline, 0);
+  const curExp = depts.reduce((s, d) => s + d.baseline * (state.deptPct[d.id] / 100), 0);
+  const deptSavings = baseExp - curExp;
+
+  const baseRev = budget.generalFund.revenues.reduce((s, r) => s + r.amount, 0);
+
+  let ongoingCuts = 0, ongoingRevenue = 0, oneTime = 0, atRisk = 0;
+  let taxBurden = 0, bizBurden = 0;
+  const picked = [];
+
+  actions.actions.forEach((a) => {
+    if (!state.chosen.has(a.id)) return;
+    picked.push(a);
+
+    // A ballot measure that already failed contributes nothing.
+    const failed = state.ballotResults && state.ballotResults[a.id] === false;
+    const value = failed ? 0 : a.amount;
+
+    if (a.type === 'onetime') oneTime += value;
+    else if (a.category === 'revenue') {
+      ongoingRevenue += value;
+      // A cost-recovery fee and a utility users tax are not the same ask.
+      taxBurden += value * (a.taxBurden ?? 0.6);
+      bizBurden += value * (a.bizBurden ?? 0.3);
+      if (a.needsBallot && !state.ballotResults) atRisk += a.amount;
+    } else ongoingCuts += value;
+  });
+
+  const ongoingExp = baseExp - deptSavings - ongoingCuts;
+  const ongoingRev = baseRev + ongoingRevenue;
+
+  // The honest measure: do recurring revenues cover recurring costs?
+  const structuralGap = ongoingExp - ongoingRev;
+  // The paper measure: what the adopted budget would show.
+  const cashGap = ongoingExp - (ongoingRev + oneTime);
+
+  const startGap = baseExp - baseRev;
+  const closed = startGap - cashGap;
+
+  return {
+    baseExp, curExp, deptSavings, baseRev,
+    ongoingCuts, ongoingRevenue, oneTime, atRisk, taxBurden, bizBurden,
+    ongoingExp, ongoingRev,
+    structuralGap, cashGap, startGap, closed,
+    picked,
+    balanced: cashGap <= 0,
+    structurallyBalanced: structuralGap <= 0,
+    surplus: cashGap < 0 ? -cashGap : 0,
+    reserve: cashGap < 0 ? -cashGap : 0,
+    reservePct: ongoingExp > 0 ? (cashGap < 0 ? -cashGap : 0) / ongoingExp * 100 : 0,
+  };
+}
+
+/* ---------- consequences ---------- */
+function meters(state, budget, actions) {
+  const out = {};
+  METER_IDS.forEach((m) => { out[m] = state.startMeters[m]; });
+
+  budget.generalFund.departments.forEach((d) => {
+    const delta = (state.deptPct[d.id] - 100) / 100; // -0.30 .. +0.20
+    if (delta === 0) return;
+    METER_IDS.forEach((m) => {
+      const w = d.cutEffects[m] || 0;
+      if (!w) return;
+      // Increases help at a third of the rate cuts hurt — money alone
+      // doesn't buy back service as fast as removing it takes it away.
+      const eff = delta < 0 ? delta : delta * 0.34;
+      out[m] += eff * w * DEPT_METER_SCALE;
+    });
+  });
+
+  actions.actions.forEach((a) => {
+    if (!state.chosen.has(a.id)) return;
+    if (state.ballotResults && a.needsBallot && state.ballotResults[a.id] === false) return;
+    for (const m in (a.effects || {})) {
+      if (out[m] !== undefined) out[m] += a.effects[m];
+    }
+  });
+
+  METER_IDS.forEach((m) => { out[m] = Math.max(0, Math.min(100, Math.round(out[m]))); });
+  return out;
+}
+function meterStatus(v) {
+  if (v >= 65) return { key: 'good',     label: 'Healthy',  color: 'var(--good)' };
+  if (v >= 45) return { key: 'warning',  label: 'Strained', color: 'var(--warning)' };
+  if (v >= 25) return { key: 'serious',  label: 'Degraded', color: 'var(--serious)' };
+  return         { key: 'critical', label: 'Failing',  color: 'var(--critical)' };
+}
+
+/* ---------- three-year outlook ---------- */
+function projection(state, budget, actions) {
+  const t = totals(state, budget, actions);
+  const p = budget.projection;
+  const years = p.years;
+
+  const rev = [], exp = [];
+  for (let i = 0; i < years.length; i++) {
+    // One-time money is in the first year and only the first year.
+    const oneTimeThisYear = i === 0 ? t.oneTime : 0;
+    rev.push(t.ongoingRev * Math.pow(1 + p.revenueGrowth, i) + oneTimeThisYear);
+    exp.push(t.ongoingExp * Math.pow(1 + p.expenditureGrowth, i));
+  }
+  const gaps = exp.map((e, i) => e - rev[i]);
+  return { years, rev, exp, gaps, cumulative: gaps.reduce((s, g) => s + Math.max(0, g), 0) };
+}
+
+/* ---------- the council ---------- */
+function councilVotes(state, budget, actions) {
+  const t = totals(state, budget, actions);
+  const m = meters(state, budget, actions);
+
+  // Normalised signals, all roughly in a -10..+10 band.
+  const structural = clamp(-t.structuralGap / 1e6, -12, 8);
+  const onetimeReliance = t.closed > 0 ? clamp(t.oneTime / t.closed * 10, 0, 10) : 0;
+  const newTaxes = clamp(t.taxBurden / 1e6 * 2.2, 0, 10);
+  const bizBurden = clamp(t.bizBurden / 1e6 * 2.2, 0, 10);
+  const reserve = clamp(t.reservePct / 20 * 8, 0, 10);
+
+  return actions.council.map((c) => {
+    let score = 50;
+    score += (c.weights.structural || 0) * structural;
+    score += (c.weights.onetimeReliance || 0) * onetimeReliance;
+    score += (c.weights.newTaxes || 0) * newTaxes;
+    score += (c.weights.bizBurden || 0) * bizBurden;
+    score += (c.weights.reserve || 0) * reserve;
+    // Structural balance is a threshold, not a gradient. Clearing it at all is
+    // the thing a fiscal conservative is actually voting for.
+    if (t.structurallyBalanced) score += 3 * (c.weights.structural || 0);
+    METER_IDS.forEach((k) => {
+      score += (c.weights[k] || 0) * ((m[k] - 48) / 4.5);
+    });
+    // A budget that does not balance on paper cannot be adopted at all.
+    if (!t.balanced) score -= 28;
+
+    const yes = score >= 50;
+    return { ...c, score: Math.round(score), yes };
+  });
+}
+
+/* ---------- ballot measures ---------- */
+function resolveBallots(state, actions, rng = Math.random) {
+  const res = {};
+  actions.actions.forEach((a) => {
+    if (a.needsBallot && state.chosen.has(a.id)) {
+      res[a.id] = rng() < (a.passChance ?? 0.5);
+    }
+  });
+  return res;
+}
+
+/* ---------- the scorecard ---------- */
+function score(state, budget, actions) {
+  const t = totals(state, budget, actions);
+  const m = meters(state, budget, actions);
+  const votes = councilVotes(state, budget, actions);
+  const proj = projection(state, budget, actions);
+  const yes = votes.filter((v) => v.yes).length;
+  const adopted = yes >= 3 && t.balanced;
+
+  let pts = 0;
+
+  // 1. Did it balance at all? (30)
+  if (t.balanced) pts += 30;
+  else pts += Math.max(0, 30 * (1 - t.cashGap / Math.max(1, t.startGap)));
+
+  // 2. Is it structural, or papered over? (25)
+  if (t.structurallyBalanced) pts += 25;
+  else pts += Math.max(0, 25 * (1 - Math.min(1, t.structuralGap / Math.max(1, t.startGap))));
+
+  // 3. Did the council adopt it? (20)
+  pts += (yes / 5) * 20;
+
+  // 4. Are the services people actually use still working? (20)
+  const avgMeter = METER_IDS.reduce((s, k) => s + m[k], 0) / METER_IDS.length;
+  pts += (avgMeter / 100) * 20;
+  const failing = METER_IDS.filter((k) => m[k] < 25);
+  pts -= failing.length * 6;
+
+  // 5. Is there anything left in reserve? (5)
+  pts += Math.min(5, t.reservePct / 20 * 5);
+
+  pts = Math.max(0, Math.min(100, pts));
+
+  const grade =
+    pts >= 90 ? 'A'  : pts >= 83 ? 'A-' : pts >= 77 ? 'B+' : pts >= 70 ? 'B' :
+    pts >= 64 ? 'B-' : pts >= 57 ? 'C+' : pts >= 50 ? 'C'  : pts >= 43 ? 'C-' :
+    pts >= 35 ? 'D'  : 'F';
+
+  return { points: Math.round(pts), grade, adopted, yesVotes: yes, totals: t, meters: m, votes, proj, failing };
+}
+
+/* ---------- verdict lines ---------- */
+function verdicts(s, budget, actions) {
+  const out = [];
+  const t = s.totals;
+  const push = (level, text) => out.push({ level, text });
+
+  if (!t.balanced) {
+    push('critical', `The budget still shows a <b>${money(t.cashGap)} gap</b>. Under California law a city council cannot adopt a general fund budget that does not balance, so this one never reached a vote.`);
+  } else if (!t.structurallyBalanced) {
+    push('serious', `It balances on paper, but <b>${money(t.structuralGap)} of the fix is one-time money</b>. Next July the hole reopens, minus whatever you already sold or borrowed.`);
+  } else {
+    push('good', `This is a <b>structurally balanced</b> budget: recurring revenue covers recurring cost. That is the thing Hollister has not had.`);
+  }
+
+  if (t.oneTime > 0) {
+    const share = Math.round(t.oneTime / Math.max(1, t.closed) * 100);
+    push(share > 55 ? 'critical' : share > 25 ? 'warning' : 'good',
+      `<b>${share}%</b> of the gap you closed came from one-time sources. Interfund loans and property sales work exactly once.`);
+  }
+
+  if (s.adopted) push('good', `The council adopted it <b>${s.yesVotes}&ndash;${5 - s.yesVotes}</b>.`);
+  else if (t.balanced) push('critical', `The council rejected it <b>${s.yesVotes}&ndash;${5 - s.yesVotes}</b>. Three votes is the whole job.`);
+
+  s.failing.forEach((k) => {
+    const name = actions.meta.meters.find((x) => x.id === k).name;
+    push('critical', `<b>${name}</b> has collapsed. Cuts this deep stop being budget decisions and start being service failures.`);
+  });
+
+  const y3 = s.proj.gaps[2];
+  if (y3 > 0) {
+    push(y3 > 5e6 ? 'critical' : 'warning',
+      `By <b>${s.proj.years[2]}</b> the projected gap is <b>${money(y3)}</b>. Salary steps and pension costs grow faster than this revenue base.`);
+  } else {
+    push('good', `The three-year outlook holds: <b>${s.proj.years[2]}</b> still projects in the black.`);
+  }
+
+  if (t.reservePct > 0) {
+    push(t.reservePct >= 20 ? 'good' : 'warning',
+      `Reserve lands at <b>${t.reservePct.toFixed(1)}%</b> of expenditures against the city's <b>20%</b> policy target.`);
+  } else {
+    push('warning', `You left <b>nothing in reserve</b>. The next unbudgeted storm drain failure is another emergency.`);
+  }
+
+  const ballot = Object.entries(s.ballotResults || {});
+  ballot.forEach(([id, passed]) => {
+    const a = actions.actions.find((x) => x.id === id);
+    if (!a) return;
+    push(passed ? 'good' : 'critical',
+      `Voters <b>${passed ? 'approved' : 'rejected'}</b> ${a.name.toLowerCase()}${passed ? '' : `, taking ${money(a.amount)} back out of your budget`}.`);
+  });
+
+  return out;
+}
+
+/* ---------- utils ---------- */
+
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+function money(v) {
+  const n = Math.abs(v);
+  if (n >= 1e6) return `$${(n / 1e6).toFixed(1)}M`;
+  if (n >= 1e3) return `$${Math.round(n / 1e3)}K`;
+  return `$${Math.round(n)}`;
+}
+
+
+/* ui */
+
+/* ============================================================
+   ui.js — component builders. Each returns a DOM node and calls
+   back on change. Touch targets are >=40px; the slider owns its
+   gestures via Pointer Events so dragging never scrolls the page.
+   ============================================================ */
+const SERIES = [
+  'var(--series-1)', 'var(--series-2)', 'var(--series-3)', 'var(--series-4)',
+  'var(--series-5)', 'var(--series-6)', 'var(--series-7)', 'var(--series-8)',
+];
+function h(tag, attrs = {}, kids = []) {
+  const n = document.createElement(tag);
+  for (const k in attrs) {
+    const v = attrs[k];
+    if (v === null || v === undefined || v === false) continue;
+    if (k === 'class') n.className = v;
+    else if (k === 'html') n.innerHTML = v;
+    else if (k === 'text') n.textContent = v;
+    else if (k === 'style') n.setAttribute('style', v);
+    else if (k.startsWith('on') && typeof v === 'function') n.addEventListener(k.slice(2), v);
+    else n.setAttribute(k, v === true ? '' : v);
+  }
+  (Array.isArray(kids) ? kids : [kids]).forEach((c) => {
+    if (c === null || c === undefined || c === false) return;
+    n.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+  });
+  return n;
+}
+
+const icon = (d, size = 18) => {
+  const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  s.setAttribute('viewBox', '0 0 24 24');
+  s.setAttribute('fill', 'none');
+  s.setAttribute('stroke', 'currentColor');
+  s.setAttribute('stroke-width', '2');
+  s.setAttribute('stroke-linecap', 'round');
+  s.setAttribute('stroke-linejoin', 'round');
+  s.setAttribute('width', size);
+  s.setAttribute('height', size);
+  s.innerHTML = d;
+  return s;
+};
+const ICONS = {
+  check:  '<path d="M4 12.5l5.5 5.5L20 6.5"/>',
+  shield: '<path d="M12 22s8-3.6 8-10V5.5L12 2.5 4 5.5V12c0 6.4 8 10 8 10z"/>',
+  road:   '<path d="M4 22L7 2h10l3 20M12 4v3M12 11v3M12 18v3"/>',
+  tree:   '<path d="M12 22v-5M12 17l-5-3h10l-5 3zM12 2L6.5 11h11L12 2z"/>',
+  people: '<circle cx="9" cy="8" r="3.2"/><path d="M2.5 20a6.5 6.5 0 0113 0M17 11.5a3 3 0 100-6M18 20a6 6 0 00-2.2-4.6"/>',
+  scale:  '<path d="M12 3v18M4 7h16M6.5 7l-3 6a3.5 3.5 0 007 0zM17.5 7l-3 6a3.5 3.5 0 007 0z"/>',
+  good:   '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/>',
+  warning:'<path d="M12 3.5L2.5 20h19L12 3.5z"/><path d="M12 10v4.5M12 17.2v.3"/>',
+  serious:'<circle cx="12" cy="12" r="9"/><path d="M12 7.5V13M12 16.2v.3"/>',
+  critical:'<circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/>',
+};
+
+/* ============================================================
+   Department slider
+   ============================================================ */
+function deptSlider(dept, pct, color, onChange) {
+  const amount = dept.baseline * (pct / 100);
+  const delta = amount - dept.baseline;
+  const deltaPct = pct - 100;
+
+  const amtEl   = h('div', { class: 'dept-amt num', text: fmt.full(amount) });
+  const deltaEl = h('div', {
+    class: 'dept-delta ' + (deltaPct < 0 ? 'is-cut' : deltaPct > 0 ? 'is-add' : 'is-flat'),
+    text: deltaPct === 0 ? 'At baseline' : `${deltaPct > 0 ? '+' : ''}${deltaPct}% · ${fmt.signed(delta)}`,
+  });
+
+  const fill  = h('div', { class: 'slider-fill' });
+  const thumb = h('div', { class: 'slider-thumb' });
+  const base  = h('div', { class: 'slider-base' });
+  const track = h('div', { class: 'slider-track' }, [fill]);
+
+  const slider = h('div', {
+    class: 'slider', role: 'slider', tabindex: '0',
+    'aria-label': `${dept.name} funding level`,
+    'aria-valuemin': dept.minPct, 'aria-valuemax': dept.maxPct,
+  }, [track, base, thumb]);
+
+  const warn = h('div', { class: 'dept-warn', hidden: true });
+
+  const minus = h('button', { class: 'step', 'aria-label': `Reduce ${dept.name} funding`, text: '−' });
+  const plus  = h('button', { class: 'step', 'aria-label': `Increase ${dept.name} funding`, text: '+' });
+
+  const span = dept.maxPct - dept.minPct;
+
+  function paint(v) {
+    const frac = (v - dept.minPct) / span;
+    const baseFrac = (100 - dept.minPct) / span;
+    thumb.style.left = `${frac * 100}%`;
+    base.style.left = `${baseFrac * 100}%`;
+
+    // The fill runs from the baseline marker to the thumb, so the
+    // direction of the change reads at a glance.
+    const lo = Math.min(frac, baseFrac), hi = Math.max(frac, baseFrac);
+    fill.style.left = `${lo * 100}%`;
+    fill.style.width = `${(hi - lo) * 100}%`;
+    fill.style.background = v < 100 ? 'var(--pos)' : v > 100 ? 'var(--neg)' : 'transparent';
+
+    const amt = dept.baseline * (v / 100);
+    const d = amt - dept.baseline, dp = v - 100;
+    amtEl.textContent = fmt.full(amt);
+    deltaEl.className = 'dept-delta ' + (dp < 0 ? 'is-cut' : dp > 0 ? 'is-add' : 'is-flat');
+    deltaEl.textContent = dp === 0 ? 'At baseline' : `${dp > 0 ? '+' : ''}${dp}% · ${fmt.signed(d)}`;
+
+    slider.setAttribute('aria-valuenow', v);
+    slider.setAttribute('aria-valuetext', `${v}% of baseline, ${fmt.full(amt)}`);
+
+    if (dp <= -12) { warn.hidden = false; warn.textContent = dept.cutNarrative; }
+    else if (dp >= 8) { warn.hidden = false; warn.textContent = dept.raiseNarrative; }
+    else warn.hidden = true;
+
+    minus.disabled = v <= dept.minPct;
+    plus.disabled = v >= dept.maxPct;
+  }
+
+  const clampV = (v) => Math.max(dept.minPct, Math.min(dept.maxPct, Math.round(v)));
+  const set = (v) => { const c = clampV(v); paint(c); onChange(c); };
+
+  const fromX = (clientX) => {
+    const r = track.getBoundingClientRect();
+    return dept.minPct + ((clientX - r.left) / r.width) * span;
+  };
+
+  let dragging = false;
+  slider.addEventListener('pointerdown', (e) => {
+    dragging = true;
+    slider.classList.add('is-dragging');
+    slider.setPointerCapture(e.pointerId);
+    set(fromX(e.clientX));
+    e.preventDefault();
+  });
+  slider.addEventListener('pointermove', (e) => { if (dragging) set(fromX(e.clientX)); });
+  const end = (e) => {
+    if (!dragging) return;
+    dragging = false;
+    slider.classList.remove('is-dragging');
+    try { slider.releasePointerCapture(e.pointerId); } catch {}
+  };
+  slider.addEventListener('pointerup', end);
+  slider.addEventListener('pointercancel', end);
+
+  slider.addEventListener('keydown', (e) => {
+    const cur = +slider.getAttribute('aria-valuenow');
+    const big = e.shiftKey ? 10 : 1;
+    const map = {
+      ArrowLeft: -big, ArrowDown: -big, ArrowRight: big, ArrowUp: big,
+      PageDown: -10, PageUp: 10, Home: dept.minPct - cur, End: dept.maxPct - cur,
+    };
+    if (map[e.key] === undefined) return;
+    e.preventDefault();
+    set(cur + map[e.key]);
+  });
+
+  minus.addEventListener('click', () => set(+slider.getAttribute('aria-valuenow') - 1));
+  plus.addEventListener('click', () => set(+slider.getAttribute('aria-valuenow') + 1));
+
+  const node = h('div', { class: 'dept' }, [
+    h('div', { class: 'dept-head' }, [
+      h('div', { class: 'dept-swatch', style: `background:${color}` }),
+      h('div', { class: 'dept-name', text: dept.name }),
+      amtEl,
+    ]),
+    h('div', { class: 'dept-meta' }, [
+      h('div', { class: 'dept-blurb', text: dept.blurb }),
+      deltaEl,
+    ]),
+    h('div', { class: 'slider-row' }, [minus, slider, plus]),
+    h('div', { class: 'dept-scale' }, [
+      h('span', { text: `${dept.minPct}%` }),
+      // sits under the baseline tick, not at the midpoint of the row
+      h('span', {
+        class: 'dept-scale-base', text: 'baseline',
+        style: `left:${((100 - dept.minPct) / span) * 100}%`,
+      }),
+      h('span', { text: `${dept.maxPct}%` }),
+    ]),
+    warn,
+  ]);
+
+  paint(pct);
+  return node;
+}
+
+/* ============================================================
+   Policy action card
+   ============================================================ */
+function actionCard(action, selected, meterNames, onToggle) {
+  const tags = [];
+
+  tags.push(h('span', {
+    class: 'tag' + (action.type === 'onetime' ? ' is-onetime' : ''),
+    text: action.type === 'onetime' ? 'One-time money' : 'Recurring',
+  }));
+
+  if (action.needsBallot) {
+    tags.push(h('span', { class: 'tag is-ballot' },
+      [`Needs voters · ${Math.round((action.passChance ?? .5) * 100)}% odds`]));
+  }
+  if (action.realWorld) {
+    tags.push(h('span', { class: 'tag is-real' }, ['Actually happened']));
+  }
+
+  Object.entries(action.effects || {}).forEach(([k, v]) => {
+    if (!v) return;
+    tags.push(h('span', { class: 'tag is-harm' }, [
+      h('span', {
+        class: 'tag-dot',
+        style: `background:${v < 0 ? 'var(--critical)' : 'var(--good)'}`,
+      }),
+      `${meterNames[k]} ${v > 0 ? '+' : ''}${v}`,
+    ]));
+  });
+
+  const check = h('div', { class: 'action-check' }, [icon(ICONS.check, 14)]);
+
+  const btn = h('button', {
+    class: 'action', type: 'button',
+    'aria-pressed': selected ? 'true' : 'false',
+  }, [
+    h('div', { class: 'action-top' }, [
+      check,
+      h('div', { class: 'action-body' }, [
+        h('div', { class: 'action-name', text: action.name }),
+        h('div', { class: 'action-desc', text: action.desc }),
+      ]),
+      h('div', { class: 'action-amt num', text: '+' + fmt.money(action.amount) }),
+    ]),
+    h('div', { class: 'tags' }, tags),
+    action.consequence && h('div', {
+      class: 'action-more' + (action.realWorld ? ' is-real' : ''),
+      html: (action.realNote ? `<b>${action.realNote}</b> ` : '') + action.consequence,
+    }),
+  ]);
+
+  btn.addEventListener('click', () => onToggle(action.id));
+  return btn;
+}
+
+/* ============================================================
+   Meters
+   ============================================================ */
+function meterRow(def, value, startValue) {
+  const st = meterStatus(value);
+  const fill = h('div', {
+    class: 'meter-fill',
+    style: `width:${value}%;background:${st.color}`,
+  });
+  const track = h('div', { class: 'meter-track' }, [fill]);
+
+  // Ghost marker = where this meter started, so the change is legible.
+  if (Math.abs(value - startValue) > 1) {
+    track.appendChild(h('div', { class: 'meter-ghost', style: `left:${startValue}%` }));
+  }
+
+  return h('div', { class: 'meter' }, [
+    h('div', { class: 'meter-top' }, [
+      h('span', { class: 'meter-icon' }, [icon(ICONS[def.icon] || ICONS.shield, 18)]),
+      h('div', { class: 'meter-name', text: def.name }),
+      h('div', { class: 'meter-val', style: `color:${st.color}` }, [`${value} · ${st.label}`]),
+    ]),
+    track,
+  ]);
+}
+
+/* ============================================================
+   Council member row
+   ============================================================ */
+function councilRow(member, revealed) {
+  const vote = revealed ? (member.yes ? 'is-yes' : 'is-no') : '';
+  return h('div', { class: 'cm' }, [
+    h('div', { class: `cm-face ${vote}`, text: revealed ? (member.yes ? '✓' : '✕') : '?' }),
+    h('div', { class: 'cm-body' }, [
+      h('div', { class: 'cm-name', text: member.name }),
+      h('div', { class: 'cm-role', text: member.role }),
+      h('div', { class: 'cm-line', text: revealed ? `“${member.yes ? member.yesLine : member.noLine}”` : `“${member.line}”` }),
+    ]),
+    revealed && h('div', { class: `cm-vote ${vote}`, text: member.yes ? 'Aye' : 'No' }),
+  ]);
+}
+
+/* ============================================================
+   Verdict line
+   ============================================================ */
+function verdictRow(v) {
+  return h('div', { class: `verdict is-${v.level}` }, [
+    h('span', { class: 'verdict-icon' }, [icon(ICONS[v.level] || ICONS.good, 18)]),
+    h('div', { html: v.text }),
+  ]);
+}
+
+
+
+const C = { fmt, donut, barsH, divergingBars, lines, waterfall, stackPair, niceMax };
+const E = { METER_IDS, createState, totals, meters, meterStatus, projection,
+            councilVotes, resolveBallots, score, verdicts };
+
+/* app */
+
+/* ============================================================
+   app.js — screens, panels, state wiring.
+   ============================================================ */
+
+
+
+
+const $ = (id) => document.getElementById(id);
+
+
+const DEPTS = BUDGET.generalFund.departments;
+const DEPT_COLOR = {};
+DEPTS.forEach((d, i) => { DEPT_COLOR[d.id] = SERIES[i % SERIES.length]; });
+
+const METER_NAMES = {};
+ACTIONS.meta.meters.forEach((m) => { METER_NAMES[m.id] = m.name; });
+
+let state = E.createState(BUDGET, ACTIONS);
+let activePanel = 'budget';
+let cutFilter = 'all';
+
+/* ---------- toast ---------- */
+let toastTimer;
+function toast(msg) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.add('is-on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('is-on'), 2200);
+}
+
+/* ---------- theme ---------- */
+(function theme() {
+  const saved = (() => { try { return localStorage.getItem('bh-theme'); } catch { return null; } })();
+  if (saved) document.documentElement.setAttribute('data-theme', saved);
+  $('theme-toggle').addEventListener('click', () => {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const isDark = cur ? cur === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    const next = isDark ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('bh-theme', next); } catch {}
+  });
+})();
+
+/* ---------- scoreboard ---------- */
+
+function updateBoard() {
+  const t = E.totals(state, BUDGET, ACTIONS);
+  const gapEl = $('board-gap');
+  const label = $('board-label');
+
+  if (t.cashGap > 0) {
+    gapEl.textContent = fmt.money(t.cashGap);
+    gapEl.className = 'board-gap num ' + (t.cashGap < t.startGap * 0.25 ? 'is-close' : 'is-gap');
+    label.textContent = 'Still to close';
+  } else if (t.cashGap === 0) {
+    gapEl.textContent = 'Balanced';
+    gapEl.className = 'board-gap num is-balanced';
+    label.textContent = 'General fund';
+  } else {
+    gapEl.textContent = fmt.money(-t.cashGap);
+    gapEl.className = 'board-gap num is-balanced';
+    label.textContent = 'Surplus / reserve';
+  }
+
+  $('board-exp').textContent = fmt.money(t.ongoingExp);
+  $('board-rev').textContent = fmt.money(t.ongoingRev + t.oneTime);
+
+  const pct = Math.max(0, Math.min(140, (t.closed / t.startGap) * 100));
+  const bar = $('board-progress');
+  bar.style.width = Math.min(100, pct) + '%';
+  bar.className = 'progress-fill' + (t.cashGap < 0 ? ' is-over' : t.cashGap === 0 ? ' is-balanced' : '');
+  bar.parentElement.setAttribute('aria-valuenow', Math.round(pct));
+
+  const cuts = t.picked.filter((a) => a.category !== 'revenue').length;
+  const rev = t.picked.filter((a) => a.category === 'revenue').length;
+  badge('badge-cuts', cuts);
+  badge('badge-revenue', rev);
+}
+
+function badge(id, n) {
+  const b = $(id);
+  b.hidden = n === 0;
+  b.textContent = n;
+}
+
+/* ---------- state changes ---------- */
+
+function changed() {
+  updateBoard();
+  if (activePanel === 'budget') refreshBudgetChart();
+  if (activePanel === 'impact') renderImpact();
+  if (activePanel === 'council') renderCouncil();
+}
+
+function toggleAction(id) {
+  if (state.chosen.has(id)) state.chosen.delete(id);
+  else state.chosen.add(id);
+  const a = ACTIONS.actions.find((x) => x.id === id);
+  document.querySelectorAll(`[data-action="${id}"]`).forEach((n) => {
+    n.setAttribute('aria-pressed', state.chosen.has(id) ? 'true' : 'false');
+  });
+  if (state.chosen.has(id)) toast(`${a.name} · +${fmt.money(a.amount)}`);
+  changed();
+}
+
+/* ============================================================
+   Panel: Budget
+   ============================================================ */
+
+let budgetChartHost, budgetReadout;
+
+function renderBudget() {
+  const p = $('panel-budget');
+  const t = E.totals(state, BUDGET, ACTIONS);
+
+  budgetChartHost = h('div', { class: 'chart-wrap' });
+  budgetReadout = h('div', { class: 'readout is-empty', text: 'Tap a slice for the department total.' });
+
+  const sliders = h('div', { class: 'card' }, DEPTS.map((d) =>
+    deptSlider(d, state.deptPct[d.id], DEPT_COLOR[d.id], (v) => {
+      state.deptPct[d.id] = v;
+      changed();
+    })
+  ));
+
+  p.replaceChildren(
+    h('div', { class: 'panel-head' }, [
+      h('h2', { text: 'General fund spending' }),
+      h('p', { text: 'Drag to change what each department gets. The floors are set where a department stops being able to do its job.' }),
+    ]),
+    h('div', { class: 'card' }, [
+      h('div', { class: 'card-title' }, ['Where the money goes']),
+      h('div', { class: 'chart-sub', text: 'Share of general fund spending, as you have it now.' }),
+      budgetChartHost,
+      budgetReadout,
+      legendFor(DEPTS.map((d) => ({ label: d.short, color: DEPT_COLOR[d.id] }))),
+    ]),
+    sliders,
+    h('div', { class: 'source-note', html:
+      '<b>About these figures.</b> The $48.5M general fund total and the $6.4M deficit come from reporting on Hollister\'s adopted FY 2026-27 budget. The split between departments is a realistic estimate, not the city\'s official line-item budget — see SOURCES.md.' }),
+  );
+
+  refreshBudgetChart();
+}
+
+function refreshBudgetChart() {
+  if (!budgetChartHost) return;
+  const segs = DEPTS.map((d) => ({
+    id: d.id,
+    label: d.name,
+    value: d.baseline * (state.deptPct[d.id] / 100),
+    color: DEPT_COLOR[d.id],
+  })).filter((s) => s.value > 0);
+
+  const total = segs.reduce((s, x) => s + x.value, 0);
+
+  C.donut(budgetChartHost, segs, {
+    centerValue: fmt.money(total),
+    centerLabel: 'total spending',
+    ariaLabel: 'General fund spending by department',
+    onPick: (d) => {
+      const share = (d.value / total * 100).toFixed(1);
+      budgetReadout.className = 'readout';
+      budgetReadout.replaceChildren(
+        h('span', { class: 'readout-key', style: `background:${d.color}` }),
+        h('span', { html: `<b>${d.label}</b> — ${fmt.full(d.value)} · ${share}% of spending` }),
+      );
+    },
+  });
+}
+
+function legendFor(items) {
+  return h('div', { class: 'legend' }, items.map((i) =>
+    h('span', { class: 'legend-item' }, [
+      h('span', { class: 'legend-key' + (i.line ? ' is-line' : ''), style: `background:${i.color}` }),
+      i.label,
+    ])
+  ));
+}
+
+/* ============================================================
+   Panels: Cuts & Revenue
+   ============================================================ */
+
+function renderActionPanel(which) {
+  const p = $(which === 'cuts' ? 'panel-cuts' : 'panel-revenue');
+  const isCuts = which === 'cuts';
+
+  let list = ACTIONS.actions.filter((a) =>
+    isCuts ? a.category !== 'revenue' : a.category === 'revenue');
+
+  if (isCuts && cutFilter !== 'all') {
+    list = list.filter((a) => cutFilter === 'onetime' ? a.type === 'onetime' : a.type === 'ongoing');
+  }
+  list = list.slice().sort((a, b) => b.amount - a.amount);
+
+  const head = h('div', { class: 'panel-head' }, [
+    h('h2', { text: isCuts ? 'Savings and one-time money' : 'Revenue options' }),
+    h('p', { text: isCuts
+      ? 'Reductions, deferrals and borrowing. The one-time options close this year and reopen next year.'
+      : 'Fees you can set, and taxes voters would have to approve. Ballot measures only pay out if they pass.' }),
+  ]);
+
+  const kids = [head];
+
+  if (isCuts) {
+    kids.push(h('div', { class: 'filter-row' }, [
+      ['all', 'All'], ['ongoing', 'Recurring only'], ['onetime', 'One-time only'],
+    ].map(([k, label]) => h('button', {
+      class: 'chip', 'aria-pressed': cutFilter === k ? 'true' : 'false', text: label,
+      onclick: () => { cutFilter = k; renderActionPanel('cuts'); },
+    }))));
+  } else {
+    kids.push(h('div', { class: 'callout', html:
+      'A <b>cost-recovery fee</b> the council can set by itself is slower money than a tax, but it is money you actually control. A <b>ballot measure</b> can be worth millions &mdash; if it passes.' }));
+  }
+
+  list.forEach((a) => {
+    const card = actionCard(a, state.chosen.has(a.id), METER_NAMES, toggleAction);
+    card.setAttribute('data-action', a.id);
+    kids.push(card);
+  });
+
+  p.replaceChildren(...kids);
+}
+
+/* ============================================================
+   Panel: Impact
+   ============================================================ */
+
+function renderImpact() {
+  const p = $('panel-impact');
+  const t = E.totals(state, BUDGET, ACTIONS);
+  const m = E.meters(state, BUDGET, ACTIONS);
+  const proj = E.projection(state, BUDGET, ACTIONS);
+
+  /* --- service meters --- */
+  const metersCard = h('div', { class: 'card' }, [
+    h('div', { class: 'card-title' }, ['What residents will notice']),
+    h('div', { class: 'chart-sub', text: 'The notch on each bar is where you started.' }),
+    ...ACTIONS.meta.meters.map((def) => meterRow(def, m[def.id], state.startMeters[def.id])),
+  ]);
+
+  /* --- department change --- */
+  const changeHost = h('div', { class: 'chart-wrap' });
+  const changed_ = DEPTS.map((d) => ({
+    label: d.short,
+    value: d.baseline * (state.deptPct[d.id] / 100) - d.baseline,
+  }));
+  const changeCard = h('div', { class: 'card' }, [
+    h('div', { class: 'card-title' }, ['Change from the adopted budget']),
+    h('div', { class: 'chart-sub', text: 'Department funding against the baseline you inherited.' }),
+    changeHost,
+    legendFor([
+      { label: 'Cut', color: 'var(--pos)' },
+      { label: 'Increase', color: 'var(--neg)' },
+    ]),
+  ]);
+
+  /* --- revenue --- */
+  const revHost = h('div', { class: 'chart-wrap' });
+  const revReadout = h('div', { class: 'readout is-empty', text: 'Tap a bar for the exact amount.' });
+  const addedRev = ACTIONS.actions.some((a) => a.category === 'revenue' && state.chosen.has(a.id));
+  const revCard = h('div', { class: 'card' }, [
+    h('div', { class: 'card-title' }, ['Where the money comes from']),
+    h('div', { class: 'chart-sub', text: 'Recurring general fund revenue, largest first.' }),
+    revHost,
+    addedRev ? legendFor([
+      { label: 'Existing revenue', color: 'var(--series-1)' },
+      { label: 'Added by you', color: 'var(--series-3)' },
+    ]) : null,
+    revReadout,
+  ]);
+
+  /* --- three-year outlook --- */
+  const projHost = h('div', { class: 'chart-wrap' });
+  const projReadout = h('div', { class: 'readout is-empty', text: 'Tap a year to compare.' });
+  const y3 = proj.gaps[2];
+  const projCard = h('div', { class: 'card' }, [
+    h('div', { class: 'card-title' }, ['Three-year outlook']),
+    h('div', { class: 'chart-sub', html:
+      `Costs grow about <b>4.2%</b> a year, revenue about <b>2.2%</b>. One-time money lands in year one only. The shaded band is the gap.` }),
+    projHost,
+    legendFor([
+      { label: 'Revenue', color: 'var(--series-1)', line: true },
+      { label: 'Spending', color: 'var(--series-2)', line: true },
+      { label: 'Covered', color: 'var(--pos)' },
+      { label: 'Short', color: 'var(--neg)' },
+    ]),
+    projReadout,
+    h('div', { class: 'callout ' + (y3 > 3e6 ? 'is-critical' : y3 > 0 ? 'is-warning' : ''), html:
+      y3 > 0
+        ? `By <b>${proj.years[2]}</b> this plan projects a <b>${fmt.money(y3)}</b> gap. ${t.structurallyBalanced ? 'Even a structurally balanced budget erodes when costs outgrow revenue.' : 'The structural problem has not been solved.'}`
+        : `<b>${proj.years[2]}</b> still projects in the black. That is a genuinely durable fix.` }),
+  ]);
+
+  /* --- how the gap was closed --- */
+  const wfCard = buildWaterfall(t);
+
+  /* --- data table --- */
+  const tableCard = h('div', { class: 'card' }, [
+    h('div', { class: 'card-title' }, ['The numbers']),
+    dataTable(t, proj),
+  ]);
+
+  p.replaceChildren(
+    h('div', { class: 'panel-head' }, [
+      h('h2', { text: 'Impact' }),
+      h('p', { text: 'What your budget does to the city, and whether it holds up past June.' }),
+    ]),
+    metersCard, wfCard, projCard, changeCard, revCard, tableCard,
+  );
+
+  /* draw */
+  C.divergingBars(changeHost, changed_, {
+    ariaLabel: 'Change in department funding from baseline',
+    leftLabel: 'Cut', rightLabel: 'Increase',
+  });
+
+  const revItems = BUDGET.generalFund.revenues.map((r) => ({ label: r.name, value: r.amount }));
+  ACTIONS.actions.forEach((a) => {
+    if (a.category === 'revenue' && state.chosen.has(a.id)) {
+      revItems.push({ label: a.name, value: a.amount, isNew: true, color: 'var(--series-3)' });
+    }
+  });
+  revItems.sort((a, b) => b.value - a.value);
+  C.barsH(revHost, revItems, {
+    ariaLabel: 'General fund revenue by source',
+    onPick: (d) => {
+      revReadout.className = 'readout';
+      revReadout.replaceChildren(
+        h('span', { class: 'readout-key', style: `background:${d.color || 'var(--series-1)'}` }),
+        h('span', { html: `<b>${d.label}</b> — ${fmt.full(d.value)}${d.isNew ? ' · added by you' : ''}` }),
+      );
+    },
+  });
+
+  C.lines(projHost, [
+    { name: 'Revenue', color: 'var(--series-1)', values: proj.rev },
+    { name: 'Spending', color: 'var(--series-2)', values: proj.exp },
+  ], proj.years, {
+    height: 200, zeroBased: false, band: true,
+    ariaLabel: 'Three-year revenue and spending outlook',
+    onPick: (d) => {
+      const gap = proj.gaps[d.index];
+      projReadout.className = 'readout';
+      projReadout.replaceChildren(h('span', { html:
+        `<b>${d.label}</b> — revenue ${fmt.money(proj.rev[d.index])}, spending ${fmt.money(proj.exp[d.index])} · ` +
+        `<b style="color:${gap > 0 ? 'var(--critical)' : 'var(--good-ink)'}">${gap > 0 ? fmt.money(gap) + ' short' : fmt.money(-gap) + ' over'}</b>` }));
+    },
+  });
+}
+
+function buildWaterfall(t) {
+  const host = h('div', { class: 'chart-wrap' });
+  const steps = [{ label: 'Starting gap', value: t.startGap, total: true }];
+  if (t.deptSavings)   steps.push({ label: 'Department cuts', value: -t.deptSavings });
+  if (t.ongoingCuts)   steps.push({ label: 'Savings measures', value: -t.ongoingCuts });
+  if (t.ongoingRevenue)steps.push({ label: 'New revenue', value: -t.ongoingRevenue });
+  if (t.oneTime)       steps.push({ label: 'One-time money', value: -t.oneTime });
+  steps.push({ label: t.cashGap > 0 ? 'Still short' : 'Surplus', value: Math.abs(t.cashGap), total: true });
+
+  const card = h('div', { class: 'card' }, [
+    h('div', { class: 'card-title' }, ['How you closed the gap']),
+    h('div', { class: 'chart-sub', text: 'From the $6.4M you inherited to where you are now.' }),
+    host,
+    legendFor([
+      { label: 'Closes the gap', color: 'var(--pos)' },
+      { label: 'Totals', color: 'var(--series-7)' },
+    ]),
+    t.oneTime > 0 ? h('div', { class: 'callout is-warning', html:
+      `<b>${Math.round(t.oneTime / Math.max(1, t.closed) * 100)}%</b> of what you closed is one-time money. It does not come back next year.` }) : null,
+  ]);
+  setTimeout(() => C.waterfall(host, steps, { height: 210, ariaLabel: 'How the deficit was closed' }), 0);
+  return card;
+}
+
+function dataTable(t, proj) {
+  const row = (label, value, cls) => h('tr', {}, [
+    h('td', { text: label }),
+    h('td', { class: cls || '', text: typeof value === 'string' ? value : fmt.full(value) }),
+  ]);
+  return h('details', { class: 'data-table', open: true }, [
+    h('summary', { text: 'Full figures' }),
+    h('table', { class: 'dt' }, [
+      h('tbody', {}, [
+        row('Recurring spending', t.ongoingExp),
+        row('Recurring revenue', t.ongoingRev),
+        row('Structural gap', t.structuralGap, t.structuralGap > 0 ? 'neg' : 'pos'),
+        row('One-time money used', t.oneTime),
+        row('Budget as adopted', t.cashGap > 0 ? fmt.full(t.cashGap) + ' short' : fmt.full(-t.cashGap) + ' surplus',
+            t.cashGap > 0 ? 'neg' : 'pos'),
+        row(`${proj.years[1]} projected gap`, proj.gaps[1], proj.gaps[1] > 0 ? 'neg' : 'pos'),
+        row(`${proj.years[2]} projected gap`, proj.gaps[2], proj.gaps[2] > 0 ? 'neg' : 'pos'),
+      ]),
+    ]),
+  ]);
+}
+
+/* ============================================================
+   Panel: Council
+   ============================================================ */
+
+function renderCouncil() {
+  const p = $('panel-council');
+  const t = E.totals(state, BUDGET, ACTIONS);
+  const votes = E.councilVotes(state, BUDGET, ACTIONS);
+  const revealed = state.submitted;
+  const yes = votes.filter((v) => v.yes).length;
+
+  const canSubmit = t.balanced;
+
+  const tally = h('div', { class: 'tally' }, [
+    h('div', { class: `tally-score ${revealed ? (yes >= 3 ? 'is-pass' : 'is-fail') : ''}`,
+      text: revealed ? `${yes}–${5 - yes}` : '?' }),
+    h('div', { class: 'tally-text' }, [
+      h('b', { text: revealed ? (yes >= 3 ? 'Budget adopted' : 'Budget rejected') : 'Three votes needed' }),
+      h('span', { text: revealed
+        ? (yes >= 3 ? 'The council passed your budget.' : 'Without three votes, there is no adopted budget.')
+        : 'The council will not see your plan until you submit it.' }),
+    ]),
+  ]);
+
+  const kids = [
+    h('div', { class: 'panel-head' }, [
+      h('h2', { text: 'The council' }),
+      h('p', { text: 'Five members, five sets of priorities. You need three.' }),
+    ]),
+    tally,
+    h('div', { class: 'card' }, votes.map((v) => councilRow(v, revealed))),
+  ];
+
+  if (!canSubmit) {
+    kids.push(h('div', { class: 'callout is-critical', html:
+      `Your budget is still <b>${fmt.money(t.cashGap)} short</b>. A California city council cannot adopt an unbalanced general fund budget, so there is nothing to vote on yet.` }));
+  } else if (!t.structurallyBalanced) {
+    kids.push(h('div', { class: 'callout is-warning', html:
+      `It balances, but <b>${fmt.money(t.structuralGap)}</b> of that is one-time money. Some members will notice.` }));
+  }
+
+  if (t.atRisk > 0 && !revealed) {
+    kids.push(h('div', { class: 'callout is-warning', html:
+      `<b>${fmt.money(t.atRisk)}</b> of your plan depends on ballot measures. Voters decide those when you submit.` }));
+  }
+
+  kids.push(h('div', { class: 'card' }, [
+    h('div', { class: 'card-title' }, ['Your plan']),
+    h('div', { class: 'card-note', text:
+      `${t.picked.length} measure${t.picked.length === 1 ? '' : 's'} · ` +
+      `${fmt.money(t.deptSavings)} from department budgets · ` +
+      `${fmt.money(t.ongoingCuts + t.ongoingRevenue)} recurring · ` +
+      `${fmt.money(t.oneTime)} one-time` }),
+  ]));
+
+  kids.push(h('button', {
+    class: 'btn', id: 'btn-submit', disabled: !canSubmit || revealed,
+    text: revealed ? 'Already submitted' : 'Submit to the council',
+    onclick: submit,
+  }));
+
+  if (revealed) {
+    kids.push(h('button', { class: 'btn btn-ghost', style: 'margin-top:10px',
+      text: 'See the full scorecard', onclick: () => showResult() }));
+  }
+
+  p.replaceChildren(...kids);
+}
+
+/* ============================================================
+   Submit & result
+   ============================================================ */
+
+function submit() {
+  state.ballotResults = E.resolveBallots(state, ACTIONS);
+  state.submitted = true;
+  const failed = Object.entries(state.ballotResults).filter(([, ok]) => !ok);
+  if (failed.length) {
+    const names = failed.map(([id]) => ACTIONS.actions.find((a) => a.id === id).name.toLowerCase());
+    toast(`Voters rejected ${names.join(' and ')}`);
+  }
+  renderCouncil();
+  setTimeout(showResult, failed.length ? 1400 : 650);
+}
+
+function showResult() {
+  const s = E.score(state, BUDGET, ACTIONS);
+  s.ballotResults = state.ballotResults;
+  const vs = E.verdicts(s, BUDGET, ACTIONS);
+  const p = $('panel-result');
+
+  const gradeColor =
+    s.points >= 77 ? 'var(--good-ink)' :
+    s.points >= 57 ? 'var(--warning)' :
+    s.points >= 43 ? 'var(--serious)' : 'var(--critical)';
+
+  const headline = !s.totals.balanced ? 'Never reached a vote'
+    : s.adopted && s.totals.structurallyBalanced ? 'Adopted — and it holds'
+    : s.adopted ? 'Adopted — for one year'
+    : 'Rejected by the council';
+
+  const projHost = h('div', { class: 'chart-wrap' });
+  const stackHost = h('div', { class: 'chart-wrap' });
+
+  p.replaceChildren(
+    h('div', { class: 'panel-head', style: 'padding-top:calc(env(safe-area-inset-top) + 14px)' }, [
+      h('h2', { text: 'Your budget' }),
+      h('p', { text: 'City of Hollister · General Fund · FY 2026-27' }),
+    ]),
+
+    h('div', { class: 'grade-card' }, [
+      h('div', { class: 'grade', style: `color:${gradeColor}`, text: s.grade }),
+      h('div', { class: 'grade-label', text: headline }),
+      h('div', { class: 'grade-sub', text: `${s.points} out of 100 · council ${s.yesVotes}–${5 - s.yesVotes}` }),
+    ]),
+
+    h('div', { class: 'card' }, [
+      h('div', { class: 'card-title' }, ['The verdict']),
+      h('div', { class: 'verdict-list', style: 'margin-top:10px' }, vs.map(verdictRow)),
+    ]),
+
+    h('div', { class: 'card' }, [
+      h('div', { class: 'card-title' }, ['Adopted budget vs. yours']),
+      h('div', { class: 'chart-sub', text: 'Recurring spending against recurring revenue.' }),
+      stackHost,
+      legendFor([
+        { label: 'Recurring revenue', color: 'var(--series-1)' },
+        { label: 'One-time money', color: 'var(--series-4)' },
+        { label: 'Spending', color: 'var(--series-2)' },
+      ]),
+    ]),
+
+    h('div', { class: 'card' }, [
+      h('div', { class: 'card-title' }, ['Three-year outlook']),
+      h('div', { class: 'chart-sub', text: 'Whether this budget survives past next June. The shaded band is the gap.' }),
+      projHost,
+      legendFor([
+        { label: 'Revenue', color: 'var(--series-1)', line: true },
+        { label: 'Spending', color: 'var(--series-2)', line: true },
+        { label: 'Covered', color: 'var(--pos)' },
+        { label: 'Short', color: 'var(--neg)' },
+      ]),
+    ]),
+
+    h('div', { class: 'card' }, [
+      h('div', { class: 'card-title' }, ['Services, after your budget']),
+      ...ACTIONS.meta.meters.map((def) => meterRow(def, s.meters[def.id], state.startMeters[def.id])),
+    ]),
+
+    h('div', { class: 'card' }, [
+      h('div', { class: 'card-title' }, ['How they voted']),
+      ...s.votes.map((v) => councilRow(v, true)),
+    ]),
+
+    h('div', { class: 'btn-row', style: 'margin-top:16px' }, [
+      h('button', { class: 'btn btn-ghost', text: 'Revise', onclick: () => {
+        state.submitted = false; state.ballotResults = null;
+        go('game'); switchPanel('budget'); changed();
+      }}),
+      h('button', { class: 'btn', text: 'Start over', onclick: reset }),
+    ]),
+
+    h('div', { class: 'source-note', html:
+      '<b>Sources.</b> Fund totals, the deficit, the fiscal emergency, the interfund loan and the $178 bank balance are all drawn from reporting on City of Hollister council actions. Department-level splits and every policy option\'s dollar value are realistic estimates built on those totals, not official city line items. See SOURCES.md in the repository.' }),
+  );
+
+  go('result');
+  window.scrollTo(0, 0);
+
+  C.lines(projHost, [
+    { name: 'Revenue', color: 'var(--series-1)', values: s.proj.rev },
+    { name: 'Spending', color: 'var(--series-2)', values: s.proj.exp },
+  ], s.proj.years, { height: 200, zeroBased: false, band: true, ariaLabel: 'Three-year outlook' });
+
+  const t = s.totals;
+  C.stackPair(stackHost, [
+    { label: 'Money available', total: t.ongoingRev + t.oneTime, parts: [
+      { label: 'Recurring revenue', value: t.ongoingRev, color: 'var(--series-1)' },
+      { label: 'One-time money', value: t.oneTime, color: 'var(--series-4)' },
+    ].filter((x) => x.value > 0) },
+    { label: 'Money committed', total: t.ongoingExp, parts: [
+      { label: 'Spending', value: t.ongoingExp, color: 'var(--series-2)' },
+    ] },
+  ], { height: 150, ariaLabel: 'Resources against spending' });
+}
+
+function reset() {
+  state = E.createState(BUDGET, ACTIONS);
+  cutFilter = 'all';
+  go('intro');
+  window.scrollTo(0, 0);
+}
+
+/* ============================================================
+   Navigation
+   ============================================================ */
+
+function go(screen) {
+  ['intro', 'game', 'result'].forEach((s) => {
+    $(`screen-${s}`).classList.toggle('is-active', s === screen);
+  });
+}
+
+function switchPanel(name) {
+  activePanel = name;
+  ['budget', 'cuts', 'revenue', 'impact', 'council'].forEach((n) => {
+    $(`panel-${n}`).classList.toggle('is-active', n === name);
+    $(`tab-${n}`).setAttribute('aria-selected', n === name ? 'true' : 'false');
+  });
+  if (name === 'budget') renderBudget();
+  if (name === 'cuts') renderActionPanel('cuts');
+  if (name === 'revenue') renderActionPanel('revenue');
+  if (name === 'impact') renderImpact();
+  if (name === 'council') renderCouncil();
+  window.scrollTo(0, 0);
+}
+
+document.querySelectorAll('.nav-btn').forEach((b) => {
+  b.addEventListener('click', () => switchPanel(b.dataset.panel));
+});
+
+$('btn-start').addEventListener('click', () => {
+  go('game');
+  switchPanel('budget');
+  updateBoard();
+});
+
+$('btn-about-intro').addEventListener('click', () => {
+  alert(
+    'Where these numbers come from\n\n' +
+    'VERIFIED from reporting on City of Hollister council actions:\n' +
+    '• $6.4M general fund deficit in the adopted FY 2026-27 budget\n' +
+    '• $10.7M water fund deficit; $17.1M combined\n' +
+    '• Fiscal emergency declared October 2, 2026\n' +
+    '• $18M interfund loan from impact fee funds ($11M to the general fund, $7M to water), 4% interest, repayable by June 30, 2027\n' +
+    '• $178 in the general fund bank account the week of September 21, 2026\n' +
+    '• FY 2025-26: $46.47M general fund within a $130.99M all-funds budget\n' +
+    '• 20% general fund reserve policy; 16.8% actual in FY 2025-26\n' +
+    '• 31 vacant positions cut in FY 2025-26 for about $6M\n\n' +
+    'MODELED (realistic estimates, not official):\n' +
+    '• The split of the general fund across departments\n' +
+    '• The revenue mix by source\n' +
+    '• Every policy option\'s dollar value and its effect on services\n\n' +
+    'The city\'s line-item budget PDFs were not reachable when this was built. See SOURCES.md.'
+  );
+});
+
+/* boot */
+updateBoard();
+
+</script>
+</body>
+</html>

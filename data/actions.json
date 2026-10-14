@@ -1,0 +1,501 @@
+{
+  "meta": {
+    "note": "Policy options. Dollar amounts are MODELED estimates sized to be realistic for a city of Hollister's size, except where confidence is 'verified'. Meter effects are game-design values, not forecasts.",
+    "meters": [
+      {
+        "id": "safety",
+        "name": "Public Safety",
+        "icon": "shield",
+        "start": 70
+      },
+      {
+        "id": "infrastructure",
+        "name": "Streets & Infrastructure",
+        "icon": "road",
+        "start": 52
+      },
+      {
+        "id": "community",
+        "name": "Parks & Community",
+        "icon": "tree",
+        "start": 60
+      },
+      {
+        "id": "workforce",
+        "name": "City Workforce",
+        "icon": "people",
+        "start": 62
+      },
+      {
+        "id": "trust",
+        "name": "Public Trust",
+        "icon": "scale",
+        "start": 44
+      }
+    ]
+  },
+  "council": [
+    {
+      "id": "hawk",
+      "name": "The Fiscal Hawk",
+      "role": "Fiscal conservative",
+      "line": "I want this fixed, not postponed.",
+      "weights": {
+        "structural": 2.4,
+        "onetimeReliance": -2.6,
+        "newTaxes": -1.5,
+        "reserve": 1.5,
+        "safety": 0.3,
+        "infrastructure": 0.2,
+        "community": 0,
+        "workforce": -0.1,
+        "trust": 0.5
+      },
+      "yesLine": "This one actually closes the gap. I'll support it.",
+      "noLine": "This is a bridge loan with a bow on it. That's a no."
+    },
+    {
+      "id": "safety",
+      "name": "The Public Safety Advocate",
+      "role": "Police & fire first",
+      "line": "Response times are not a line item to me.",
+      "weights": {
+        "structural": 0.6,
+        "onetimeReliance": -0.4,
+        "newTaxes": 0.2,
+        "reserve": 0.3,
+        "safety": 2.8,
+        "infrastructure": 0.2,
+        "community": 0.1,
+        "workforce": 0.5,
+        "trust": 0.4
+      },
+      "yesLine": "You protected the people who answer the calls. Yes.",
+      "noLine": "You cut the engine companies. I can't vote for that."
+    },
+    {
+      "id": "neighbor",
+      "name": "The Neighborhood Voice",
+      "role": "Parks, library, programs",
+      "line": "A city people leave isn't saving money.",
+      "weights": {
+        "structural": 0.5,
+        "onetimeReliance": -0.3,
+        "newTaxes": 0.6,
+        "reserve": 0.1,
+        "safety": 0.4,
+        "infrastructure": 1,
+        "community": 2.6,
+        "workforce": 0.4,
+        "trust": 0.8
+      },
+      "yesLine": "The neighborhoods can live with this. Yes.",
+      "noLine": "You closed the pool and the library. No."
+    },
+    {
+      "id": "business",
+      "name": "The Business Voice",
+      "role": "Permits, fees, growth",
+      "line": "Don't balance this on the people who build here.",
+      "weights": {
+        "structural": 1.2,
+        "onetimeReliance": -0.8,
+        "newTaxes": -1.5,
+        "reserve": 0.6,
+        "safety": 0.5,
+        "infrastructure": 0.9,
+        "community": 0.2,
+        "workforce": -0.2,
+        "trust": 0.4,
+        "bizBurden": -1.6
+      },
+      "yesLine": "You found savings before you found my wallet. Yes.",
+      "noLine": "Every answer here was a new tax or a new fee. No."
+    },
+    {
+      "id": "labor",
+      "name": "The Labor Ally",
+      "role": "City employees",
+      "line": "These are people, not positions.",
+      "weights": {
+        "structural": 0.5,
+        "onetimeReliance": 0.1,
+        "newTaxes": 0.9,
+        "reserve": 0,
+        "safety": 0.5,
+        "infrastructure": 0.3,
+        "community": 0.5,
+        "workforce": 2.7,
+        "trust": 0.5
+      },
+      "yesLine": "Nobody lost a livelihood over this. Yes.",
+      "noLine": "You balanced this on layoffs. Absolutely not."
+    }
+  ],
+  "actions": [
+    {
+      "id": "voluntary-separation",
+      "name": "Voluntary separation incentives",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 1400000,
+      "desc": "Pay retirement and resignation incentives instead of ordering layoffs.",
+      "consequence": "Institutional knowledge walks out the door. You backfill the critical posts later at a premium.",
+      "effects": {
+        "workforce": -8,
+        "trust": -2
+      },
+      "realWorld": true,
+      "realNote": "This is the approach Hollister actually took for FY 2026-27."
+    },
+    {
+      "id": "freeze-vacancies",
+      "name": "Freeze all vacant positions",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 2200000,
+      "desc": "Hold every unfilled position citywide, including sworn vacancies.",
+      "consequence": "Cheapest real money on the board. It also quietly shrinks the city by attrition.",
+      "effects": {
+        "safety": -7,
+        "community": -4,
+        "workforce": -6,
+        "trust": -2
+      },
+      "realWorld": true,
+      "realNote": "Hollister eliminated 31 budgeted vacant positions in FY 2025-26 for about $6M."
+    },
+    {
+      "id": "layoffs-nonsafety",
+      "name": "Lay off 12 non-safety positions",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 1600000,
+      "desc": "Reduction in force across administration, parks and public works.",
+      "consequence": "Fast, certain savings. It costs you the room and most of your workforce goodwill.",
+      "effects": {
+        "workforce": -20,
+        "trust": -10,
+        "community": -8,
+        "infrastructure": -6
+      }
+    },
+    {
+      "id": "four-day-week",
+      "name": "Four-day City Hall week",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 450000,
+      "desc": "Close City Hall on Fridays and move staff to a 36-hour schedule.",
+      "consequence": "Utilities and overtime drop. Residents find the counter closed when they need it.",
+      "effects": {
+        "trust": -4,
+        "community": -4,
+        "workforce": 4
+      }
+    },
+    {
+      "id": "overtime-reform",
+      "name": "Overtime and scheduling reform",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 640000,
+      "desc": "Rebuild shift schedules to cut callback and mandatory overtime.",
+      "consequence": "Real savings without a layoff, but it needs union agreement and a year to land.",
+      "effects": {
+        "safety": -4,
+        "workforce": -5
+      }
+    },
+    {
+      "id": "contract-parks",
+      "name": "Contract out park maintenance",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 520000,
+      "desc": "Move turf, landscape and restroom maintenance to a private contractor.",
+      "consequence": "Cheaper per acre. Response to problems gets slower and less accountable.",
+      "effects": {
+        "community": -8,
+        "workforce": -7
+      }
+    },
+    {
+      "id": "defer-streets",
+      "name": "Defer street maintenance one year",
+      "category": "cuts",
+      "type": "onetime",
+      "amount": 1100000,
+      "desc": "Skip this year's slurry seal and overlay program.",
+      "consequence": "Pavement that fails costs roughly four times as much to rebuild as to maintain. This is a loan from your own streets.",
+      "effects": {
+        "infrastructure": -20,
+        "trust": -4
+      }
+    },
+    {
+      "id": "defer-fleet",
+      "name": "Defer fleet and equipment replacement",
+      "category": "cuts",
+      "type": "onetime",
+      "amount": 700000,
+      "desc": "Keep patrol cars, engines and street sweepers one more year.",
+      "consequence": "Maintenance costs climb and an engine out of service is a response time problem.",
+      "effects": {
+        "safety": -6,
+        "infrastructure": -10,
+        "workforce": -2
+      }
+    },
+    {
+      "id": "travel-training",
+      "name": "Suspend non-essential travel and training",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 160000,
+      "desc": "Cancel conferences and discretionary professional development.",
+      "consequence": "Small money. Certifications lapse and recruitment gets harder.",
+      "effects": {
+        "workforce": -3
+      }
+    },
+    {
+      "id": "library-hours",
+      "name": "Cut library and community center hours",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 280000,
+      "desc": "Drop to four open days a week and end evening hours.",
+      "consequence": "Highly visible. It is the cut residents notice first and remember longest.",
+      "effects": {
+        "community": -12,
+        "trust": -4
+      }
+    },
+    {
+      "id": "admin-hiring-freeze",
+      "name": "Freeze administrative hiring",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 780000,
+      "desc": "No backfills in finance, HR, IT or the clerk's office.",
+      "consequence": "It also slows the overdue audit catch-up, and lenders are watching that.",
+      "effects": {
+        "workforce": -5,
+        "trust": -3
+      }
+    },
+    {
+      "id": "fire-jpa",
+      "name": "Move to a regional fire services JPA",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 900000,
+      "desc": "Shift fire operations into a joint powers authority with neighboring agencies.",
+      "consequence": "Shares overhead across agencies. You also give up direct control of your own fire service.",
+      "effects": {
+        "safety": -7,
+        "workforce": -6,
+        "trust": -6
+      }
+    },
+    {
+      "id": "energy-retrofit",
+      "name": "Energy retrofit and solar agreement",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 210000,
+      "desc": "LED conversion and a solar power purchase agreement on city facilities.",
+      "consequence": "Low risk, no service loss. It takes about a year to show up in the numbers.",
+      "effects": {
+        "infrastructure": 3
+      }
+    },
+    {
+      "id": "debt-restructure",
+      "name": "Restructure outstanding debt",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 380000,
+      "desc": "Refinance and re-amortize existing obligations to lower annual payments.",
+      "consequence": "Lower payments now, more interest paid in total. A fiscal emergency does not get you good terms.",
+      "effects": {
+        "trust": -2
+      }
+    },
+    {
+      "id": "cm-office-cut",
+      "name": "Cut the City Manager's office budget",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 190000,
+      "desc": "Reduce executive staffing, car allowances and discretionary accounts.",
+      "consequence": "Small money, large signal. Residents read this one as good faith.",
+      "effects": {
+        "workforce": -2,
+        "trust": 7
+      }
+    },
+    {
+      "id": "fee-cost-recovery",
+      "name": "Full cost-recovery fee study",
+      "category": "revenue",
+      "type": "ongoing",
+      "amount": 900000,
+      "desc": "Reset building, planning and engineering fees to the true cost of service.",
+      "consequence": "Defensible and council-approvable. The development community will fight it.",
+      "effects": {
+        "community": -4,
+        "trust": -3
+      },
+      "taxBurden": 0.2,
+      "bizBurden": 1
+    },
+    {
+      "id": "biz-license-modernize",
+      "name": "Modernize the business license tax",
+      "category": "revenue",
+      "type": "ongoing",
+      "amount": 450000,
+      "desc": "Update a flat-rate schedule that has not changed in decades.",
+      "consequence": "Overdue housekeeping. Small businesses feel it as a rate increase anyway.",
+      "effects": {
+        "trust": -2
+      },
+      "taxBurden": 0.4,
+      "bizBurden": 1
+    },
+    {
+      "id": "ambulance-fee",
+      "name": "First responder fee for medical calls",
+      "category": "revenue",
+      "type": "ongoing",
+      "amount": 400000,
+      "desc": "Bill insurers when fire units respond to medical emergencies.",
+      "consequence": "Common practice statewide. Residents still experience it as a bill for calling 911.",
+      "effects": {
+        "trust": -5,
+        "community": -3
+      },
+      "taxBurden": 0.6,
+      "bizBurden": 0.1
+    },
+    {
+      "id": "citations",
+      "name": "Step up code enforcement and citations",
+      "category": "revenue",
+      "type": "ongoing",
+      "amount": 180000,
+      "desc": "Fund an additional code officer and enforce existing citation authority.",
+      "consequence": "Revenue from enforcement reads as a shakedown whether or not it is one.",
+      "effects": {
+        "trust": -4
+      },
+      "taxBurden": 0.4,
+      "bizBurden": 0.5
+    },
+    {
+      "id": "cell-tower",
+      "name": "Lease rooftop and cell tower rights",
+      "category": "revenue",
+      "type": "ongoing",
+      "amount": 120000,
+      "desc": "Lease space on city water tanks and rooftops to carriers.",
+      "consequence": "Free money, small money. There is no reason not to do this.",
+      "effects": {},
+      "taxBurden": 0,
+      "bizBurden": 0
+    },
+    {
+      "id": "tot-increase",
+      "name": "Raise the hotel tax to 12%",
+      "category": "revenue",
+      "type": "ongoing",
+      "amount": 260000,
+      "desc": "Increase transient occupancy tax from 10% to 12%.",
+      "needsBallot": true,
+      "passChance": 0.74,
+      "consequence": "Visitors pay it, not residents. It is the easiest ballot measure on this board.",
+      "effects": {},
+      "taxBurden": 0.2,
+      "bizBurden": 0.4
+    },
+    {
+      "id": "cannabis-tax",
+      "name": "Cannabis business tax",
+      "category": "revenue",
+      "type": "ongoing",
+      "amount": 350000,
+      "desc": "Tax gross receipts of licensed cannabis businesses.",
+      "needsBallot": true,
+      "passChance": 0.58,
+      "consequence": "Depends entirely on how many operators actually open here.",
+      "effects": {
+        "trust": -2
+      },
+      "taxBurden": 0.5,
+      "bizBurden": 0.6
+    },
+    {
+      "id": "uut",
+      "name": "Utility users tax at 3%",
+      "category": "revenue",
+      "type": "ongoing",
+      "amount": 2800000,
+      "desc": "A 3% tax on electric, gas and telecom bills.",
+      "needsBallot": true,
+      "passChance": 0.33,
+      "consequence": "The largest ongoing revenue available to you. Residents pay it on every bill, every month.",
+      "effects": {
+        "trust": -8
+      },
+      "taxBurden": 1,
+      "bizBurden": 0.7
+    },
+    {
+      "id": "sales-tax-half",
+      "name": "Add a half-cent sales tax",
+      "category": "revenue",
+      "type": "ongoing",
+      "amount": 3700000,
+      "desc": "A half-cent add-on to the local transactions and use tax.",
+      "needsBallot": true,
+      "passChance": 0.41,
+      "consequence": "Hollister is already at 9.25%. Another half cent is a hard ask in a fiscal emergency.",
+      "effects": {
+        "trust": -6
+      },
+      "taxBurden": 1,
+      "bizBurden": 0.8
+    },
+    {
+      "id": "sell-surplus",
+      "name": "Sell surplus city property",
+      "category": "onetime",
+      "type": "onetime",
+      "amount": 2100000,
+      "desc": "Dispose of city-owned parcels no longer used for operations.",
+      "consequence": "You can only sell it once, and you will never buy it back at this price.",
+      "effects": {
+        "infrastructure": -5,
+        "trust": -4
+      }
+    },
+    {
+      "id": "impact-fee-loan",
+      "name": "Borrow $11M from impact fee funds",
+      "category": "onetime",
+      "type": "onetime",
+      "amount": 11000000,
+      "desc": "An interfund loan from restricted impact fee funds to the General Fund.",
+      "consequence": "This is cash, not a fix. It is repayable by June 30, 2027 at 4%, and the capital projects those fees were collected for wait.",
+      "effects": {
+        "trust": -9,
+        "infrastructure": -8
+      },
+      "realWorld": true,
+      "confidence": "verified",
+      "realNote": "On October 2, 2026 the Hollister City Council declared a fiscal emergency and approved exactly this: $18M from impact fee funds, $11M of it to the General Fund."
+    }
+  ]
+}

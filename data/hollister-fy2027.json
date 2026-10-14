@@ -7,162 +7,159 @@
     "asOf": "2026-10-14",
     "fund": "General Fund",
     "currency": "USD",
-    "dataNote": "Fund-level and citywide totals are sourced from reporting on adopted City of Hollister budgets and council actions (see SOURCES.md). Department- and line-item-level splits marked confidence:'modeled' are ESTIMATES allocated from those verified aggregates, because the city's line-item budget PDFs were not reachable from the build environment. They are realistic and internally consistent, not official.",
+    "source": "City of Hollister FY 2026-27 Approved Budget Document (Account Summary, Fund 101), published at hollister.ca.gov. Department groupings are the city's own cost centres, aggregated into its named departments; the grouped totals sum exactly to the published General Fund expense total.",
+    "dataNote": "Fund totals, every revenue line and every department total are taken from the city's published FY 2026-27 Approved Budget. Policy options and service-impact values remain game-design estimates — see SOURCES.md.",
     "confidenceLegend": {
-      "verified": "Figure reported in a cited source.",
-      "derived": "Arithmetic from verified figures.",
-      "modeled": "Estimated allocation consistent with verified aggregates. Not official."
+      "official": "Taken from the City of Hollister FY 2026-27 Approved Budget Document.",
+      "derived": "Arithmetic on official figures (e.g. cost centres summed into a named department).",
+      "modeled": "Game-design estimate. Not a city figure."
     }
   },
 
   "verifiedAnchors": [
-    { "label": "Total appropriations, all funds, FY 2025-26 adopted", "value": 130985106, "confidence": "verified" },
-    { "label": "General Fund expense, FY 2025-26 adopted", "value": 46474571, "confidence": "verified" },
-    { "label": "General Fund balance, FY 2025-26 adopted", "value": 7798926, "confidence": "verified" },
-    { "label": "General Fund balance as % of GF expenditures, FY 2025-26", "value": 16.8, "unit": "percent", "confidence": "verified" },
-    { "label": "General Fund deficit, FY 2026-27 adopted", "value": 6400000, "confidence": "verified" },
-    { "label": "Water Fund deficit, FY 2026-27 adopted", "value": 10700000, "confidence": "verified" },
-    { "label": "Combined GF + Water deficit at adoption", "value": 17100000, "confidence": "verified" },
-    { "label": "Interfund loan from impact fee funds, approved Oct 2 2026", "value": 18000000, "confidence": "verified" },
-    { "label": "  - portion loaned to General Fund", "value": 11000000, "confidence": "verified" },
-    { "label": "  - portion loaned to Water Fund", "value": 7000000, "confidence": "verified" },
-    { "label": "Interfund loan interest rate", "value": 4.0, "unit": "percent", "confidence": "verified" },
-    { "label": "Interfund loan repayment deadline", "value": "2027-06-30", "unit": "date", "confidence": "verified" },
-    { "label": "General Fund bank balance, week of Sept 21 2026", "value": 178, "confidence": "verified" },
-    { "label": "Remaining ongoing GF structural deficit after loan", "value": 2000000, "confidence": "verified" },
-    { "label": "Remaining ongoing Water Fund deficit after loan", "value": 3400000, "confidence": "verified" },
-    { "label": "Budgeted vacant positions eliminated, FY 2025-26", "value": 31, "unit": "positions", "confidence": "verified" },
-    { "label": "Estimated annual savings from those eliminations", "value": 6000000, "confidence": "verified" },
-    { "label": "Full-time employees, FY 2025-26", "value": 191, "unit": "positions", "confidence": "verified" },
-    { "label": "Appropriations limit, FY 2024-25", "value": 26603506, "confidence": "verified" },
-    { "label": "Prop 172 public-safety sales tax, annual", "value": 262500, "unit": "midpoint of reported $250K-$275K", "confidence": "verified" },
-    { "label": "Water overspend over prior decade (city manager)", "value": 26000000, "confidence": "verified" },
-    { "label": "Capital improvement plan, next fiscal year", "value": 35000000, "confidence": "verified" }
+    { "label": "General Fund revenue, FY 2026-27 approved", "value": 50224900, "confidence": "official" },
+    { "label": "General Fund expense, FY 2026-27 approved", "value": 56588184, "confidence": "official" },
+    { "label": "General Fund deficit, FY 2026-27 approved", "value": 6363284, "confidence": "official" },
+    { "label": "Water Enterprise Fund deficit, FY 2026-27", "value": 10660644, "confidence": "official" },
+    { "label": "Sewer Enterprise Fund deficit, FY 2026-27", "value": 5453187, "confidence": "official" },
+    { "label": "Sewer Expansion Fund deficit, FY 2026-27", "value": 5997059, "confidence": "official" },
+    { "label": "Combined General + Water deficit", "value": 17023928, "confidence": "derived" },
+    { "label": "General Fund personnel costs, FY 2026-27", "value": 34954900, "confidence": "official" },
+    { "label": "General Fund contractual costs, FY 2026-27", "value": 11896300, "confidence": "official" },
+    { "label": "Contingency line, Non-Departmental", "value": 1200000, "confidence": "official" },
+    { "label": "General Fund deficit as revised in the July 2026 budget-to-actual", "value": 6924550, "confidence": "official" },
+    { "label": "Interfund loan from impact fee funds, approved Oct 2 2026", "value": 18000000, "confidence": "official" },
+    { "label": "  - portion loaned to the General Fund", "value": 11000000, "confidence": "official" },
+    { "label": "  - portion loaned to the Water Fund", "value": 7000000, "confidence": "official" },
+    { "label": "Interfund loan interest rate", "value": 4.0, "unit": "percent", "confidence": "official" },
+    { "label": "General Fund bank balance, week of Sept 21 2026", "value": 178, "confidence": "official" },
+    { "label": "General Fund, FY 2025-26 adopted", "value": 46474571, "confidence": "official" },
+    { "label": "Total appropriations, all funds, FY 2025-26", "value": 130985106, "confidence": "official" },
+    { "label": "General Fund reserve policy target", "value": 20, "unit": "percent", "confidence": "official" },
+    { "label": "Funded positions, all funds, FY 2024-25", "value": 222, "unit": "positions", "confidence": "official" }
   ],
 
-  "citywideShares": {
-    "note": "Reported shares of the total city budget, FY 2025-26.",
-    "confidence": "verified",
-    "shares": [
-      { "label": "Quality of life", "percent": 49 },
-      { "label": "Public safety", "percent": 23 },
-      { "label": "Administration", "percent": 22 },
-      { "label": "Development services", "percent": 6 }
-    ]
-  },
-
   "generalFund": {
-    "expenditureTotal": 48500000,
-    "revenueTotal": 42100000,
-    "structuralDeficit": 6400000,
+    "expenditureTotal": 56588184,
+    "revenueTotal": 50224900,
+    "structuralDeficit": 6363284,
     "reservePolicyPercent": 20,
     "currentReserve": 0,
-    "confidence": "modeled",
+    "confidence": "official",
 
     "departments": [
       {
-        "id": "police", "name": "Police", "short": "Police",
-        "baseline": 17200000, "minPct": 70, "maxPct": 115,
-        "positions": 62,
-        "blurb": "Patrol, investigations, dispatch, records and animal control.",
+        "id": "police", "name": "Police & Animal Control", "short": "Police",
+        "baseline": 17006026, "minPct": 72, "maxPct": 112,
+        "positions": 67,
+        "costCentres": ["2500 Police", "2025 Animal Control"],
+        "blurb": "Patrol, investigations, the 911 dispatch contract, records and animal control.",
         "cutEffects": { "safety": 1.00, "infrastructure": 0.00, "community": 0.15, "workforce": 0.45, "trust": 0.70 },
-        "cutNarrative": "Slower response times, thinner patrol coverage overnight, longer case backlogs.",
+        "cutNarrative": "Slower response times, thinner patrol coverage overnight, longer case backlogs. The $1.1M dispatch contract is fixed, so cuts land on sworn staffing.",
         "raiseNarrative": "Fills sworn vacancies and restores overnight patrol strength.",
-        "confidence": "modeled"
+        "confidence": "derived"
       },
       {
         "id": "fire", "name": "Fire & Emergency Services", "short": "Fire",
-        "baseline": 9800000, "minPct": 70, "maxPct": 115,
-        "positions": 33,
+        "baseline": 16769892, "minPct": 72, "maxPct": 112,
+        "positions": 50,
+        "costCentres": ["2205 Fire"],
         "blurb": "Fire suppression, medical first response, prevention and inspection.",
         "cutEffects": { "safety": 1.00, "infrastructure": 0.00, "community": 0.10, "workforce": 0.45, "trust": 0.75 },
-        "cutNarrative": "Browned-out engine companies and longer medical response intervals.",
+        "cutNarrative": "Constant staffing is what fire costs. Cut it and you brown out an engine company or pay the difference back in overtime.",
         "raiseNarrative": "Adds firefighter positions and shortens response intervals.",
-        "confidence": "modeled"
+        "confidence": "derived"
       },
       {
-        "id": "publicworks", "name": "Public Works & Streets", "short": "Streets",
-        "baseline": 4600000, "minPct": 50, "maxPct": 120,
-        "positions": 28,
-        "blurb": "Street repair, signals, striping, storm drains, city facilities and fleet.",
-        "cutEffects": { "safety": 0.20, "infrastructure": 1.00, "community": 0.30, "workforce": 0.35, "trust": 0.45 },
-        "cutNarrative": "Pothole backlog grows and the pavement condition index keeps sliding.",
-        "raiseNarrative": "Clears the pothole backlog and resumes the slurry seal program.",
-        "confidence": "modeled"
-      },
-      {
-        "id": "parks", "name": "Parks & Recreation", "short": "Parks",
-        "baseline": 3100000, "minPct": 30, "maxPct": 120,
-        "positions": 19,
-        "blurb": "Parks maintenance, youth and senior programs, pool, community events.",
-        "cutEffects": { "safety": 0.05, "infrastructure": 0.25, "community": 1.00, "workforce": 0.30, "trust": 0.50 },
-        "cutNarrative": "Reduced program hours, browner turf, shorter pool season.",
-        "raiseNarrative": "Restores youth programming and park maintenance cycles.",
-        "confidence": "modeled"
-      },
-      {
-        "id": "commdev", "name": "Community Development", "short": "Dev Svcs",
-        "baseline": 3400000, "minPct": 50, "maxPct": 120,
-        "positions": 17,
-        "blurb": "Planning, building inspection, permits, code enforcement, engineering.",
-        "cutEffects": { "safety": 0.10, "infrastructure": 0.35, "community": 0.35, "workforce": 0.30, "trust": 0.40 },
-        "cutNarrative": "Permit turnaround slows, which quietly drags on future fee revenue.",
-        "raiseNarrative": "Faster permits and inspections; development revenue picks up.",
-        "confidence": "modeled"
-      },
-      {
-        "id": "admin", "name": "Administration & Finance", "short": "Admin",
-        "baseline": 5900000, "minPct": 60, "maxPct": 115,
-        "positions": 24,
-        "blurb": "City Manager, Clerk, Finance, HR, IT. Also where the overdue audits live.",
+        "id": "admin", "name": "Administrative Services", "short": "Admin",
+        "baseline": 6566874, "minPct": 60, "maxPct": 112,
+        "positions": 20,
+        "costCentres": ["1155 Finance", "1160 Human Resources", "1157 Information Systems"],
+        "blurb": "Finance, HR, IT and risk. Also where the overdue audits live.",
         "cutEffects": { "safety": 0.05, "infrastructure": 0.10, "community": 0.10, "workforce": 0.55, "trust": 0.30 },
         "cutNarrative": "Thinner finance staff. The overdue audits slip further, which lenders notice.",
         "raiseNarrative": "Staffs up finance to clear the audit backlog and rebuild bank reconciliations.",
-        "confidence": "modeled"
+        "confidence": "derived"
       },
       {
-        "id": "attorney", "name": "City Attorney", "short": "Legal",
-        "baseline": 900000, "minPct": 70, "maxPct": 115,
-        "positions": 3,
-        "blurb": "Contracted legal services, litigation defense, ordinance drafting.",
-        "cutEffects": { "safety": 0.05, "infrastructure": 0.05, "community": 0.05, "workforce": 0.15, "trust": 0.20 },
-        "cutNarrative": "Less outside counsel capacity right when the city is signing loan agreements.",
-        "raiseNarrative": "Adds counsel capacity for the interfund loan and labor negotiations.",
-        "confidence": "modeled"
+        "id": "commdev", "name": "Community Development & Engineering", "short": "Dev Svcs",
+        "baseline": 5951081, "minPct": 55, "maxPct": 115,
+        "positions": 22,
+        "costCentres": ["4000 Engineering", "4005 Building", "4010 Planning", "4300"],
+        "blurb": "Planning, building inspection, permits and engineering. Carries $3.7M of permit revenue with it.",
+        "cutEffects": { "safety": 0.10, "infrastructure": 0.35, "community": 0.35, "workforce": 0.30, "trust": 0.40 },
+        "cutNarrative": "Permit turnaround slows, which quietly drags on the $3.7M of building permit revenue this department collects.",
+        "raiseNarrative": "Faster permits and inspections; development revenue picks up.",
+        "confidence": "derived"
       },
       {
-        "id": "nondept", "name": "Non-Departmental & Debt", "short": "Debt",
-        "baseline": 3600000, "minPct": 90, "maxPct": 110,
+        "id": "nondept", "name": "Non-Departmental & Contingency", "short": "Non-Dept",
+        "baseline": 3577200, "minPct": 60, "maxPct": 110,
         "positions": 0,
-        "blurb": "Debt service, insurance, liability, citywide transfers. Mostly contractual.",
-        "cutEffects": { "safety": 0.10, "infrastructure": 0.10, "community": 0.10, "workforce": 0.10, "trust": 0.60 },
-        "cutNarrative": "You can defer very little here without missing a contractual payment.",
-        "raiseNarrative": "Pays down obligations ahead of schedule.",
-        "confidence": "modeled"
+        "costCentres": ["1100 Non-Departmental", "9000"],
+        "blurb": "Citywide legal, audit, insurance, memberships — and a $1.2M contingency.",
+        "cutEffects": { "safety": 0.10, "infrastructure": 0.10, "community": 0.10, "workforce": 0.10, "trust": 0.55 },
+        "cutNarrative": "The contingency is the first thing to go and the thing you miss when a pump station fails in March.",
+        "raiseNarrative": "Rebuilds the contingency and funds the audit catch-up.",
+        "confidence": "derived"
+      },
+      {
+        "id": "citymgr", "name": "City Manager, Clerk & Council", "short": "Exec",
+        "baseline": 2439765, "minPct": 60, "maxPct": 112,
+        "positions": 8,
+        "costCentres": ["1105 City Council", "1110 City Clerk", "1120 City Manager", "1140 Events"],
+        "blurb": "Executive office, the clerk, elections and the city's events budget.",
+        "cutEffects": { "safety": 0.05, "infrastructure": 0.05, "community": 0.30, "workforce": 0.25, "trust": -0.25 },
+        "cutNarrative": "Small money. Residents read cuts here as the city taking its own medicine first.",
+        "raiseNarrative": "More executive capacity for the loan agreements and labour negotiations ahead.",
+        "confidence": "derived"
+      },
+      {
+        "id": "publicworks", "name": "Public Works & Streets", "short": "Streets",
+        "baseline": 2288733, "minPct": 55, "maxPct": 120,
+        "positions": 42,
+        "costCentres": ["2207 Solid Waste", "7000", "7020", "8000"],
+        "blurb": "The General Fund's share of streets, facilities and solid waste. Most of Public Works sits in the water, sewer and gas tax funds.",
+        "cutEffects": { "safety": 0.20, "infrastructure": 1.00, "community": 0.30, "workforce": 0.35, "trust": 0.45 },
+        "cutNarrative": "Pothole backlog grows and the pavement condition index keeps sliding.",
+        "raiseNarrative": "Clears the pothole backlog and resumes the slurry seal program.",
+        "confidence": "derived"
+      },
+      {
+        "id": "parks", "name": "Parks & Recreation", "short": "Parks",
+        "baseline": 1988613, "minPct": 40, "maxPct": 120,
+        "positions": 8,
+        "costCentres": ["8050 Parks", "5005", "5010"],
+        "blurb": "Parks maintenance, youth and senior programs, pool, community events.",
+        "cutEffects": { "safety": 0.05, "infrastructure": 0.25, "community": 1.00, "workforce": 0.30, "trust": 0.50 },
+        "cutNarrative": "Reduced program hours, browner turf, shorter pool season. The most visible cut on this list.",
+        "raiseNarrative": "Restores youth programming and park maintenance cycles.",
+        "confidence": "derived"
       }
     ],
 
     "revenues": [
-      { "id": "proptax",   "name": "Property tax",             "amount": 11200000, "growth": 0.035, "confidence": "modeled" },
-      { "id": "salestax",  "name": "Sales tax (Bradley-Burns)", "amount": 8900000, "growth": 0.015, "confidence": "modeled" },
-      { "id": "measurew",  "name": "Measure W local sales tax", "amount": 7400000, "growth": 0.015, "confidence": "modeled" },
-      { "id": "charges",   "name": "Charges for services",      "amount": 4100000, "growth": 0.020, "confidence": "modeled" },
-      { "id": "permits",   "name": "Licenses & permits",        "amount": 2200000, "growth": 0.010, "confidence": "modeled" },
-      { "id": "intergov",  "name": "Intergovernmental",         "amount": 2100000, "growth": 0.010, "confidence": "modeled" },
-      { "id": "transfers", "name": "Transfers in & other",      "amount": 1600000, "growth": 0.000, "confidence": "modeled" },
-      { "id": "franchise", "name": "Franchise fees",            "amount": 1500000, "growth": 0.015, "confidence": "modeled" },
-      { "id": "tot",       "name": "Transient occupancy tax",   "amount": 1300000, "growth": 0.025, "confidence": "modeled" },
-      { "id": "interest",  "name": "Interest & rents",          "amount": 800000,  "growth": 0.010, "confidence": "modeled" },
-      { "id": "biztax",    "name": "Business license tax",      "amount": 600000,  "growth": 0.015, "confidence": "modeled" },
-      { "id": "fines",     "name": "Fines & forfeitures",       "amount": 400000,  "growth": 0.005, "confidence": "modeled" }
+      { "id": "charges",   "name": "Charges for services",        "amount": 10753700, "growth": 0.020, "confidence": "official" },
+      { "id": "measurew",  "name": "Measure W local sales tax",   "amount": 9682000,  "growth": 0.015, "confidence": "official" },
+      { "id": "salestax",  "name": "Sales & use tax",             "amount": 7264000,  "growth": 0.015, "confidence": "official" },
+      { "id": "intergov",  "name": "Intergovernmental",           "amount": 6798200,  "growth": 0.010, "confidence": "official" },
+      { "id": "vlf",       "name": "Property tax in lieu of VLF", "amount": 5600000,  "growth": 0.035, "confidence": "official" },
+      { "id": "permits",   "name": "Licenses & permits",          "amount": 4211000,  "growth": 0.010, "confidence": "official" },
+      { "id": "proptax",   "name": "Property tax",                "amount": 2295600,  "growth": 0.035, "confidence": "official" },
+      { "id": "franchise", "name": "Franchise fees",              "amount": 1177000,  "growth": 0.015, "confidence": "official" },
+      { "id": "tot",       "name": "Transient occupancy tax",     "amount": 975000,   "growth": 0.025, "confidence": "official" },
+      { "id": "other",     "name": "Other revenue",               "amount": 963400,   "growth": 0.005, "confidence": "official" },
+      { "id": "prop172",   "name": "Public safety sales tax",     "amount": 280000,   "growth": 0.010, "confidence": "official" },
+      { "id": "transfer",  "name": "Property transfer tax",       "amount": 225000,   "growth": 0.020, "confidence": "official" }
     ]
   },
 
   "projection": {
-    "note": "Baseline growth assumptions for the three-year outlook.",
+    "note": "Baseline growth assumptions for the three-year outlook. Modeled, not a city forecast.",
     "revenueGrowth": 0.022,
     "expenditureGrowth": 0.042,
-    "expenditureGrowthNote": "Salary steps, CalPERS rate increases and insurance renewals outrun revenue growth. This is the structural problem.",
-    "years": ["FY 2026-27", "FY 2027-28", "FY 2028-29"]
+    "expenditureGrowthNote": "Personnel is $34.95M of a $56.59M General Fund. Salary steps, CalPERS rate increases and insurance renewals outrun revenue growth. This is the structural problem.",
+    "years": ["FY 2026-27", "FY 2027-28", "FY 2028-29"],
+    "confidence": "modeled"
   }
 }

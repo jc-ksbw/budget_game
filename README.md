@@ -1,14 +1,18 @@
 # Balancing Hollister
 
 A phone-first budget game. You are the City Manager of **Hollister, California**
-in the middle of a declared fiscal emergency, and you have a **$6.4 million**
+in the middle of a declared fiscal emergency, and you have a **$6,363,284**
 general fund deficit to close — with three of five council votes.
 
 > On October 2, 2026 the Hollister City Council declared a fiscal emergency. The
 > week of September 21, the city's general fund bank account held **$178**.
 
-That part is real. See [SOURCES.md](SOURCES.md) for exactly which figures are
-drawn from reporting on actual council actions and which are modeled estimates.
+That part is real, and so is the budget. Every fund total, revenue line and
+department total comes from the city's published
+[FY 2026-27 Approved Budget Document](https://hollister.ca.gov/City%20Managers/Documents/Hollister_FY2026-27_Approved_Budget_July4_Cover.pdf)
+and reconciles to it exactly: $56,588,184 of spending against $50,224,900 of
+revenue. See [SOURCES.md](SOURCES.md) for what is official and what is a
+game-design estimate.
 
 ## Play it
 
@@ -49,7 +53,7 @@ scorecard separates:
   a California council cannot adopt an unbalanced general fund budget.)
 - **Structural balance** — does recurring revenue cover recurring cost?
 
-You can close the whole $6.4M with the $11M interfund loan the city actually
+You can close the whole $6.36M with the $11M interfund loan the city actually
 took, submit it, and watch the council adopt it — and still be told, correctly,
 that the hole reopens in July. The three-year outlook chart makes that visible.
 
@@ -59,14 +63,17 @@ that the hole reopens in July. The three-year outlook chart makes that visible.
 service levels (20), reserve against the city's 20% policy (5), minus 6 for every
 service meter that collapses below 25.
 
-Randomised play almost never passes — roughly **5%** of random plans win three
-votes. A well-constructed plan reaches a B; the practical ceiling found by a
-hill-climbing search over ~54,000 plans is an **A-** with a unanimous council.
+Randomised play almost never passes — roughly **5%** of 40,000 random plans win
+three votes, and none reach an A. A well-constructed plan reaches a B; the
+practical ceiling found by a hill-climbing search over ~54,000 plans is an
+**A-** with a unanimous council.
 
 ### Ballot measures
 
 Four revenue options need voter approval, with the odds printed on the card
 (hotel tax 74%, cannabis tax 58%, half-cent sales tax 41%, utility users tax 33%).
+Their values are derived from the real tax bases: two points on a $975,000 hotel
+tax is $195K; half of Measure W's $9,682,000 is $4.8M.
 They are resolved when you submit. Build your whole plan on a 33% measure and you
 may watch it evaporate at the vote.
 
@@ -117,7 +124,7 @@ more series has a legend, and service meters pair colour with a number, a word
 ## Changing the data
 
 All figures live in `data/hollister-fy2027.json` and `data/actions.json`. Each
-budget entry carries a `confidence` field — `verified`, `derived` or `modeled`.
+entry carries a `confidence` field — `official`, `derived` or `modeled`.
 Edit, run `node build.js`, reload. `build.js` fails loudly if the flat bundle
 would contain duplicate top-level declarations.
 

@@ -140,7 +140,7 @@ function renderBudget() {
     ]),
     sliders,
     h('div', { class: 'source-note', html:
-      '<b>About these figures.</b> The $48.5M general fund total and the $6.4M deficit come from reporting on Hollister\'s adopted FY 2026-27 budget. The split between departments is a realistic estimate, not the city\'s official line-item budget — see SOURCES.md.' }),
+      '<b>About these figures.</b> Every department total here is taken from the City of Hollister\'s published FY 2026-27 Approved Budget and sums exactly to its $56,588,184 General Fund expense total. The policy options on the other tabs are game-design estimates — see SOURCES.md.' }),
   );
 
   refreshBudgetChart();
@@ -365,7 +365,7 @@ function buildWaterfall(t) {
 
   const card = h('div', { class: 'card' }, [
     h('div', { class: 'card-title' }, ['How you closed the gap']),
-    h('div', { class: 'chart-sub', text: 'From the $6.4M you inherited to where you are now.' }),
+    h('div', { class: 'chart-sub', text: 'From the $6.36M you inherited to where you are now.' }),
     host,
     legendFor([
       { label: 'Closes the gap', color: 'var(--pos)' },
@@ -563,7 +563,7 @@ function showResult() {
     ]),
 
     h('div', { class: 'source-note', html:
-      '<b>Sources.</b> Fund totals, the deficit, the fiscal emergency, the interfund loan and the $178 bank balance are all drawn from reporting on City of Hollister council actions. Department-level splits and every policy option\'s dollar value are realistic estimates built on those totals, not official city line items. See SOURCES.md in the repository.' }),
+      '<b>Sources.</b> The General Fund totals, every revenue line and every department total come from the City of Hollister FY 2026-27 Approved Budget Document. The fiscal emergency, the $18M interfund loan and the $178 bank balance come from reporting on council actions. Policy options and service-impact values are game-design estimates. See SOURCES.md in the repository.' }),
   );
 
   go('result');
@@ -630,20 +630,26 @@ $('btn-start').addEventListener('click', () => {
 $('btn-about-intro').addEventListener('click', () => {
   alert(
     'Where these numbers come from\n\n' +
-    'VERIFIED from reporting on City of Hollister council actions:\n' +
-    '• $6.4M general fund deficit in the adopted FY 2026-27 budget\n' +
-    '• $10.7M water fund deficit; $17.1M combined\n' +
-    '• Fiscal emergency declared October 2, 2026\n' +
-    '• $18M interfund loan from impact fee funds ($11M to the general fund, $7M to water), 4% interest, repayable by June 30, 2027\n' +
-    '• $178 in the general fund bank account the week of September 21, 2026\n' +
-    '• FY 2025-26: $46.47M general fund within a $130.99M all-funds budget\n' +
-    '• 20% general fund reserve policy; 16.8% actual in FY 2025-26\n' +
-    '• 31 vacant positions cut in FY 2025-26 for about $6M\n\n' +
-    'MODELED (realistic estimates, not official):\n' +
-    '• The split of the general fund across departments\n' +
-    '• The revenue mix by source\n' +
-    '• Every policy option\'s dollar value and its effect on services\n\n' +
-    'The city\'s line-item budget PDFs were not reachable when this was built. See SOURCES.md.'
+    'OFFICIAL — City of Hollister FY 2026-27 Approved Budget Document:\n' +
+    '\u2022 General Fund revenue $50,224,900\n' +
+    '\u2022 General Fund expense $56,588,184\n' +
+    '\u2022 General Fund deficit $6,363,284\n' +
+    '\u2022 Every revenue line on the Impact tab\n' +
+    '\u2022 Every department total on the Budget tab (the city\'s cost centres grouped into its named departments; they sum exactly to the published total)\n' +
+    '\u2022 Water Enterprise Fund deficit $10,660,644\n' +
+    '\u2022 Personnel $34,954,900 of the General Fund\n' +
+    '\u2022 The $1.2M contingency and $500K events lines\n\n' +
+    'OFFICIAL — reporting on council actions:\n' +
+    '\u2022 Fiscal emergency declared October 2, 2026\n' +
+    '\u2022 $18M interfund loan from impact fee funds ($11M to the General Fund), 4%, repayable by June 30, 2027\n' +
+    '\u2022 $178 in the General Fund bank account the week of September 21, 2026\n' +
+    '\u2022 20% General Fund reserve policy\n\n' +
+    'GAME-DESIGN ESTIMATES:\n' +
+    '\u2022 What each policy option would save or raise, except the $11M loan, the $1.2M contingency and the $500K events line\n' +
+    '\u2022 All five service meters and their movements\n' +
+    '\u2022 The growth rates in the three-year outlook\n' +
+    '\u2022 The five council members, who are fictional archetypes\n\n' +
+    'See SOURCES.md.'
   );
 });
 

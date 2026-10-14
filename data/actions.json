@@ -343,7 +343,7 @@
       "type": "ongoing",
       "amount": 900000,
       "desc": "Reset building, planning and engineering fees to the true cost of service.",
-      "consequence": "Defensible and council-approvable. The development community will fight it.",
+      "consequence": "Building permits alone bring in $3.7M. Resetting fees to the true cost of service is defensible and council-approvable, and the development community will fight it.",
       "effects": {
         "community": -4,
         "trust": -3
@@ -356,14 +356,15 @@
       "name": "Modernize the business license tax",
       "category": "revenue",
       "type": "ongoing",
-      "amount": 450000,
+      "amount": 360000,
       "desc": "Update a flat-rate schedule that has not changed in decades.",
-      "consequence": "Overdue housekeeping. Small businesses feel it as a rate increase anyway.",
+      "consequence": "The business license tax raises $240,000 on a flat-rate schedule that has not changed in decades. Moving to gross receipts could half again that. Small businesses feel it as a rate increase.",
       "effects": {
         "trust": -2
       },
       "taxBurden": 0.4,
-      "bizBurden": 1
+      "bizBurden": 1,
+      "confidence": "derived"
     },
     {
       "id": "ambulance-fee",
@@ -411,14 +412,15 @@
       "name": "Raise the hotel tax to 12%",
       "category": "revenue",
       "type": "ongoing",
-      "amount": 260000,
+      "amount": 195000,
       "desc": "Increase transient occupancy tax from 10% to 12%.",
       "needsBallot": true,
       "passChance": 0.74,
-      "consequence": "Visitors pay it, not residents. It is the easiest ballot measure on this board.",
+      "consequence": "The hotel tax raises $975,000 today, so two points adds about $195K. Visitors pay it, not residents — the easiest ballot measure on this board.",
       "effects": {},
       "taxBurden": 0.2,
-      "bizBurden": 0.4
+      "bizBurden": 0.4,
+      "confidence": "derived"
     },
     {
       "id": "cannabis-tax",
@@ -457,16 +459,17 @@
       "name": "Add a half-cent sales tax",
       "category": "revenue",
       "type": "ongoing",
-      "amount": 3700000,
+      "amount": 4800000,
       "desc": "A half-cent add-on to the local transactions and use tax.",
       "needsBallot": true,
       "passChance": 0.41,
-      "consequence": "Hollister is already at 9.25%. Another half cent is a hard ask in a fiscal emergency.",
+      "consequence": "Measure W's one cent brings in $9.68M, so a half cent is worth roughly $4.8M. Hollister is already at 9.25%, and this is a hard ask in a fiscal emergency.",
       "effects": {
         "trust": -6
       },
       "taxBurden": 1,
-      "bizBurden": 0.8
+      "bizBurden": 0.8,
+      "confidence": "derived"
     },
     {
       "id": "sell-surplus",
@@ -494,8 +497,40 @@
         "infrastructure": -8
       },
       "realWorld": true,
-      "confidence": "verified",
+      "confidence": "official",
       "realNote": "On October 2, 2026 the Hollister City Council declared a fiscal emergency and approved exactly this: $18M from impact fee funds, $11M of it to the General Fund."
+    },
+    {
+      "id": "spend-contingency",
+      "name": "Spend down the contingency",
+      "category": "onetime",
+      "type": "onetime",
+      "amount": 1200000,
+      "confidence": "official",
+      "desc": "Release the $1.2M contingency held in the Non-Departmental budget.",
+      "consequence": "It is right there in the adopted budget and it is the easiest million you will ever find. It is also the only thing standing between you and the next unbudgeted pump station failure.",
+      "effects": {
+        "trust": -4,
+        "infrastructure": -3
+      },
+      "realWorld": true,
+      "realNote": "The FY 2026-27 Approved Budget carries a $1,200,000 contingency line."
+    },
+    {
+      "id": "cancel-events",
+      "name": "Cancel city event funding",
+      "category": "cuts",
+      "type": "ongoing",
+      "amount": 500000,
+      "confidence": "official",
+      "desc": "Zero out the $500,000 events budget.",
+      "consequence": "Hollister without its events calendar saves real money and costs the downtown businesses that depend on those weekends.",
+      "effects": {
+        "community": -11,
+        "trust": -5
+      },
+      "realWorld": true,
+      "realNote": "The FY 2026-27 Approved Budget carries a $500,000 event expenditures line."
     }
   ]
 }

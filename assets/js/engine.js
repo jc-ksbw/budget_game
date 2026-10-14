@@ -1,5 +1,5 @@
 /* ============================================================
-   engine.js — budget state, consequences, council, scoring.
+   engine.js — budget state, consequences, community reaction, scoring.
    Pure functions over a plain state object. No DOM here.
    ============================================================ */
 
@@ -135,9 +135,9 @@ export function projection(state, budget, actions) {
   return { years, rev, exp, gaps, cumulative: gaps.reduce((s, g) => s + Math.max(0, g), 0) };
 }
 
-/* ---------- the council ---------- */
+/* ---------- community reaction ---------- */
 
-export function councilVotes(state, budget, actions) {
+export function communityReactions(state, budget, actions) {
   const t = totals(state, budget, actions);
   const m = meters(state, budget, actions);
 
@@ -148,7 +148,7 @@ export function councilVotes(state, budget, actions) {
   const bizBurden = clamp(t.bizBurden / 1e6 * 2.2, 0, 10);
   const reserve = clamp(t.reservePct / 20 * 8, 0, 10);
 
-  return actions.council.map((c) => {
+  return actions.community.map((c) => {
     let score = 50;
     score += (c.weights.structural || 0) * structural;
     score += (c.weights.onetimeReliance || 0) * onetimeReliance;
@@ -161,12 +161,16 @@ export function councilVotes(state, budget, actions) {
     METER_IDS.forEach((k) => {
       score += (c.weights[k] || 0) * ((m[k] - 48) / 4.5);
     });
-    // A budget that does not balance on paper cannot be adopted at all.
+    // A budget that does not balance is a non-starter for everyone.
     if (!t.balanced) score -= 28;
 
-    const yes = score >= 50;
-    return { ...c, score: Math.round(score), yes };
-  });
+    // Round first, then judge, so the shown score and the verdict can never
+    // disagree (a raw 49.6 displaying as 50 but reading "disliked").
+    const rounded = Math.round(score);
+    return { ...c, score: rounded, liked: rounded >= 50 };
+  })
+    // Ranked: whoever this budget sits best with comes first.
+    .sort((a, b) => b.score - a.score);
 }
 
 /* ---------- ballot measures ---------- */
@@ -186,10 +190,10 @@ export function resolveBallots(state, actions, rng = Math.random) {
 export function score(state, budget, actions) {
   const t = totals(state, budget, actions);
   const m = meters(state, budget, actions);
-  const votes = councilVotes(state, budget, actions);
+  const reactions = communityReactions(state, budget, actions);
   const proj = projection(state, budget, actions);
-  const yes = votes.filter((v) => v.yes).length;
-  const adopted = yes >= 3 && t.balanced;
+  const liked = reactions.filter((v) => v.liked).length;
+  const wellReceived = liked >= 3 && t.balanced;
 
   let pts = 0;
 
@@ -201,8 +205,8 @@ export function score(state, budget, actions) {
   if (t.structurallyBalanced) pts += 25;
   else pts += Math.max(0, 25 * (1 - Math.min(1, t.structuralGap / Math.max(1, t.startGap))));
 
-  // 3. Did the council adopt it? (20)
-  pts += (yes / 5) * 20;
+  // 3. How did the community take it? (20)
+  pts += (liked / 5) * 20;
 
   // 4. Are the services people actually use still working? (20)
   const avgMeter = METER_IDS.reduce((s, k) => s + m[k], 0) / METER_IDS.length;
@@ -220,7 +224,10 @@ export function score(state, budget, actions) {
     pts >= 64 ? 'B-' : pts >= 57 ? 'C+' : pts >= 50 ? 'C'  : pts >= 43 ? 'C-' :
     pts >= 35 ? 'D'  : 'F';
 
-  return { points: Math.round(pts), grade, adopted, yesVotes: yes, totals: t, meters: m, votes, proj, failing };
+  return {
+    points: Math.round(pts), grade, wellReceived, likedCount: liked,
+    totals: t, meters: m, reactions, proj, failing,
+  };
 }
 
 /* ---------- verdict lines ---------- */
@@ -231,7 +238,7 @@ export function verdicts(s, budget, actions) {
   const push = (level, text) => out.push({ level, text });
 
   if (!t.balanced) {
-    push('critical', `The budget still shows a <b>${money(t.cashGap)} gap</b>. Under California law a city council cannot adopt a general fund budget that does not balance, so this one never reached a vote.`);
+    push('critical', `The budget still shows a <b>${money(t.cashGap)} gap</b>. Under California law a city cannot adopt a general fund budget that does not balance, so there is nothing here to put in front of anyone.`);
   } else if (!t.structurallyBalanced) {
     push('serious', `It balances on paper, but <b>${money(t.structuralGap)} of the fix is one-time money</b>. Next July the hole reopens, minus whatever you already sold or borrowed.`);
   } else {
@@ -244,8 +251,11 @@ export function verdicts(s, budget, actions) {
       `<b>${share}%</b> of the gap you closed came from one-time sources. Interfund loans and property sales work exactly once.`);
   }
 
-  if (s.adopted) push('good', `The council adopted it <b>${s.yesVotes}&ndash;${5 - s.yesVotes}</b>.`);
-  else if (t.balanced) push('critical', `The council rejected it <b>${s.yesVotes}&ndash;${5 - s.yesVotes}</b>. Three votes is the whole job.`);
+  if (s.wellReceived) {
+    push('good', `<b>${s.likedCount} of 5</b> community voices liked this budget.`);
+  } else if (t.balanced) {
+    push('critical', `Only <b>${s.likedCount} of 5</b> community voices liked this budget. Winning over three of them is the whole job.`);
+  }
 
   s.failing.forEach((k) => {
     const name = actions.meta.meters.find((x) => x.id === k).name;

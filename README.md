@@ -2,7 +2,7 @@
 
 A phone-first budget game. You are the City Manager of **Hollister, California**
 in the middle of a declared fiscal emergency, and you have a **$6,363,284**
-general fund deficit to close — with three of five council votes.
+general fund deficit to close — and three of five community voices to win over.
 
 > On October 2, 2026 the Hollister City Council declared a fiscal emergency. The
 > week of September 21, the city's general fund bank account held **$178**.
@@ -55,7 +55,7 @@ Five tabs, built to be driven with a thumb:
 | **Cuts** | Pick savings measures, deferrals and borrowing |
 | **Revenue** | Set fees the council controls; put taxes to the voters |
 | **Impact** | See what your budget does to services and whether it survives past June |
-| **Council** | Submit it and find out if three of five say aye |
+| **Community** | Share it and see how five residents rank it |
 
 The deficit meter is pinned to the top of the screen and updates as you move.
 
@@ -69,19 +69,19 @@ scorecard separates:
 - **Structural balance** — does recurring revenue cover recurring cost?
 
 You can close the whole $6.36M with the $11M interfund loan the city actually
-took, submit it, and watch the council adopt it — and still be told, correctly,
+took, share it, and watch it go down well — and still be told, correctly,
 that the hole reopens in July. The three-year outlook chart makes that visible.
 
 ### Scoring
 
-100 points: balancing at all (30), structural balance (25), council support (20),
+100 points: balancing at all (30), structural balance (25), community support (20),
 service levels (20), reserve against the city's 20% policy (5), minus 6 for every
 service meter that collapses below 25.
 
-Randomised play almost never passes — roughly **5%** of 40,000 random plans win
-three votes, and none reach an A. A well-constructed plan reaches a B; the
+Randomised play almost never lands — roughly **5%** of 40,000 random plans win
+over three of five, and none reach an A. A well-constructed plan reaches a B; the
 practical ceiling found by a hill-climbing search over ~54,000 plans is an
-**A-** with a unanimous council.
+**A-** with all five on side.
 
 ### Ballot measures
 
@@ -92,13 +92,14 @@ tax is $195K; half of Measure W's $9,682,000 is $4.8M.
 They are resolved when you submit. Build your whole plan on a 33% measure and you
 may watch it evaporate at the vote.
 
-### The council
+### The community
 
-Five members, five sets of priorities: the Fiscal Hawk, the Public Safety
+Five residents, five sets of priorities: the Fiscal Hawk, the Public Safety
 Advocate, the Neighborhood Voice, the Business Voice and the Labor Ally. They are
-**fictional archetypes**, not portrayals of any real Hollister council member.
-Each scores your budget on structural health, reliance on one-time money, tax and
-fee burden, reserve, and the five service meters.
+**fictional archetypes**, not portrayals of any real person or officeholder. Each
+weighs your budget on structural health, reliance on one-time money, tax and fee
+burden, reserve, and the five service meters, then lands on liked or disliked.
+The scorecard ranks them best-received first.
 
 ## Built on
 
@@ -110,8 +111,8 @@ behaviour, dark mode and label collisions are all under direct control.
 index.html              app shell
 assets/css/app.css      phone-first styles, light + dark
 assets/js/charts.js     donut, bars, diverging bars, lines, waterfall, stacks
-assets/js/engine.js     budget maths, service meters, council, scoring
-assets/js/ui.js         slider, policy card, meter, council row
+assets/js/engine.js     budget maths, service meters, community reaction, scoring
+assets/js/ui.js         slider, policy card, meter, community row
 assets/js/app.js        screens and wiring
 data/*.json             canonical figures — edit these, not the generated file
 build.js                generates data.gen.js + the single-file dist build
@@ -144,5 +145,5 @@ Edit, run `node build.js`, reload. `build.js` fails loudly if the flat bundle
 would contain duplicate top-level declarations.
 
 To retarget the game at another city, replace the two JSON files. The engine
-reads departments, revenues, actions, meters and council members entirely from
+reads departments, revenues, actions, meters and community voices entirely from
 data.

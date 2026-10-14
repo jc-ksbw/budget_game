@@ -5,7 +5,7 @@
 import { BUDGET, ACTIONS } from './data.gen.js';
 import * as C from './charts.js';
 import * as E from './engine.js';
-import { h, SERIES, deptSlider, actionCard, meterRow, councilRow, verdictRow, icon, ICONS } from './ui.js';
+import { h, SERIES, deptSlider, actionCard, meterRow, communityRow, verdictRow, icon, ICONS } from './ui.js';
 
 const $ = (id) => document.getElementById(id);
 const fmt = C.fmt;
@@ -92,7 +92,7 @@ function changed() {
   updateBoard();
   if (activePanel === 'budget') refreshBudgetChart();
   if (activePanel === 'impact') renderImpact();
-  if (activePanel === 'council') renderCouncil();
+  if (activePanel === 'community') renderCommunity();
 }
 
 function toggleAction(id) {
@@ -401,63 +401,69 @@ function dataTable(t, proj) {
 }
 
 /* ============================================================
-   Panel: Council
+   Panel: Community
    ============================================================ */
 
-function renderCouncil() {
-  const p = $('panel-council');
+function renderCommunity() {
+  const p = $('panel-community');
   const t = E.totals(state, BUDGET, ACTIONS);
-  const votes = E.councilVotes(state, BUDGET, ACTIONS);
+  const reactions = E.communityReactions(state, BUDGET, ACTIONS);
   const revealed = state.submitted;
-  const yes = votes.filter((v) => v.yes).length;
+  const liked = reactions.filter((v) => v.liked).length;
 
   const canSubmit = t.balanced;
 
   const tally = h('div', { class: 'tally' }, [
-    h('div', { class: `tally-score ${revealed ? (yes >= 3 ? 'is-pass' : 'is-fail') : ''}`,
-      text: revealed ? `${yes}–${5 - yes}` : '?' }),
+    h('div', { class: `tally-score ${revealed ? (liked >= 3 ? 'is-pass' : 'is-fail') : ''}`,
+      text: revealed ? `${liked}/5` : '?' }),
     h('div', { class: 'tally-text' }, [
-      h('b', { text: revealed ? (yes >= 3 ? 'Budget adopted' : 'Budget rejected') : 'Three votes needed' }),
+      h('b', { text: revealed
+        ? (liked >= 3 ? 'Well received' : 'Not well received')
+        : 'Win over three of five' }),
       h('span', { text: revealed
-        ? (yes >= 3 ? 'The council passed your budget.' : 'Without three votes, there is no adopted budget.')
-        : 'The council will not see your plan until you submit it.' }),
+        ? (liked >= 3
+            ? `${liked} of five community voices liked this budget.`
+            : `Only ${liked} of five liked it.`)
+        : 'Nobody sees your plan until you share it.' }),
     ]),
   ]);
 
   const kids = [
     h('div', { class: 'panel-head' }, [
-      h('h2', { text: 'The council' }),
-      h('p', { text: 'Five members, five sets of priorities. You need three.' }),
+      h('h2', { text: 'Community reaction' }),
+      h('p', { text: revealed
+        ? 'Ranked by how well your budget sat with each of them.'
+        : 'Five residents, five sets of priorities. Win over at least three.' }),
     ]),
     tally,
-    h('div', { class: 'card' }, votes.map((v) => councilRow(v, revealed))),
+    h('div', { class: 'card' }, reactions.map((v, i) => communityRow(v, revealed, i + 1))),
   ];
 
   if (!canSubmit) {
     kids.push(h('div', { class: 'callout is-critical', html:
-      `Your budget is still <b>${fmt.money(t.cashGap)} short</b>. A California city council cannot adopt an unbalanced general fund budget, so there is nothing to vote on yet.` }));
+      `Your budget is still <b>${fmt.money(t.cashGap)} short</b>. A California city cannot adopt an unbalanced general fund budget, so there is nothing to show anyone yet.` }));
   } else if (!t.structurallyBalanced) {
     kids.push(h('div', { class: 'callout is-warning', html:
-      `It balances, but <b>${fmt.money(t.structuralGap)}</b> of that is one-time money. Some members will notice.` }));
+      `It balances, but <b>${fmt.money(t.structuralGap)}</b> of that is one-time money. Some of them will notice.` }));
   }
 
   if (t.atRisk > 0 && !revealed) {
     kids.push(h('div', { class: 'callout is-warning', html:
-      `<b>${fmt.money(t.atRisk)}</b> of your plan depends on ballot measures. Voters decide those when you submit.` }));
+      `<b>${fmt.money(t.atRisk)}</b> of your plan depends on ballot measures. Voters decide those when you share it.` }));
   }
 
   kids.push(h('div', { class: 'card' }, [
     h('div', { class: 'card-title' }, ['Your plan']),
     h('div', { class: 'card-note', text:
-      `${t.picked.length} measure${t.picked.length === 1 ? '' : 's'} · ` +
-      `${fmt.money(t.deptSavings)} from department budgets · ` +
-      `${fmt.money(t.ongoingCuts + t.ongoingRevenue)} recurring · ` +
+      `${t.picked.length} measure${t.picked.length === 1 ? '' : 's'} \u00b7 ` +
+      `${fmt.money(t.deptSavings)} from department budgets \u00b7 ` +
+      `${fmt.money(t.ongoingCuts + t.ongoingRevenue)} recurring \u00b7 ` +
       `${fmt.money(t.oneTime)} one-time` }),
   ]));
 
   kids.push(h('button', {
     class: 'btn', id: 'btn-submit', disabled: !canSubmit || revealed,
-    text: revealed ? 'Already submitted' : 'Submit to the council',
+    text: revealed ? 'Already shared' : 'Share your budget',
     onclick: submit,
   }));
 
@@ -481,7 +487,7 @@ function submit() {
     const names = failed.map(([id]) => ACTIONS.actions.find((a) => a.id === id).name.toLowerCase());
     toast(`Voters rejected ${names.join(' and ')}`);
   }
-  renderCouncil();
+  renderCommunity();
   setTimeout(showResult, failed.length ? 1400 : 650);
 }
 
@@ -496,10 +502,10 @@ function showResult() {
     s.points >= 57 ? 'var(--warning)' :
     s.points >= 43 ? 'var(--serious)' : 'var(--critical)';
 
-  const headline = !s.totals.balanced ? 'Never reached a vote'
-    : s.adopted && s.totals.structurallyBalanced ? 'Adopted — and it holds'
-    : s.adopted ? 'Adopted — for one year'
-    : 'Rejected by the council';
+  const headline = !s.totals.balanced ? 'Never got off the ground'
+    : s.wellReceived && s.totals.structurallyBalanced ? 'Well liked — and it holds'
+    : s.wellReceived ? 'Well liked — for one year'
+    : 'The community disliked it';
 
   const projHost = h('div', { class: 'chart-wrap' });
   const stackHost = h('div', { class: 'chart-wrap' });
@@ -513,7 +519,7 @@ function showResult() {
     h('div', { class: 'grade-card' }, [
       h('div', { class: 'grade', style: `color:${gradeColor}`, text: s.grade }),
       h('div', { class: 'grade-label', text: headline }),
-      h('div', { class: 'grade-sub', text: `${s.points} out of 100 · council ${s.yesVotes}–${5 - s.yesVotes}` }),
+      h('div', { class: 'grade-sub', text: `${s.points} out of 100 · ${s.likedCount} of 5 community voices liked it` }),
     ]),
 
     h('div', { class: 'card' }, [
@@ -550,8 +556,9 @@ function showResult() {
     ]),
 
     h('div', { class: 'card' }, [
-      h('div', { class: 'card-title' }, ['How they voted']),
-      ...s.votes.map((v) => councilRow(v, true)),
+      h('div', { class: 'card-title' }, ['How the community ranked it']),
+      h('div', { class: 'chart-sub', text: 'Best received first.' }),
+      ...s.reactions.map((v, i) => communityRow(v, true, i + 1)),
     ]),
 
     h('div', { class: 'btn-row', style: 'margin-top:16px' }, [
@@ -605,7 +612,7 @@ function go(screen) {
 
 function switchPanel(name) {
   activePanel = name;
-  ['budget', 'cuts', 'revenue', 'impact', 'council'].forEach((n) => {
+  ['budget', 'cuts', 'revenue', 'impact', 'community'].forEach((n) => {
     $(`panel-${n}`).classList.toggle('is-active', n === name);
     $(`tab-${n}`).setAttribute('aria-selected', n === name ? 'true' : 'false');
   });
@@ -613,7 +620,7 @@ function switchPanel(name) {
   if (name === 'cuts') renderActionPanel('cuts');
   if (name === 'revenue') renderActionPanel('revenue');
   if (name === 'impact') renderImpact();
-  if (name === 'council') renderCouncil();
+  if (name === 'community') renderCommunity();
   window.scrollTo(0, 0);
 }
 

@@ -148,5 +148,5 @@ That regenerates both builds. Re-upload `dist/index.html`, or push and let Pages
 or Netlify redeploy. Nothing else changes.
 
 To point the game at a different city, replace those two JSON files — the engine
-reads departments, revenues, policy options, meters and council members entirely
+reads departments, revenues, policy options, meters and community voices entirely
 from data.

@@ -4,7 +4,7 @@
 Budget.** Fund totals, every General Fund revenue line and every department total
 are taken from the published document and reconcile to it exactly. What remains
 estimated is the game layer: what each policy option would save or raise, how
-service levels respond, and the council.
+service levels respond, and the community reaction.
 
 ## What is official
 
@@ -118,9 +118,9 @@ These are **game-design values**, not city figures:
 - **Growth rates** in the three-year outlook: revenue +2.2%/yr, expenditures
   +4.2%/yr. Directionally right for a California city facing CalPERS rate
   increases and salary steps, but not a city projection.
-- **The five council members**, who are deliberately fictional archetypes — "The
+- **The five community voices**, who are deliberately fictional archetypes — "The
   Fiscal Hawk", "The Labor Ally" and so on. They are **not** portrayals of any
-  real Hollister council member, and no real person's name, record or position is
+  real resident or officeholder, and no real person's name, record or position is
   used.
 - **Department funding floors and ceilings**, which are playable bounds rather
   than any city policy.

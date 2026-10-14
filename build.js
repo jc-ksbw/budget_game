@@ -37,8 +37,25 @@ const bundle = [
 const shims = `
 const C = { fmt, donut, barsH, divergingBars, lines, waterfall, stackPair, niceMax };
 const E = { METER_IDS, createState, totals, meters, meterStatus, projection,
-            councilVotes, resolveBallots, score, verdicts };
+            communityReactions, resolveBallots, score, verdicts };
 `;
+
+// The shims above name functions by hand, so a rename in a module silently
+// turns one into a ReferenceError that kills the whole bundle at load.
+// Check every shimmed name is actually declared somewhere in it.
+{
+  const declared = new Set();
+  const re = /^(?:const|let|var|function|class)\s+([A-Za-z_$][\w$]*)/gm;
+  let m;
+  while ((m = re.exec(bundle))) declared.add(m[1]);
+  const shimmed = (shims.match(/[{,]\s*([A-Za-z_$][\w$]*)\s*[,}]/g) || [])
+    .map((x) => x.replace(/[{,}\s]/g, ''));
+  const missing = shimmed.filter((n) => n && !declared.has(n));
+  if (missing.length) {
+    console.error('\u2717 shim references names not in the bundle: ' + missing.join(', '));
+    process.exit(1);
+  }
+}
 
 // A flat bundle shares one scope, so two modules declaring the same
 // top-level name is a hard SyntaxError at load. Catch it here instead.

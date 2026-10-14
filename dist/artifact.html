@@ -662,7 +662,7 @@ table.dt .neg { color: var(--critical); }
       </p>
       <p class="intro-lede">
         You are the City Manager. The approved budget carries a <strong>$6.36 million</strong>
-        general fund deficit. Close it &mdash; and get three of five council votes.
+        general fund deficit. Close it &mdash; and win over three of five community voices.
       </p>
 
       <div class="fact-grid">
@@ -719,7 +719,7 @@ table.dt .neg { color: var(--critical); }
       <div class="panel"           id="panel-cuts"    role="tabpanel" aria-labelledby="tab-cuts"></div>
       <div class="panel"           id="panel-revenue" role="tabpanel" aria-labelledby="tab-revenue"></div>
       <div class="panel"           id="panel-impact"  role="tabpanel" aria-labelledby="tab-impact"></div>
-      <div class="panel"           id="panel-council" role="tabpanel" aria-labelledby="tab-council"></div>
+      <div class="panel"           id="panel-community" role="tabpanel" aria-labelledby="tab-community"></div>
     </main>
 
     <nav class="nav" role="tablist" aria-label="Budget sections">
@@ -739,9 +739,9 @@ table.dt .neg { color: var(--critical); }
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 21H3V3"/><path d="M7 15l4-5 3.5 3L21 6"/></svg>
         <span>Impact</span>
       </button>
-      <button class="nav-btn" id="tab-council" role="tab" aria-selected="false" data-panel="council">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M4 7h16M6.5 7l-3 6a3.5 3.5 0 007 0zM17.5 7l-3 6a3.5 3.5 0 007 0z"/></svg>
-        <span>Council</span>
+      <button class="nav-btn" id="tab-community" role="tab" aria-selected="false" data-panel="community">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.1"/><path d="M2.5 20a6.5 6.5 0 0113 0"/><path d="M16.5 5.6a3.1 3.1 0 010 5.8M18.5 20a6.4 6.4 0 00-2.2-4.7"/></svg>
+        <span>Community</span>
       </button>
     </nav>
   </section>
@@ -784,7 +784,7 @@ table.dt .neg { color: var(--critical); }
         <li>What each policy option saves or raises &mdash; except the $11M loan, the $1.2M contingency and the $500K events line, which are real budget lines</li>
         <li>All five service meters and every movement in them</li>
         <li>The growth rates behind the three-year outlook</li>
-        <li>The five council members, who are fictional archetypes and not portrayals of any real officeholder</li>
+        <li>The five community voices, who are fictional archetypes and not portrayals of any real resident or officeholder</li>
       </ul>
     </div>
     <div class="sheet-foot">Full provenance, including how each department was identified, is in SOURCES.md.</div>
@@ -997,11 +997,11 @@ const ACTIONS = {
       }
     ]
   },
-  "council": [
+  "community": [
     {
       "id": "hawk",
       "name": "The Fiscal Hawk",
-      "role": "Fiscal conservative",
+      "role": "Watches the structural gap",
       "line": "I want this fixed, not postponed.",
       "weights": {
         "structural": 2.4,
@@ -1014,8 +1014,8 @@ const ACTIONS = {
         "workforce": -0.1,
         "trust": 0.5
       },
-      "yesLine": "This one actually closes the gap. I'll support it.",
-      "noLine": "This is a bridge loan with a bow on it. That's a no."
+      "likedLine": "This one actually closes the gap. I'm satisfied.",
+      "dislikedLine": "This postpones the problem more than it fixes it."
     },
     {
       "id": "safety",
@@ -1033,8 +1033,8 @@ const ACTIONS = {
         "workforce": 0.5,
         "trust": 0.4
       },
-      "yesLine": "You protected the people who answer the calls. Yes.",
-      "noLine": "You cut the engine companies. I can't vote for that."
+      "likedLine": "You protected the people who answer the calls.",
+      "dislikedLine": "Public safety comes out of this worse than it went in."
     },
     {
       "id": "neighbor",
@@ -1052,8 +1052,8 @@ const ACTIONS = {
         "workforce": 0.4,
         "trust": 0.8
       },
-      "yesLine": "The neighborhoods can live with this. Yes.",
-      "noLine": "You closed the pool and the library. No."
+      "likedLine": "The neighborhoods can live with this.",
+      "dislikedLine": "The neighborhoods are the ones paying for this."
     },
     {
       "id": "business",
@@ -1072,13 +1072,13 @@ const ACTIONS = {
         "trust": 0.4,
         "bizBurden": -1.6
       },
-      "yesLine": "You found savings before you found my wallet. Yes.",
-      "noLine": "Every answer here was a new tax or a new fee. No."
+      "likedLine": "You found savings before you found my wallet.",
+      "dislikedLine": "Every answer here was a new tax or a new fee."
     },
     {
       "id": "labor",
       "name": "The Labor Ally",
-      "role": "City employees",
+      "role": "Speaks for city employees",
       "line": "These are people, not positions.",
       "weights": {
         "structural": 0.5,
@@ -1091,8 +1091,8 @@ const ACTIONS = {
         "workforce": 2.7,
         "trust": 0.5
       },
-      "yesLine": "Nobody lost a livelihood over this. Yes.",
-      "noLine": "You balanced this on layoffs. Absolutely not."
+      "likedLine": "Nobody lost a livelihood over this.",
+      "dislikedLine": "This still comes out of the people who do the work."
     }
   ],
   "actions": [
@@ -2126,7 +2126,7 @@ function stackPair(host, pair, opts = {}) {
 /* engine */
 
 /* ============================================================
-   engine.js — budget state, consequences, council, scoring.
+   engine.js — budget state, consequences, community reaction, scoring.
    Pure functions over a plain state object. No DOM here.
    ============================================================ */
 const METER_IDS = ['safety', 'infrastructure', 'community', 'workforce', 'trust'];
@@ -2256,8 +2256,8 @@ function projection(state, budget, actions) {
   return { years, rev, exp, gaps, cumulative: gaps.reduce((s, g) => s + Math.max(0, g), 0) };
 }
 
-/* ---------- the council ---------- */
-function councilVotes(state, budget, actions) {
+/* ---------- community reaction ---------- */
+function communityReactions(state, budget, actions) {
   const t = totals(state, budget, actions);
   const m = meters(state, budget, actions);
 
@@ -2268,7 +2268,7 @@ function councilVotes(state, budget, actions) {
   const bizBurden = clamp(t.bizBurden / 1e6 * 2.2, 0, 10);
   const reserve = clamp(t.reservePct / 20 * 8, 0, 10);
 
-  return actions.council.map((c) => {
+  return actions.community.map((c) => {
     let score = 50;
     score += (c.weights.structural || 0) * structural;
     score += (c.weights.onetimeReliance || 0) * onetimeReliance;
@@ -2281,12 +2281,16 @@ function councilVotes(state, budget, actions) {
     METER_IDS.forEach((k) => {
       score += (c.weights[k] || 0) * ((m[k] - 48) / 4.5);
     });
-    // A budget that does not balance on paper cannot be adopted at all.
+    // A budget that does not balance is a non-starter for everyone.
     if (!t.balanced) score -= 28;
 
-    const yes = score >= 50;
-    return { ...c, score: Math.round(score), yes };
-  });
+    // Round first, then judge, so the shown score and the verdict can never
+    // disagree (a raw 49.6 displaying as 50 but reading "disliked").
+    const rounded = Math.round(score);
+    return { ...c, score: rounded, liked: rounded >= 50 };
+  })
+    // Ranked: whoever this budget sits best with comes first.
+    .sort((a, b) => b.score - a.score);
 }
 
 /* ---------- ballot measures ---------- */
@@ -2304,10 +2308,10 @@ function resolveBallots(state, actions, rng = Math.random) {
 function score(state, budget, actions) {
   const t = totals(state, budget, actions);
   const m = meters(state, budget, actions);
-  const votes = councilVotes(state, budget, actions);
+  const reactions = communityReactions(state, budget, actions);
   const proj = projection(state, budget, actions);
-  const yes = votes.filter((v) => v.yes).length;
-  const adopted = yes >= 3 && t.balanced;
+  const liked = reactions.filter((v) => v.liked).length;
+  const wellReceived = liked >= 3 && t.balanced;
 
   let pts = 0;
 
@@ -2319,8 +2323,8 @@ function score(state, budget, actions) {
   if (t.structurallyBalanced) pts += 25;
   else pts += Math.max(0, 25 * (1 - Math.min(1, t.structuralGap / Math.max(1, t.startGap))));
 
-  // 3. Did the council adopt it? (20)
-  pts += (yes / 5) * 20;
+  // 3. How did the community take it? (20)
+  pts += (liked / 5) * 20;
 
   // 4. Are the services people actually use still working? (20)
   const avgMeter = METER_IDS.reduce((s, k) => s + m[k], 0) / METER_IDS.length;
@@ -2338,7 +2342,10 @@ function score(state, budget, actions) {
     pts >= 64 ? 'B-' : pts >= 57 ? 'C+' : pts >= 50 ? 'C'  : pts >= 43 ? 'C-' :
     pts >= 35 ? 'D'  : 'F';
 
-  return { points: Math.round(pts), grade, adopted, yesVotes: yes, totals: t, meters: m, votes, proj, failing };
+  return {
+    points: Math.round(pts), grade, wellReceived, likedCount: liked,
+    totals: t, meters: m, reactions, proj, failing,
+  };
 }
 
 /* ---------- verdict lines ---------- */
@@ -2348,7 +2355,7 @@ function verdicts(s, budget, actions) {
   const push = (level, text) => out.push({ level, text });
 
   if (!t.balanced) {
-    push('critical', `The budget still shows a <b>${money(t.cashGap)} gap</b>. Under California law a city council cannot adopt a general fund budget that does not balance, so this one never reached a vote.`);
+    push('critical', `The budget still shows a <b>${money(t.cashGap)} gap</b>. Under California law a city cannot adopt a general fund budget that does not balance, so there is nothing here to put in front of anyone.`);
   } else if (!t.structurallyBalanced) {
     push('serious', `It balances on paper, but <b>${money(t.structuralGap)} of the fix is one-time money</b>. Next July the hole reopens, minus whatever you already sold or borrowed.`);
   } else {
@@ -2361,8 +2368,11 @@ function verdicts(s, budget, actions) {
       `<b>${share}%</b> of the gap you closed came from one-time sources. Interfund loans and property sales work exactly once.`);
   }
 
-  if (s.adopted) push('good', `The council adopted it <b>${s.yesVotes}&ndash;${5 - s.yesVotes}</b>.`);
-  else if (t.balanced) push('critical', `The council rejected it <b>${s.yesVotes}&ndash;${5 - s.yesVotes}</b>. Three votes is the whole job.`);
+  if (s.wellReceived) {
+    push('good', `<b>${s.likedCount} of 5</b> community voices liked this budget.`);
+  } else if (t.balanced) {
+    push('critical', `Only <b>${s.likedCount} of 5</b> community voices liked this budget. Winning over three of them is the whole job.`);
+  }
 
   s.failing.forEach((k) => {
     const name = actions.meta.meters.find((x) => x.id === k).name;
@@ -2675,18 +2685,22 @@ function meterRow(def, value, startValue) {
 }
 
 /* ============================================================
-   Council member row
+   Community voice row. `rank` is 1-based once revealed, since the
+   list is ordered by how well the budget sat with each of them.
    ============================================================ */
-function councilRow(member, revealed) {
-  const vote = revealed ? (member.yes ? 'is-yes' : 'is-no') : '';
+function communityRow(member, revealed, rank) {
+  const mood = revealed ? (member.liked ? 'is-yes' : 'is-no') : '';
   return h('div', { class: 'cm' }, [
-    h('div', { class: `cm-face ${vote}`, text: revealed ? (member.yes ? '✓' : '✕') : '?' }),
+    h('div', { class: `cm-face ${mood}`, text: revealed ? String(rank) : '?' }),
     h('div', { class: 'cm-body' }, [
       h('div', { class: 'cm-name', text: member.name }),
       h('div', { class: 'cm-role', text: member.role }),
-      h('div', { class: 'cm-line', text: revealed ? `“${member.yes ? member.yesLine : member.noLine}”` : `“${member.line}”` }),
+      h('div', {
+        class: 'cm-line',
+        text: revealed ? `“${member.liked ? member.likedLine : member.dislikedLine}”` : `“${member.line}”`,
+      }),
     ]),
-    revealed && h('div', { class: `cm-vote ${vote}`, text: member.yes ? 'Aye' : 'No' }),
+    revealed && h('div', { class: `cm-vote ${mood}`, text: member.liked ? 'Liked' : 'Disliked' }),
   ]);
 }
 
@@ -2704,7 +2718,7 @@ function verdictRow(v) {
 
 const C = { fmt, donut, barsH, divergingBars, lines, waterfall, stackPair, niceMax };
 const E = { METER_IDS, createState, totals, meters, meterStatus, projection,
-            councilVotes, resolveBallots, score, verdicts };
+            communityReactions, resolveBallots, score, verdicts };
 
 /* app */
 
@@ -2800,7 +2814,7 @@ function changed() {
   updateBoard();
   if (activePanel === 'budget') refreshBudgetChart();
   if (activePanel === 'impact') renderImpact();
-  if (activePanel === 'council') renderCouncil();
+  if (activePanel === 'community') renderCommunity();
 }
 
 function toggleAction(id) {
@@ -3109,63 +3123,69 @@ function dataTable(t, proj) {
 }
 
 /* ============================================================
-   Panel: Council
+   Panel: Community
    ============================================================ */
 
-function renderCouncil() {
-  const p = $('panel-council');
+function renderCommunity() {
+  const p = $('panel-community');
   const t = E.totals(state, BUDGET, ACTIONS);
-  const votes = E.councilVotes(state, BUDGET, ACTIONS);
+  const reactions = E.communityReactions(state, BUDGET, ACTIONS);
   const revealed = state.submitted;
-  const yes = votes.filter((v) => v.yes).length;
+  const liked = reactions.filter((v) => v.liked).length;
 
   const canSubmit = t.balanced;
 
   const tally = h('div', { class: 'tally' }, [
-    h('div', { class: `tally-score ${revealed ? (yes >= 3 ? 'is-pass' : 'is-fail') : ''}`,
-      text: revealed ? `${yes}–${5 - yes}` : '?' }),
+    h('div', { class: `tally-score ${revealed ? (liked >= 3 ? 'is-pass' : 'is-fail') : ''}`,
+      text: revealed ? `${liked}/5` : '?' }),
     h('div', { class: 'tally-text' }, [
-      h('b', { text: revealed ? (yes >= 3 ? 'Budget adopted' : 'Budget rejected') : 'Three votes needed' }),
+      h('b', { text: revealed
+        ? (liked >= 3 ? 'Well received' : 'Not well received')
+        : 'Win over three of five' }),
       h('span', { text: revealed
-        ? (yes >= 3 ? 'The council passed your budget.' : 'Without three votes, there is no adopted budget.')
-        : 'The council will not see your plan until you submit it.' }),
+        ? (liked >= 3
+            ? `${liked} of five community voices liked this budget.`
+            : `Only ${liked} of five liked it.`)
+        : 'Nobody sees your plan until you share it.' }),
     ]),
   ]);
 
   const kids = [
     h('div', { class: 'panel-head' }, [
-      h('h2', { text: 'The council' }),
-      h('p', { text: 'Five members, five sets of priorities. You need three.' }),
+      h('h2', { text: 'Community reaction' }),
+      h('p', { text: revealed
+        ? 'Ranked by how well your budget sat with each of them.'
+        : 'Five residents, five sets of priorities. Win over at least three.' }),
     ]),
     tally,
-    h('div', { class: 'card' }, votes.map((v) => councilRow(v, revealed))),
+    h('div', { class: 'card' }, reactions.map((v, i) => communityRow(v, revealed, i + 1))),
   ];
 
   if (!canSubmit) {
     kids.push(h('div', { class: 'callout is-critical', html:
-      `Your budget is still <b>${fmt.money(t.cashGap)} short</b>. A California city council cannot adopt an unbalanced general fund budget, so there is nothing to vote on yet.` }));
+      `Your budget is still <b>${fmt.money(t.cashGap)} short</b>. A California city cannot adopt an unbalanced general fund budget, so there is nothing to show anyone yet.` }));
   } else if (!t.structurallyBalanced) {
     kids.push(h('div', { class: 'callout is-warning', html:
-      `It balances, but <b>${fmt.money(t.structuralGap)}</b> of that is one-time money. Some members will notice.` }));
+      `It balances, but <b>${fmt.money(t.structuralGap)}</b> of that is one-time money. Some of them will notice.` }));
   }
 
   if (t.atRisk > 0 && !revealed) {
     kids.push(h('div', { class: 'callout is-warning', html:
-      `<b>${fmt.money(t.atRisk)}</b> of your plan depends on ballot measures. Voters decide those when you submit.` }));
+      `<b>${fmt.money(t.atRisk)}</b> of your plan depends on ballot measures. Voters decide those when you share it.` }));
   }
 
   kids.push(h('div', { class: 'card' }, [
     h('div', { class: 'card-title' }, ['Your plan']),
     h('div', { class: 'card-note', text:
-      `${t.picked.length} measure${t.picked.length === 1 ? '' : 's'} · ` +
-      `${fmt.money(t.deptSavings)} from department budgets · ` +
-      `${fmt.money(t.ongoingCuts + t.ongoingRevenue)} recurring · ` +
+      `${t.picked.length} measure${t.picked.length === 1 ? '' : 's'} \u00b7 ` +
+      `${fmt.money(t.deptSavings)} from department budgets \u00b7 ` +
+      `${fmt.money(t.ongoingCuts + t.ongoingRevenue)} recurring \u00b7 ` +
       `${fmt.money(t.oneTime)} one-time` }),
   ]));
 
   kids.push(h('button', {
     class: 'btn', id: 'btn-submit', disabled: !canSubmit || revealed,
-    text: revealed ? 'Already submitted' : 'Submit to the council',
+    text: revealed ? 'Already shared' : 'Share your budget',
     onclick: submit,
   }));
 
@@ -3189,7 +3209,7 @@ function submit() {
     const names = failed.map(([id]) => ACTIONS.actions.find((a) => a.id === id).name.toLowerCase());
     toast(`Voters rejected ${names.join(' and ')}`);
   }
-  renderCouncil();
+  renderCommunity();
   setTimeout(showResult, failed.length ? 1400 : 650);
 }
 
@@ -3204,10 +3224,10 @@ function showResult() {
     s.points >= 57 ? 'var(--warning)' :
     s.points >= 43 ? 'var(--serious)' : 'var(--critical)';
 
-  const headline = !s.totals.balanced ? 'Never reached a vote'
-    : s.adopted && s.totals.structurallyBalanced ? 'Adopted — and it holds'
-    : s.adopted ? 'Adopted — for one year'
-    : 'Rejected by the council';
+  const headline = !s.totals.balanced ? 'Never got off the ground'
+    : s.wellReceived && s.totals.structurallyBalanced ? 'Well liked — and it holds'
+    : s.wellReceived ? 'Well liked — for one year'
+    : 'The community disliked it';
 
   const projHost = h('div', { class: 'chart-wrap' });
   const stackHost = h('div', { class: 'chart-wrap' });
@@ -3221,7 +3241,7 @@ function showResult() {
     h('div', { class: 'grade-card' }, [
       h('div', { class: 'grade', style: `color:${gradeColor}`, text: s.grade }),
       h('div', { class: 'grade-label', text: headline }),
-      h('div', { class: 'grade-sub', text: `${s.points} out of 100 · council ${s.yesVotes}–${5 - s.yesVotes}` }),
+      h('div', { class: 'grade-sub', text: `${s.points} out of 100 · ${s.likedCount} of 5 community voices liked it` }),
     ]),
 
     h('div', { class: 'card' }, [
@@ -3258,8 +3278,9 @@ function showResult() {
     ]),
 
     h('div', { class: 'card' }, [
-      h('div', { class: 'card-title' }, ['How they voted']),
-      ...s.votes.map((v) => councilRow(v, true)),
+      h('div', { class: 'card-title' }, ['How the community ranked it']),
+      h('div', { class: 'chart-sub', text: 'Best received first.' }),
+      ...s.reactions.map((v, i) => communityRow(v, true, i + 1)),
     ]),
 
     h('div', { class: 'btn-row', style: 'margin-top:16px' }, [
@@ -3313,7 +3334,7 @@ function go(screen) {
 
 function switchPanel(name) {
   activePanel = name;
-  ['budget', 'cuts', 'revenue', 'impact', 'council'].forEach((n) => {
+  ['budget', 'cuts', 'revenue', 'impact', 'community'].forEach((n) => {
     $(`panel-${n}`).classList.toggle('is-active', n === name);
     $(`tab-${n}`).setAttribute('aria-selected', n === name ? 'true' : 'false');
   });
@@ -3321,7 +3342,7 @@ function switchPanel(name) {
   if (name === 'cuts') renderActionPanel('cuts');
   if (name === 'revenue') renderActionPanel('revenue');
   if (name === 'impact') renderImpact();
-  if (name === 'council') renderCouncil();
+  if (name === 'community') renderCommunity();
   window.scrollTo(0, 0);
 }
 

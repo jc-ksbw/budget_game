@@ -273,19 +273,23 @@ export function meterRow(def, value, startValue) {
 }
 
 /* ============================================================
-   Council member row
+   Community voice row. `rank` is 1-based once revealed, since the
+   list is ordered by how well the budget sat with each of them.
    ============================================================ */
 
-export function councilRow(member, revealed) {
-  const vote = revealed ? (member.yes ? 'is-yes' : 'is-no') : '';
+export function communityRow(member, revealed, rank) {
+  const mood = revealed ? (member.liked ? 'is-yes' : 'is-no') : '';
   return h('div', { class: 'cm' }, [
-    h('div', { class: `cm-face ${vote}`, text: revealed ? (member.yes ? '✓' : '✕') : '?' }),
+    h('div', { class: `cm-face ${mood}`, text: revealed ? String(rank) : '?' }),
     h('div', { class: 'cm-body' }, [
       h('div', { class: 'cm-name', text: member.name }),
       h('div', { class: 'cm-role', text: member.role }),
-      h('div', { class: 'cm-line', text: revealed ? `“${member.yes ? member.yesLine : member.noLine}”` : `“${member.line}”` }),
+      h('div', {
+        class: 'cm-line',
+        text: revealed ? `“${member.liked ? member.likedLine : member.dislikedLine}”` : `“${member.line}”`,
+      }),
     ]),
-    revealed && h('div', { class: `cm-vote ${vote}`, text: member.yes ? 'Aye' : 'No' }),
+    revealed && h('div', { class: `cm-vote ${mood}`, text: member.liked ? 'Liked' : 'Disliked' }),
   ]);
 }
 

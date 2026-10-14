@@ -34,11 +34,11 @@
       }
     ]
   },
-  "council": [
+  "community": [
     {
       "id": "hawk",
       "name": "The Fiscal Hawk",
-      "role": "Fiscal conservative",
+      "role": "Watches the structural gap",
       "line": "I want this fixed, not postponed.",
       "weights": {
         "structural": 2.4,
@@ -51,8 +51,8 @@
         "workforce": -0.1,
         "trust": 0.5
       },
-      "yesLine": "This one actually closes the gap. I'll support it.",
-      "noLine": "This is a bridge loan with a bow on it. That's a no."
+      "likedLine": "This one actually closes the gap. I'm satisfied.",
+      "dislikedLine": "This postpones the problem more than it fixes it."
     },
     {
       "id": "safety",
@@ -70,8 +70,8 @@
         "workforce": 0.5,
         "trust": 0.4
       },
-      "yesLine": "You protected the people who answer the calls. Yes.",
-      "noLine": "You cut the engine companies. I can't vote for that."
+      "likedLine": "You protected the people who answer the calls.",
+      "dislikedLine": "Public safety comes out of this worse than it went in."
     },
     {
       "id": "neighbor",
@@ -89,8 +89,8 @@
         "workforce": 0.4,
         "trust": 0.8
       },
-      "yesLine": "The neighborhoods can live with this. Yes.",
-      "noLine": "You closed the pool and the library. No."
+      "likedLine": "The neighborhoods can live with this.",
+      "dislikedLine": "The neighborhoods are the ones paying for this."
     },
     {
       "id": "business",
@@ -109,13 +109,13 @@
         "trust": 0.4,
         "bizBurden": -1.6
       },
-      "yesLine": "You found savings before you found my wallet. Yes.",
-      "noLine": "Every answer here was a new tax or a new fee. No."
+      "likedLine": "You found savings before you found my wallet.",
+      "dislikedLine": "Every answer here was a new tax or a new fee."
     },
     {
       "id": "labor",
       "name": "The Labor Ally",
-      "role": "City employees",
+      "role": "Speaks for city employees",
       "line": "These are people, not positions.",
       "weights": {
         "structural": 0.5,
@@ -128,8 +128,8 @@
         "workforce": 2.7,
         "trust": 0.5
       },
-      "yesLine": "Nobody lost a livelihood over this. Yes.",
-      "noLine": "You balanced this on layoffs. Absolutely not."
+      "likedLine": "Nobody lost a livelihood over this.",
+      "dislikedLine": "This still comes out of the people who do the work."
     }
   ],
   "actions": [

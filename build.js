@@ -69,3 +69,50 @@ const html = read('index.html')
 fs.mkdirSync(R('dist'), { recursive: true });
 fs.writeFileSync(R('dist/index.html'), html);
 console.log(`✓ dist/index.html  (${(html.length / 1024).toFixed(0)} KB, single file)`);
+
+/* ---------------------------------------------------------------
+   dist/artifact.html — the same app for the Claude Artifact host,
+   which supplies its own document skeleton and pads :root by the
+   phone's safe-area insets. So: no doctype/head/body of our own, no
+   duplicate inset padding, and side gutters written as max(16px, env()).
+   --------------------------------------------------------------- */
+let css = read('assets/css/app.css')
+  // the host already pads :root top/bottom — don't add the insets twice
+  .replace('padding: calc(env(safe-area-inset-top) + 10px) 16px 10px;',
+           'padding-block: 10px; padding-left: var(--gutter); padding-right: var(--gutter);')
+  .replace('position: sticky; top: 0; z-index: 40;',
+           'position: sticky; top: env(safe-area-inset-top, 0px); z-index: 40;')
+  .replace('padding: calc(env(safe-area-inset-top) + 28px) 20px calc(env(safe-area-inset-bottom) + 28px);',
+           'padding-block: 28px; padding-left: var(--gutter); padding-right: var(--gutter);')
+  .replace('.panel { padding: 16px 16px 28px; display: none; }',
+           '.panel { padding-block: 16px 28px; padding-left: var(--gutter); padding-right: var(--gutter); display: none; }')
+  .replace('padding-bottom: env(safe-area-inset-bottom);',
+           'padding-bottom: env(safe-area-inset-bottom, 0px); padding-left: var(--gutter-0); padding-right: var(--gutter-0);')
+  .replace('top: calc(env(safe-area-inset-top) + 10px); right: 14px;',
+           'top: 10px; right: max(14px, env(safe-area-inset-right, 0px));')
+  .replace('.app { max-width: 720px; margin: 0 auto; min-height: 100dvh; position: relative; }',
+           '.app { max-width: 720px; margin: 0 auto; min-height: 100%; position: relative; }')
+  .replace('  min-height: 100dvh;\n  padding-block: 28px;', '  min-height: 100%;\n  padding-block: 28px;')
+  .replace('.panel { padding-inline: 22px; }', '.panel { padding-left: max(22px, env(safe-area-inset-left, 0px)); padding-right: max(22px, env(safe-area-inset-right, 0px)); }')
+  .replace('.board { padding-inline: 22px; }', '.board { padding-left: max(22px, env(safe-area-inset-left, 0px)); padding-right: max(22px, env(safe-area-inset-right, 0px)); }');
+
+// the two gutter tokens the rules above lean on
+css = css.replace(':root {\n  color-scheme: light;',
+  ':root {\n  color-scheme: light;\n  --gutter: max(16px, env(safe-area-inset-left, 0px));\n  --gutter-0: env(safe-area-inset-left, 0px);');
+
+const bodyOnly = read('index.html')
+  .replace(/^[\s\S]*?<body>/, '')
+  .replace(/<\/body>[\s\S]*$/, '')
+  .replace('<script type="module" src="assets/js/app.js"></script>', '');
+
+const artifact =
+  '<title>Balancing Hollister</title>\n' +
+  '<meta name="claude:viewport-fit-sides" content="cover">\n' +
+  '<style>\nhtml, body { height: 100%; }\n' + css + '\n</style>\n' +
+  bodyOnly +
+  '<script type="module">\n' +
+  withShims.replace("padding-top:calc(env(safe-area-inset-top) + 14px)", "padding-top:14px") +
+  '\n</script>\n';
+
+fs.writeFileSync(R('dist/artifact.html'), artifact);
+console.log(`✓ dist/artifact.html (${(artifact.length / 1024).toFixed(0)} KB, for the Artifact host)`);

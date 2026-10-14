@@ -18,9 +18,13 @@ python3 -m http.server 8000
 # open http://localhost:8000
 ```
 
-`dist/index.html` is a single self-contained file — no server, no network, no
-dependencies. Open it directly, drop it on any static host, or AirDrop it to a
-phone.
+`build.js` emits two single-file builds, both self-contained — no server, no
+network, no dependencies:
+
+- `dist/index.html` — a complete standalone page. Open it directly, drop it on
+  any static host, or AirDrop it to a phone.
+- `dist/artifact.html` — the same app for the Claude Artifact host, which
+  supplies its own document skeleton and safe-area padding.
 
 ## How it plays
 

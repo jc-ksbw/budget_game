@@ -346,6 +346,41 @@ p:last-child { margin-bottom: 0; }
   color: var(--text-2); border-left: 3px solid var(--serious);
 }
 
+/* ---------- staffing context on a department slider ---------- */
+.staff {
+  margin: 10px 0 0 21px; padding: 11px 12px;
+  border-radius: var(--radius-s); background: var(--surface-2);
+  border-left: 3px solid var(--series-1);
+}
+.staff-head {
+  font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline;
+}
+.staff-unit { font-size: 13.5px; font-weight: 650; color: var(--text-1); margin-top: 5px; }
+.staff-nums {
+  display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 5px;
+  font-size: 13px; color: var(--text-2);
+}
+.staff-nums b { color: var(--text-1); font-weight: 700; font-variant-numeric: tabular-nums; }
+.staff-bar {
+  display: flex; height: 7px; border-radius: 999px; overflow: hidden;
+  background: var(--surface-3); margin-top: 8px; gap: 2px;
+}
+.staff-bar i { display: block; height: 100%; }
+.staff-bar .filled { background: var(--series-1); border-radius: 999px 0 0 999px; }
+.staff-bar .vacant { background: var(--warning); border-radius: 0 999px 999px 0; }
+.staff-note { font-size: 12px; color: var(--text-2); line-height: 1.45; margin-top: 8px; }
+.staff-note.is-stale { color: var(--muted); }
+.staff-prop {
+  margin-top: 9px; padding-top: 9px; border-top: 1px solid var(--hairline-2);
+}
+.staff-prop-tag {
+  display: inline-block; font-size: 9.5px; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; padding: 2px 7px; border-radius: 6px;
+  background: color-mix(in srgb, var(--warning) 26%, var(--surface-2)); color: var(--text-1);
+}
+.staff-prop-text { font-size: 13px; color: var(--text-1); font-weight: 600; margin-top: 5px; }
+
 /* ---------- action cards ---------- */
 .filter-row {
   display: flex; gap: 7px; margin-bottom: 13px;
@@ -847,6 +882,15 @@ table.dt .neg { color: var(--critical); }
         <li>Where the City has published no figure, the card says <b>&ldquo;Savings/revenue not published&rdquo;</b> and the option cannot move the deficit</li>
       </ul>
 
+      <h3>Vacancies on the Police and Fire sliders <span class="sheet-tag is-official">FY 2025-26</span></h3>
+      <ul>
+        <li>From the City's AB&nbsp;2561 vacancy presentation in the <b>June 15, 2026</b> Council packet. Police shows the Police Officers Association figures, Fire shows the firefighters union</li>
+        <li>The POA unit spans sworn police, records and support, and animal control; staff said most of its vacancies were sworn officers but gave no exact count</li>
+        <li>Citywide and SEIU totals are <b>not</b> shown on any slider &mdash; the snapshot does not break them down that way</li>
+        <li>The <b>11 Fire</b> and <b>seven Police</b> positions are proposed targets from the June 16, 2026 budget discussion, not adopted hires. Funding a position is not the same as filling it</li>
+        <li>This is a <b>FY 2025-26</b> snapshot and not current staffing; no vacancy count is turned into a dollar figure anywhere</li>
+      </ul>
+
       <h3>Game-design estimates <span class="sheet-tag is-est">Not city figures</span></h3>
       <ul>
         <li>All five service meters and every movement in them</li>
@@ -1009,8 +1053,40 @@ const BUDGET = {
           "trust": 0.7
         },
         "cutNarrative": "Slower response times, thinner patrol coverage overnight, longer case backlogs. The $1.1M dispatch contract is fixed, so cuts land on sworn staffing.",
-        "raiseNarrative": "Fills sworn vacancies and restores overnight patrol strength.",
-        "confidence": "derived"
+        "raiseNarrative": "Supports the proposed staffing plan. Funding a position is not the same as filling it — the unit was already carrying vacancies it was recruiting for.",
+        "confidence": "derived",
+        "staffing": {
+          "asOf": "2026-06-15",
+          "fiscalYear": "FY 2025-26",
+          "unitLabel": "Police Officers Association",
+          "budgeted": 52,
+          "vacancies": 10,
+          "vacancyRate": 19.23,
+          "scopeNote": "This bargaining unit spans sworn police, records and support, and animal control. Staff said most of these vacancies were sworn police officers but did not give an exact count.",
+          "proposal": {
+            "label": "Proposed target",
+            "text": "Continue recruiting for seven Police positions.",
+            "date": "2026-06-16",
+            "caveat": "A proposal from the June 16, 2026 budget discussion — not adopted hires, and not a guarantee any post gets filled."
+          },
+          "staleNote": "FY 2025-26 snapshot, dated June 15, 2026. The City has not published an updated count for FY 2026-27, so this is not current staffing.",
+          "sources": [
+            {
+              "title": "AB 2561 \"Vacancy Status\" presentation, June 15 Council packet",
+              "publisher": "City of Hollister",
+              "url": "https://pub-hollister.escribemeetings.com/filestream.ashx?DocumentId=17631",
+              "date": "2026-06-15",
+              "kind": "city-record"
+            },
+            {
+              "title": "City Council budget discussion, June 16, 2026",
+              "publisher": "City of Hollister (meeting recording, third-party host)",
+              "url": "https://www.myhamlet.com/hollister-ca/city-council--16269/06-16-2026/c7642c2e-458b-4b7d-a4d2-e21f172e086b",
+              "date": "2026-06-16",
+              "kind": "meeting-record"
+            }
+          ]
+        }
       },
       {
         "id": "fire",
@@ -1032,8 +1108,39 @@ const BUDGET = {
           "trust": 0.75
         },
         "cutNarrative": "Constant staffing is what fire costs. Cut it and you brown out an engine company or pay the difference back in overtime.",
-        "raiseNarrative": "Adds firefighter positions and shortens response intervals.",
-        "confidence": "derived"
+        "raiseNarrative": "Supports the proposed staffing plan. Funding a position is not the same as filling it.",
+        "confidence": "derived",
+        "staffing": {
+          "asOf": "2026-06-15",
+          "fiscalYear": "FY 2025-26",
+          "unitLabel": "Firefighters union",
+          "budgeted": 44,
+          "vacancies": 2,
+          "vacancyRate": 4.55,
+          "proposal": {
+            "label": "Proposed target",
+            "text": "Seek 11 additional Fire positions.",
+            "date": "2026-06-16",
+            "caveat": "A proposal from the June 16, 2026 budget discussion — not adopted hires, and not a guarantee any post gets filled."
+          },
+          "staleNote": "FY 2025-26 snapshot, dated June 15, 2026. The City has not published an updated count for FY 2026-27, so this is not current staffing.",
+          "sources": [
+            {
+              "title": "AB 2561 \"Vacancy Status\" presentation, June 15 Council packet",
+              "publisher": "City of Hollister",
+              "url": "https://pub-hollister.escribemeetings.com/filestream.ashx?DocumentId=17631",
+              "date": "2026-06-15",
+              "kind": "city-record"
+            },
+            {
+              "title": "City Council budget discussion, June 16, 2026",
+              "publisher": "City of Hollister (meeting recording, third-party host)",
+              "url": "https://www.myhamlet.com/hollister-ca/city-council--16269/06-16-2026/c7642c2e-458b-4b7d-a4d2-e21f172e086b",
+              "date": "2026-06-16",
+              "kind": "meeting-record"
+            }
+          ]
+        }
       },
       {
         "id": "admin",
@@ -1319,6 +1426,54 @@ const BUDGET = {
       }
     ],
     "labelDiscrepancy": "The City infographic captions these figures \"Adopted Budget FY 2025-26\" and \"July - September 2025\", but the amounts ($50.2M revenue, $57.1M expenses, $6.9M gap) match the FY 2026-27 budget-to-actual exactly. Reproduced here as published."
+  },
+  "staffingSnapshot": {
+    "label": "AB 2561 vacancy snapshot",
+    "asOf": "2026-06-15",
+    "fiscalYear": "FY 2025-26",
+    "citywide": {
+      "budgeted": 189,
+      "vacancies": 22,
+      "vacancyRate": 11.64
+    },
+    "units": [
+      {
+        "unitLabel": "SEIU",
+        "budgeted": 53,
+        "vacancies": 2,
+        "vacancyRate": 3.77
+      },
+      {
+        "unitLabel": "Firefighters union",
+        "budgeted": 44,
+        "vacancies": 2,
+        "vacancyRate": 4.55
+      },
+      {
+        "unitLabel": "Police Officers Association",
+        "budgeted": 52,
+        "vacancies": 10,
+        "vacancyRate": 19.23
+      }
+    ],
+    "note": "Citywide and SEIU totals are not assigned to any department slider: the snapshot does not break them down that way.",
+    "retrievalNote": "Neither source could be retrieved from this build environment — the eScribe portal and the meeting host both sit behind browser verification. The figures are recorded as supplied; all four rates are internally consistent.",
+    "sources": [
+      {
+        "title": "AB 2561 \"Vacancy Status\" presentation, June 15 Council packet",
+        "publisher": "City of Hollister",
+        "url": "https://pub-hollister.escribemeetings.com/filestream.ashx?DocumentId=17631",
+        "date": "2026-06-15",
+        "kind": "city-record"
+      },
+      {
+        "title": "City Council budget discussion, June 16, 2026",
+        "publisher": "City of Hollister (meeting recording, third-party host)",
+        "url": "https://www.myhamlet.com/hollister-ca/city-council--16269/06-16-2026/c7642c2e-458b-4b7d-a4d2-e21f172e086b",
+        "date": "2026-06-16",
+        "kind": "meeting-record"
+      }
+    ]
   }
 };
 const ACTIONS = {
@@ -3189,6 +3344,38 @@ function deptSlider(dept, pct, color, onChange) {
   minus.addEventListener('click', () => set(+slider.getAttribute('aria-valuenow') - 1));
   plus.addEventListener('click', () => set(+slider.getAttribute('aria-valuenow') + 1));
 
+  // Dated vacancy context, shown only where the City's snapshot actually
+  // breaks the numbers out by bargaining unit.
+  const st = dept.staffing;
+  const staffBlock = st ? h('div', { class: 'staff' }, [
+    h('div', { class: 'staff-head' }, [
+      h('span', { text: 'Vacancies' }),
+      h('span', { text: `${st.fiscalYear} · as of ${fmtDate(st.asOf)}` }),
+    ]),
+    h('div', { class: 'staff-unit', text: st.unitLabel }),
+    h('div', { class: 'staff-nums' }, [
+      h('span', { html: `<b>${st.budgeted}</b> budgeted` }),
+      h('span', { html: `<b>${st.vacancies}</b> vacant` }),
+      h('span', { html: `<b>${st.vacancyRate}%</b> vacancy rate` }),
+    ]),
+    h('div', {
+      class: 'staff-bar',
+      role: 'img',
+      'aria-label': `${st.budgeted - st.vacancies} of ${st.budgeted} positions filled, ${st.vacancies} vacant`,
+    }, [
+      h('i', { class: 'filled', style: `flex:${st.budgeted - st.vacancies}` }),
+      h('i', { class: 'vacant', style: `flex:${st.vacancies}` }),
+    ]),
+    st.scopeNote ? h('div', { class: 'staff-note', text: st.scopeNote }) : null,
+    st.proposal ? h('div', { class: 'staff-prop' }, [
+      h('span', { class: 'staff-prop-tag', text: `${st.proposal.label} · ${fmtDate(st.proposal.date)}` }),
+      h('div', { class: 'staff-prop-text', text: st.proposal.text }),
+      h('div', { class: 'staff-note', text: st.proposal.caveat }),
+    ]) : null,
+    h('div', { class: 'staff-note is-stale', text: st.staleNote }),
+    sourceList(st.sources),
+  ]) : null;
+
   const node = h('div', { class: 'dept' }, [
     h('div', { class: 'dept-head' }, [
       h('div', { class: 'dept-swatch', style: `background:${color}` }),
@@ -3210,6 +3397,7 @@ function deptSlider(dept, pct, color, onChange) {
       h('span', { text: `${dept.maxPct}%` }),
     ]),
     warn,
+    staffBlock,
   ]);
 
   paint(pct);

@@ -1,7 +1,9 @@
 # Sources and data provenance
 
-**The live game cites City of Hollister documents only.** Every source link on
-every card points at `hollister.ca.gov`. BenitoLink and other reporting were used
+**The live game cites City of Hollister sources only.** Every source link on every
+*card* points at `hollister.ca.gov`. The two staffing sources on the Police and Fire
+sliders are the City's own Council packet portal and a recording of a Council
+meeting — see the citation-host note below. BenitoLink and other reporting were used
 as research — to find documents, confirm dates and catch errors — and are listed at
 the bottom of this file, but they are not cited in the game.
 
@@ -147,6 +149,64 @@ sufficient savings" and that it began issuing layoff notices on October 14, 2026
 
 ---
 
+## Vacancy and staffing context on the sliders
+
+The Police and Fire sliders carry a dated vacancy snapshot. **No other slider does**,
+because the source does not break the numbers out that way.
+
+From the City's AB 2561 **"Vacancy Status"** presentation in the **June 15, 2026**
+Council packet, reporting **FY 2025-26**:
+
+| Group | Budgeted FTE | Vacancies | Rate |
+|---|---|---|---|
+| Citywide | 189 | 22 | 11.64% |
+| SEIU | 53 | 2 | 3.77% |
+| Firefighters union | 44 | 2 | 4.55% |
+| Police Officers Association | 52 | 10 | 19.23% |
+
+**What is shown where.** The Police slider shows the POA row and notes that the unit
+spans **sworn police, records and support, and animal control** — staff said most of
+those vacancies were sworn officers but **did not give an exact count**, so no split
+is shown. The Fire slider shows the firefighters-union row. **The citywide and SEIU
+totals are not attached to any department**; they live in `staffingSnapshot` for
+reference only. The named units account for 149 of the 189 budgeted positions; the
+remaining 40 sit in groups the snapshot does not break out.
+
+**Proposed staffing targets**, from the **June 16, 2026** Council budget discussion:
+the City Manager proposed seeking **11 additional Fire positions** and continuing to
+recruit for **seven Police positions**. Both are labelled **"Proposed target"** on
+the slider, with a caveat that they are *not adopted hires and not a guarantee any
+post gets filled*.
+
+**What the game does not do with this.** Vacancy counts are never converted into
+dollar savings or a cost-per-position figure — a test asserts there is no `$`,
+"per position" or "savings" anywhere in the staffing data. Raising Police or Fire
+funding is described as *supporting the proposed staffing plan*, and both sliders
+say in terms that **funding a position is not the same as filling it**.
+
+**Dating.** Both blocks are tagged *FY 2025-26, as of June 15, 2026* and carry a note
+that the City has not published an updated count for FY 2026-27, so this is **not**
+current staffing. If a later City report confirms updated numbers, replace the
+`staffing` blocks in `data/hollister-fy2027.json` rather than editing these in place.
+
+> **Retrieval caveat.** Neither source could be opened from this build environment:
+> the eScribe portal answers with a browser-verification challenge and the meeting
+> host with a Vercel security checkpoint. The figures are recorded **as supplied**
+> rather than read off the documents. All four vacancy rates are internally
+> consistent (22/189, 2/53, 2/44 and 10/52 each match their stated percentage
+> exactly), and the citywide 189 sits close to the 191 FTE reported for FY 2025-26
+> after 31 vacant posts were cut — likely a different count basis. Worth a read
+> against the originals before anyone relies on them.
+
+> **Citation-host note.** These are the only two sources in the game not served from
+> `hollister.ca.gov`. `pub-hollister.escribemeetings.com` is the City's own Council
+> agenda and packet system, so the AB 2561 presentation is a City document. The
+> June 16 link is a **third-party host of a City Council meeting recording** — a
+> record of a City proceeding rather than a City-published document, and it is
+> labelled that way in the data.
+
+---
+
 ## Dropped from the live game
 
 These were on the board before this pass but rest only on BenitoLink reporting, and
@@ -190,6 +250,13 @@ surplus property sale.
 - **Department funding floors and ceilings**, playable bounds rather than City policy.
 
 ## City documents used
+
+Staffing context:
+
+- [AB 2561 "Vacancy Status" presentation, June 15 Council packet](https://pub-hollister.escribemeetings.com/filestream.ashx?DocumentId=17631) — the FY 2025-26 vacancy snapshot
+- [City Council budget discussion, June 16, 2026](https://www.myhamlet.com/hollister-ca/city-council--16269/06-16-2026/c7642c2e-458b-4b7d-a4d2-e21f172e086b) — the proposed Fire and Police staffing targets
+
+Budget and emergency documents:
 
 - [FY 2026-27 Approved Budget Document](https://hollister.ca.gov/City%20Managers/Documents/Hollister_FY2026-27_Approved_Budget_July4_Cover.pdf) — every budget figure in the game
 - [FY 2024-25 Budget Book](https://hollister.ca.gov/Administrative%20Services/FY%202024-2025%20COH%20Budget%20Book_FINAL.pdf) — department names, divisions, staffing

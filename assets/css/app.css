@@ -340,6 +340,41 @@ p:last-child { margin-bottom: 0; }
   color: var(--text-2); border-left: 3px solid var(--serious);
 }
 
+/* ---------- staffing context on a department slider ---------- */
+.staff {
+  margin: 10px 0 0 21px; padding: 11px 12px;
+  border-radius: var(--radius-s); background: var(--surface-2);
+  border-left: 3px solid var(--series-1);
+}
+.staff-head {
+  font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline;
+}
+.staff-unit { font-size: 13.5px; font-weight: 650; color: var(--text-1); margin-top: 5px; }
+.staff-nums {
+  display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 5px;
+  font-size: 13px; color: var(--text-2);
+}
+.staff-nums b { color: var(--text-1); font-weight: 700; font-variant-numeric: tabular-nums; }
+.staff-bar {
+  display: flex; height: 7px; border-radius: 999px; overflow: hidden;
+  background: var(--surface-3); margin-top: 8px; gap: 2px;
+}
+.staff-bar i { display: block; height: 100%; }
+.staff-bar .filled { background: var(--series-1); border-radius: 999px 0 0 999px; }
+.staff-bar .vacant { background: var(--warning); border-radius: 0 999px 999px 0; }
+.staff-note { font-size: 12px; color: var(--text-2); line-height: 1.45; margin-top: 8px; }
+.staff-note.is-stale { color: var(--muted); }
+.staff-prop {
+  margin-top: 9px; padding-top: 9px; border-top: 1px solid var(--hairline-2);
+}
+.staff-prop-tag {
+  display: inline-block; font-size: 9.5px; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; padding: 2px 7px; border-radius: 6px;
+  background: color-mix(in srgb, var(--warning) 26%, var(--surface-2)); color: var(--text-1);
+}
+.staff-prop-text { font-size: 13px; color: var(--text-1); font-weight: 600; margin-top: 5px; }
+
 /* ---------- action cards ---------- */
 .filter-row {
   display: flex; gap: 7px; margin-bottom: 13px;

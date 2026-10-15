@@ -162,6 +162,38 @@ export function deptSlider(dept, pct, color, onChange) {
   minus.addEventListener('click', () => set(+slider.getAttribute('aria-valuenow') - 1));
   plus.addEventListener('click', () => set(+slider.getAttribute('aria-valuenow') + 1));
 
+  // Dated vacancy context, shown only where the City's snapshot actually
+  // breaks the numbers out by bargaining unit.
+  const st = dept.staffing;
+  const staffBlock = st ? h('div', { class: 'staff' }, [
+    h('div', { class: 'staff-head' }, [
+      h('span', { text: 'Vacancies' }),
+      h('span', { text: `${st.fiscalYear} · as of ${fmtDate(st.asOf)}` }),
+    ]),
+    h('div', { class: 'staff-unit', text: st.unitLabel }),
+    h('div', { class: 'staff-nums' }, [
+      h('span', { html: `<b>${st.budgeted}</b> budgeted` }),
+      h('span', { html: `<b>${st.vacancies}</b> vacant` }),
+      h('span', { html: `<b>${st.vacancyRate}%</b> vacancy rate` }),
+    ]),
+    h('div', {
+      class: 'staff-bar',
+      role: 'img',
+      'aria-label': `${st.budgeted - st.vacancies} of ${st.budgeted} positions filled, ${st.vacancies} vacant`,
+    }, [
+      h('i', { class: 'filled', style: `flex:${st.budgeted - st.vacancies}` }),
+      h('i', { class: 'vacant', style: `flex:${st.vacancies}` }),
+    ]),
+    st.scopeNote ? h('div', { class: 'staff-note', text: st.scopeNote }) : null,
+    st.proposal ? h('div', { class: 'staff-prop' }, [
+      h('span', { class: 'staff-prop-tag', text: `${st.proposal.label} · ${fmtDate(st.proposal.date)}` }),
+      h('div', { class: 'staff-prop-text', text: st.proposal.text }),
+      h('div', { class: 'staff-note', text: st.proposal.caveat }),
+    ]) : null,
+    h('div', { class: 'staff-note is-stale', text: st.staleNote }),
+    sourceList(st.sources),
+  ]) : null;
+
   const node = h('div', { class: 'dept' }, [
     h('div', { class: 'dept-head' }, [
       h('div', { class: 'dept-swatch', style: `background:${color}` }),
@@ -183,6 +215,7 @@ export function deptSlider(dept, pct, color, onChange) {
       h('span', { text: `${dept.maxPct}%` }),
     ]),
     warn,
+    staffBlock,
   ]);
 
   paint(pct);

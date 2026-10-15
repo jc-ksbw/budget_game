@@ -144,8 +144,40 @@
           "trust": 0.7
         },
         "cutNarrative": "Slower response times, thinner patrol coverage overnight, longer case backlogs. The $1.1M dispatch contract is fixed, so cuts land on sworn staffing.",
-        "raiseNarrative": "Fills sworn vacancies and restores overnight patrol strength.",
-        "confidence": "derived"
+        "raiseNarrative": "Supports the proposed staffing plan. Funding a position is not the same as filling it — the unit was already carrying vacancies it was recruiting for.",
+        "confidence": "derived",
+        "staffing": {
+          "asOf": "2026-06-15",
+          "fiscalYear": "FY 2025-26",
+          "unitLabel": "Police Officers Association",
+          "budgeted": 52,
+          "vacancies": 10,
+          "vacancyRate": 19.23,
+          "scopeNote": "This bargaining unit spans sworn police, records and support, and animal control. Staff said most of these vacancies were sworn police officers but did not give an exact count.",
+          "proposal": {
+            "label": "Proposed target",
+            "text": "Continue recruiting for seven Police positions.",
+            "date": "2026-06-16",
+            "caveat": "A proposal from the June 16, 2026 budget discussion — not adopted hires, and not a guarantee any post gets filled."
+          },
+          "staleNote": "FY 2025-26 snapshot, dated June 15, 2026. The City has not published an updated count for FY 2026-27, so this is not current staffing.",
+          "sources": [
+            {
+              "title": "AB 2561 \"Vacancy Status\" presentation, June 15 Council packet",
+              "publisher": "City of Hollister",
+              "url": "https://pub-hollister.escribemeetings.com/filestream.ashx?DocumentId=17631",
+              "date": "2026-06-15",
+              "kind": "city-record"
+            },
+            {
+              "title": "City Council budget discussion, June 16, 2026",
+              "publisher": "City of Hollister (meeting recording, third-party host)",
+              "url": "https://www.myhamlet.com/hollister-ca/city-council--16269/06-16-2026/c7642c2e-458b-4b7d-a4d2-e21f172e086b",
+              "date": "2026-06-16",
+              "kind": "meeting-record"
+            }
+          ]
+        }
       },
       {
         "id": "fire",
@@ -167,8 +199,39 @@
           "trust": 0.75
         },
         "cutNarrative": "Constant staffing is what fire costs. Cut it and you brown out an engine company or pay the difference back in overtime.",
-        "raiseNarrative": "Adds firefighter positions and shortens response intervals.",
-        "confidence": "derived"
+        "raiseNarrative": "Supports the proposed staffing plan. Funding a position is not the same as filling it.",
+        "confidence": "derived",
+        "staffing": {
+          "asOf": "2026-06-15",
+          "fiscalYear": "FY 2025-26",
+          "unitLabel": "Firefighters union",
+          "budgeted": 44,
+          "vacancies": 2,
+          "vacancyRate": 4.55,
+          "proposal": {
+            "label": "Proposed target",
+            "text": "Seek 11 additional Fire positions.",
+            "date": "2026-06-16",
+            "caveat": "A proposal from the June 16, 2026 budget discussion — not adopted hires, and not a guarantee any post gets filled."
+          },
+          "staleNote": "FY 2025-26 snapshot, dated June 15, 2026. The City has not published an updated count for FY 2026-27, so this is not current staffing.",
+          "sources": [
+            {
+              "title": "AB 2561 \"Vacancy Status\" presentation, June 15 Council packet",
+              "publisher": "City of Hollister",
+              "url": "https://pub-hollister.escribemeetings.com/filestream.ashx?DocumentId=17631",
+              "date": "2026-06-15",
+              "kind": "city-record"
+            },
+            {
+              "title": "City Council budget discussion, June 16, 2026",
+              "publisher": "City of Hollister (meeting recording, third-party host)",
+              "url": "https://www.myhamlet.com/hollister-ca/city-council--16269/06-16-2026/c7642c2e-458b-4b7d-a4d2-e21f172e086b",
+              "date": "2026-06-16",
+              "kind": "meeting-record"
+            }
+          ]
+        }
       },
       {
         "id": "admin",
@@ -454,5 +517,53 @@
       }
     ],
     "labelDiscrepancy": "The City infographic captions these figures \"Adopted Budget FY 2025-26\" and \"July - September 2025\", but the amounts ($50.2M revenue, $57.1M expenses, $6.9M gap) match the FY 2026-27 budget-to-actual exactly. Reproduced here as published."
+  },
+  "staffingSnapshot": {
+    "label": "AB 2561 vacancy snapshot",
+    "asOf": "2026-06-15",
+    "fiscalYear": "FY 2025-26",
+    "citywide": {
+      "budgeted": 189,
+      "vacancies": 22,
+      "vacancyRate": 11.64
+    },
+    "units": [
+      {
+        "unitLabel": "SEIU",
+        "budgeted": 53,
+        "vacancies": 2,
+        "vacancyRate": 3.77
+      },
+      {
+        "unitLabel": "Firefighters union",
+        "budgeted": 44,
+        "vacancies": 2,
+        "vacancyRate": 4.55
+      },
+      {
+        "unitLabel": "Police Officers Association",
+        "budgeted": 52,
+        "vacancies": 10,
+        "vacancyRate": 19.23
+      }
+    ],
+    "note": "Citywide and SEIU totals are not assigned to any department slider: the snapshot does not break them down that way.",
+    "retrievalNote": "Neither source could be retrieved from this build environment — the eScribe portal and the meeting host both sit behind browser verification. The figures are recorded as supplied; all four rates are internally consistent.",
+    "sources": [
+      {
+        "title": "AB 2561 \"Vacancy Status\" presentation, June 15 Council packet",
+        "publisher": "City of Hollister",
+        "url": "https://pub-hollister.escribemeetings.com/filestream.ashx?DocumentId=17631",
+        "date": "2026-06-15",
+        "kind": "city-record"
+      },
+      {
+        "title": "City Council budget discussion, June 16, 2026",
+        "publisher": "City of Hollister (meeting recording, third-party host)",
+        "url": "https://www.myhamlet.com/hollister-ca/city-council--16269/06-16-2026/c7642c2e-458b-4b7d-a4d2-e21f172e086b",
+        "date": "2026-06-16",
+        "kind": "meeting-record"
+      }
+    ]
   }
 }

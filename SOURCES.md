@@ -174,9 +174,14 @@ remaining 40 sit in groups the snapshot does not break out.
 
 **Proposed staffing targets**, from the **June 16, 2026** Council budget discussion:
 the City Manager proposed seeking **11 additional Fire positions** and continuing to
-recruit for **seven Police positions**. Both are labelled **"Proposed target"** on
-the slider, with a caveat that they are *not adopted hires and not a guarantee any
-post gets filled*.
+recruit for **seven Police positions**. These appear **only when that department's
+funding is moved above baseline** — they are about adding money, so they stay out of
+the way until someone does. Both are labelled **"Proposed target"** with their date,
+and carry a caveat that they are *not adopted hires and not a guarantee any post gets
+filled*. The same trigger governs the slider's own raise text.
+
+The always-visible block is deliberately compact: unit, date, counts, a filled/vacant
+bar, the scope caveat where the source gives one, and a one-line citation.
 
 **What the game does not do with this.** Vacancy counts are never converted into
 dollar savings or a cost-per-position figure — a test asserts there is no `$`,

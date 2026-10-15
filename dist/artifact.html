@@ -348,31 +348,32 @@ p:last-child { margin-bottom: 0; }
 
 /* ---------- staffing context on a department slider ---------- */
 .staff {
-  margin: 10px 0 0 21px; padding: 11px 12px;
+  margin: 10px 0 0 21px; padding: 9px 11px;
   border-radius: var(--radius-s); background: var(--surface-2);
   border-left: 3px solid var(--series-1);
 }
 .staff-head {
   font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
-  color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline;
+  color: var(--muted); display: flex; flex-wrap: wrap; gap: 2px 8px;
+  align-items: baseline; justify-content: space-between;
 }
-.staff-unit { font-size: 13.5px; font-weight: 650; color: var(--text-1); margin-top: 5px; }
-.staff-nums {
-  display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 5px;
-  font-size: 13px; color: var(--text-2);
-}
+.staff-asof { font-weight: 600; letter-spacing: .04em; }
+.staff-unit { font-weight: 700; color: var(--text-1); letter-spacing: .05em; }
+.staff-nums { margin-top: 5px; font-size: 12.5px; color: var(--text-2); }
 .staff-nums b { color: var(--text-1); font-weight: 700; font-variant-numeric: tabular-nums; }
 .staff-bar {
-  display: flex; height: 7px; border-radius: 999px; overflow: hidden;
+  display: flex; height: 6px; border-radius: 999px; overflow: hidden;
   background: var(--surface-3); margin-top: 8px; gap: 2px;
 }
 .staff-bar i { display: block; height: 100%; }
 .staff-bar .filled { background: var(--series-1); border-radius: 999px 0 0 999px; }
 .staff-bar .vacant { background: var(--warning); border-radius: 0 999px 999px 0; }
-.staff-note { font-size: 12px; color: var(--text-2); line-height: 1.45; margin-top: 8px; }
+.staff-note { font-size: 11.5px; color: var(--text-2); line-height: 1.4; margin-top: 7px; }
 .staff-note.is-stale { color: var(--muted); }
 .staff-prop {
-  margin-top: 9px; padding-top: 9px; border-top: 1px solid var(--hairline-2);
+  margin: 8px 0 0 21px; padding: 10px 11px;
+  border-radius: var(--radius-s); background: var(--surface-2);
+  border-left: 3px solid var(--warning);
 }
 .staff-prop-tag {
   display: inline-block; font-size: 9.5px; font-weight: 700; letter-spacing: .06em;
@@ -507,6 +508,7 @@ p:last-child { margin-bottom: 0; }
   text-transform: uppercase; color: var(--muted); margin-bottom: 5px;
 }
 .src { font-size: 11.5px; color: var(--text-2); line-height: 1.5; display: block; margin-bottom: 3px; }
+.src-compact { margin: 7px 0 0; font-size: 11px; line-height: 1.4; }
 .src a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 2px; }
 .src .src-meta { color: var(--muted); }
 
@@ -887,7 +889,7 @@ table.dt .neg { color: var(--critical); }
         <li>From the City's AB&nbsp;2561 vacancy presentation in the <b>June 15, 2026</b> Council packet. Police shows the Police Officers Association figures, Fire shows the firefighters union</li>
         <li>The POA unit spans sworn police, records and support, and animal control; staff said most of its vacancies were sworn officers but gave no exact count</li>
         <li>Citywide and SEIU totals are <b>not</b> shown on any slider &mdash; the snapshot does not break them down that way</li>
-        <li>The <b>11 Fire</b> and <b>seven Police</b> positions are proposed targets from the June 16, 2026 budget discussion, not adopted hires. Funding a position is not the same as filling it</li>
+        <li>The <b>11 Fire</b> and <b>seven Police</b> positions are proposed targets from the June 16, 2026 budget discussion, not adopted hires. They appear only when you raise that department's funding, and funding a position is not the same as filling it</li>
         <li>This is a <b>FY 2025-26</b> snapshot and not current staffing; no vacancy count is turned into a dollar figure anywhere</li>
       </ul>
 
@@ -1062,7 +1064,7 @@ const BUDGET = {
           "budgeted": 52,
           "vacancies": 10,
           "vacancyRate": 19.23,
-          "scopeNote": "This bargaining unit spans sworn police, records and support, and animal control. Staff said most of these vacancies were sworn police officers but did not give an exact count.",
+          "scopeNote": "Spans sworn police, records and support, and animal control. Most vacancies were sworn officers; no exact count given.",
           "proposal": {
             "label": "Proposed target",
             "text": "Continue recruiting for seven Police positions.",
@@ -3299,6 +3301,9 @@ function deptSlider(dept, pct, color, onChange) {
     else if (dp >= 8) { warn.hidden = false; warn.textContent = dept.raiseNarrative; }
     else warn.hidden = true;
 
+    // The proposed staffing targets are only relevant once you add money.
+    if (staffRaise) staffRaise.hidden = dp <= 0;
+
     minus.disabled = v <= dept.minPct;
     plus.disabled = v >= dept.maxPct;
   }
@@ -3345,35 +3350,34 @@ function deptSlider(dept, pct, color, onChange) {
   plus.addEventListener('click', () => set(+slider.getAttribute('aria-valuenow') + 1));
 
   // Dated vacancy context, shown only where the City's snapshot actually
-  // breaks the numbers out by bargaining unit.
+  // breaks the numbers out by bargaining unit. Kept compact: the proposed
+  // staffing targets appear only once funding is raised above baseline.
   const st = dept.staffing;
   const staffBlock = st ? h('div', { class: 'staff' }, [
     h('div', { class: 'staff-head' }, [
-      h('span', { text: 'Vacancies' }),
-      h('span', { text: `${st.fiscalYear} · as of ${fmtDate(st.asOf)}` }),
+      h('span', { class: 'staff-unit', text: st.unitLabel }),
+      h('span', { class: 'staff-asof', text: `${st.fiscalYear} · ${fmtDate(st.asOf)}` }),
     ]),
-    h('div', { class: 'staff-unit', text: st.unitLabel }),
-    h('div', { class: 'staff-nums' }, [
-      h('span', { html: `<b>${st.budgeted}</b> budgeted` }),
-      h('span', { html: `<b>${st.vacancies}</b> vacant` }),
-      h('span', { html: `<b>${st.vacancyRate}%</b> vacancy rate` }),
-    ]),
+    h('div', { class: 'staff-nums', html:
+      `<b>${st.budgeted}</b> budgeted &middot; <b>${st.vacancies}</b> vacant &middot; <b>${st.vacancyRate}%</b>` }),
     h('div', {
-      class: 'staff-bar',
-      role: 'img',
+      class: 'staff-bar', role: 'img',
       'aria-label': `${st.budgeted - st.vacancies} of ${st.budgeted} positions filled, ${st.vacancies} vacant`,
     }, [
       h('i', { class: 'filled', style: `flex:${st.budgeted - st.vacancies}` }),
       h('i', { class: 'vacant', style: `flex:${st.vacancies}` }),
     ]),
     st.scopeNote ? h('div', { class: 'staff-note', text: st.scopeNote }) : null,
-    st.proposal ? h('div', { class: 'staff-prop' }, [
-      h('span', { class: 'staff-prop-tag', text: `${st.proposal.label} · ${fmtDate(st.proposal.date)}` }),
-      h('div', { class: 'staff-prop-text', text: st.proposal.text }),
-      h('div', { class: 'staff-note', text: st.proposal.caveat }),
-    ]) : null,
+    sourceLine(st.sources[0]),
+  ]) : null;
+
+  // Shown only when this department's funding is moved above baseline.
+  const staffRaise = (st && st.proposal) ? h('div', { class: 'staff-prop', hidden: true }, [
+    h('span', { class: 'staff-prop-tag', text: `${st.proposal.label} · ${fmtDate(st.proposal.date)}` }),
+    h('div', { class: 'staff-prop-text', text: st.proposal.text }),
+    h('div', { class: 'staff-note', text: st.proposal.caveat }),
     h('div', { class: 'staff-note is-stale', text: st.staleNote }),
-    sourceList(st.sources),
+    sourceLine(st.sources[1] || st.sources[0]),
   ]) : null;
 
   const node = h('div', { class: 'dept' }, [
@@ -3398,6 +3402,7 @@ function deptSlider(dept, pct, color, onChange) {
     ]),
     warn,
     staffBlock,
+    staffRaise,
   ]);
 
   paint(pct);
@@ -3416,6 +3421,15 @@ function fmtDate(iso) {
   const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   return d ? `${MON[m - 1]} ${d}, ${y}` : `${MON[m - 1]} ${y}`;
+}
+
+/** A single citation on one line, for tight spaces. */
+function sourceLine(src) {
+  if (!src) return null;
+  return h('div', { class: 'src src-compact' }, [
+    h('a', { href: src.url, target: '_blank', rel: 'noopener', text: src.title }),
+    h('span', { class: 'src-meta', text: ` · ${fmtDate(src.date)}` }),
+  ]);
 }
 
 function sourceList(sources) {

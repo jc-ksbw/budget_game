@@ -117,6 +117,9 @@ export function deptSlider(dept, pct, color, onChange) {
     else if (dp >= 8) { warn.hidden = false; warn.textContent = dept.raiseNarrative; }
     else warn.hidden = true;
 
+    // The proposed staffing targets are only relevant once you add money.
+    if (staffRaise) staffRaise.hidden = dp <= 0;
+
     minus.disabled = v <= dept.minPct;
     plus.disabled = v >= dept.maxPct;
   }
@@ -163,35 +166,34 @@ export function deptSlider(dept, pct, color, onChange) {
   plus.addEventListener('click', () => set(+slider.getAttribute('aria-valuenow') + 1));
 
   // Dated vacancy context, shown only where the City's snapshot actually
-  // breaks the numbers out by bargaining unit.
+  // breaks the numbers out by bargaining unit. Kept compact: the proposed
+  // staffing targets appear only once funding is raised above baseline.
   const st = dept.staffing;
   const staffBlock = st ? h('div', { class: 'staff' }, [
     h('div', { class: 'staff-head' }, [
-      h('span', { text: 'Vacancies' }),
-      h('span', { text: `${st.fiscalYear} · as of ${fmtDate(st.asOf)}` }),
+      h('span', { class: 'staff-unit', text: st.unitLabel }),
+      h('span', { class: 'staff-asof', text: `${st.fiscalYear} · ${fmtDate(st.asOf)}` }),
     ]),
-    h('div', { class: 'staff-unit', text: st.unitLabel }),
-    h('div', { class: 'staff-nums' }, [
-      h('span', { html: `<b>${st.budgeted}</b> budgeted` }),
-      h('span', { html: `<b>${st.vacancies}</b> vacant` }),
-      h('span', { html: `<b>${st.vacancyRate}%</b> vacancy rate` }),
-    ]),
+    h('div', { class: 'staff-nums', html:
+      `<b>${st.budgeted}</b> budgeted &middot; <b>${st.vacancies}</b> vacant &middot; <b>${st.vacancyRate}%</b>` }),
     h('div', {
-      class: 'staff-bar',
-      role: 'img',
+      class: 'staff-bar', role: 'img',
       'aria-label': `${st.budgeted - st.vacancies} of ${st.budgeted} positions filled, ${st.vacancies} vacant`,
     }, [
       h('i', { class: 'filled', style: `flex:${st.budgeted - st.vacancies}` }),
       h('i', { class: 'vacant', style: `flex:${st.vacancies}` }),
     ]),
     st.scopeNote ? h('div', { class: 'staff-note', text: st.scopeNote }) : null,
-    st.proposal ? h('div', { class: 'staff-prop' }, [
-      h('span', { class: 'staff-prop-tag', text: `${st.proposal.label} · ${fmtDate(st.proposal.date)}` }),
-      h('div', { class: 'staff-prop-text', text: st.proposal.text }),
-      h('div', { class: 'staff-note', text: st.proposal.caveat }),
-    ]) : null,
+    sourceLine(st.sources[0]),
+  ]) : null;
+
+  // Shown only when this department's funding is moved above baseline.
+  const staffRaise = (st && st.proposal) ? h('div', { class: 'staff-prop', hidden: true }, [
+    h('span', { class: 'staff-prop-tag', text: `${st.proposal.label} · ${fmtDate(st.proposal.date)}` }),
+    h('div', { class: 'staff-prop-text', text: st.proposal.text }),
+    h('div', { class: 'staff-note', text: st.proposal.caveat }),
     h('div', { class: 'staff-note is-stale', text: st.staleNote }),
-    sourceList(st.sources),
+    sourceLine(st.sources[1] || st.sources[0]),
   ]) : null;
 
   const node = h('div', { class: 'dept' }, [
@@ -216,6 +218,7 @@ export function deptSlider(dept, pct, color, onChange) {
     ]),
     warn,
     staffBlock,
+    staffRaise,
   ]);
 
   paint(pct);
@@ -234,6 +237,15 @@ function fmtDate(iso) {
   const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   return d ? `${MON[m - 1]} ${d}, ${y}` : `${MON[m - 1]} ${y}`;
+}
+
+/** A single citation on one line, for tight spaces. */
+function sourceLine(src) {
+  if (!src) return null;
+  return h('div', { class: 'src src-compact' }, [
+    h('a', { href: src.url, target: '_blank', rel: 'noopener', text: src.title }),
+    h('span', { class: 'src-meta', text: ` · ${fmtDate(src.date)}` }),
+  ]);
 }
 
 function sourceList(sources) {

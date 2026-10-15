@@ -342,31 +342,32 @@ p:last-child { margin-bottom: 0; }
 
 /* ---------- staffing context on a department slider ---------- */
 .staff {
-  margin: 10px 0 0 21px; padding: 11px 12px;
+  margin: 10px 0 0 21px; padding: 9px 11px;
   border-radius: var(--radius-s); background: var(--surface-2);
   border-left: 3px solid var(--series-1);
 }
 .staff-head {
   font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
-  color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline;
+  color: var(--muted); display: flex; flex-wrap: wrap; gap: 2px 8px;
+  align-items: baseline; justify-content: space-between;
 }
-.staff-unit { font-size: 13.5px; font-weight: 650; color: var(--text-1); margin-top: 5px; }
-.staff-nums {
-  display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 5px;
-  font-size: 13px; color: var(--text-2);
-}
+.staff-asof { font-weight: 600; letter-spacing: .04em; }
+.staff-unit { font-weight: 700; color: var(--text-1); letter-spacing: .05em; }
+.staff-nums { margin-top: 5px; font-size: 12.5px; color: var(--text-2); }
 .staff-nums b { color: var(--text-1); font-weight: 700; font-variant-numeric: tabular-nums; }
 .staff-bar {
-  display: flex; height: 7px; border-radius: 999px; overflow: hidden;
+  display: flex; height: 6px; border-radius: 999px; overflow: hidden;
   background: var(--surface-3); margin-top: 8px; gap: 2px;
 }
 .staff-bar i { display: block; height: 100%; }
 .staff-bar .filled { background: var(--series-1); border-radius: 999px 0 0 999px; }
 .staff-bar .vacant { background: var(--warning); border-radius: 0 999px 999px 0; }
-.staff-note { font-size: 12px; color: var(--text-2); line-height: 1.45; margin-top: 8px; }
+.staff-note { font-size: 11.5px; color: var(--text-2); line-height: 1.4; margin-top: 7px; }
 .staff-note.is-stale { color: var(--muted); }
 .staff-prop {
-  margin-top: 9px; padding-top: 9px; border-top: 1px solid var(--hairline-2);
+  margin: 8px 0 0 21px; padding: 10px 11px;
+  border-radius: var(--radius-s); background: var(--surface-2);
+  border-left: 3px solid var(--warning);
 }
 .staff-prop-tag {
   display: inline-block; font-size: 9.5px; font-weight: 700; letter-spacing: .06em;
@@ -501,6 +502,7 @@ p:last-child { margin-bottom: 0; }
   text-transform: uppercase; color: var(--muted); margin-bottom: 5px;
 }
 .src { font-size: 11.5px; color: var(--text-2); line-height: 1.5; display: block; margin-bottom: 3px; }
+.src-compact { margin: 7px 0 0; font-size: 11px; line-height: 1.4; }
 .src a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 2px; }
 .src .src-meta { color: var(--muted); }
 

@@ -725,7 +725,7 @@ export const ACTIONS = {
     {
       "id": "impact-fee-loan",
       "name": "Interfund loan from impact fee funds",
-      "category": "onetime",
+      "category": "revenue",
       "type": "onetime",
       "status": "adopted",
       "amountKnown": true,
@@ -733,10 +733,9 @@ export const ACTIONS = {
       "amountKind": "published",
       "amountBasis": "The City's own October 2026 infographic states $11M borrowing \"to support cash flow and prior deficits.\"",
       "desc": "The City borrowed $11M into the General Fund to support cash flow and prior deficits.",
-      "consequence": "Near-term operating cash, not a reduction in ongoing spending. It is repayable by June 30, 2027, and the structural gap is exactly as large after it as before.",
+      "consequence": "Temporary cash for operating needs. It is not recurring revenue and not a structural fix — the gap is exactly as large after it as before — and it is repayable by June 30, 2027, so it creates an obligation that lands back on the General Fund.",
       "effects": {
-        "trust": -9,
-        "infrastructure": -8
+        "trust": -9
       },
       "cashBridge": true,
       "realWorld": true,
@@ -763,11 +762,10 @@ export const ACTIONS = {
       "category": "cuts",
       "type": "ongoing",
       "status": "adopted",
-      "amountKnown": false,
-      "amount": null,
-      "unpublishedNote": "Savings/revenue not published",
+      "amountKnown": true,
+      "amount": 3617997,
       "desc": "On October 14, 2026 the City began issuing layoff notices to represented and unrepresented employees across multiple departments.",
-      "consequence": "The City published neither a headcount nor a savings amount. Animal Control staff are unaffected and the City says it is not eliminating all civilian positions.",
+      "consequence": "The SEIU letter names 16 positions and freezes a vacant seventeenth. The City has published no citywide layoff count — 25 is the figure used here — and no savings amount. Three things the number does not account for: it is gross payroll, not General Fund savings, and five of the sixteen are water operators and one is at the airport, paid from enterprise funds; employees separate November 13, so FY 2026-27 carries only part of a year; and severance and leave payouts land against the first year. Animal Control staff are unaffected.",
       "effects": {
         "workforce": -11,
         "trust": -6,
@@ -775,8 +773,15 @@ export const ACTIONS = {
         "safety": -2
       },
       "realWorld": true,
-      "realNote": "Announced October 14, 2026 with no number of positions and no dollar figure.",
+      "realNote": "Noticed October 14, 2026; employment severs November 13, 2026.",
       "sources": [
+        {
+          "title": "Notification of Staffing Reductions — letter to SEIU Local 521",
+          "publisher": "City of Hollister",
+          "url": "https://www.instagram.com/p/DedlTzsFP_7/?img_index=1",
+          "date": "2026-10-14",
+          "note": "City letter signed by the City Manager. It is not posted on the City website; this is the public copy it was released through."
+        },
         {
           "title": "Press release: workforce reductions and financial emergency",
           "publisher": "City of Hollister",
@@ -789,7 +794,10 @@ export const ACTIONS = {
           "url": "https://hollister.ca.gov/news_detail_T3_R120.php",
           "date": "2026-10-14"
         }
-      ]
+      ],
+      "locked": true,
+      "amountKind": "derived",
+      "amountBasis": "Averaged from the City's October 14, 2026 notification to SEIU Local 521: 16 named employees at a combined $2,315,518 of annual payroll, an average of $144,720 each, applied to 25 positions. A derivation for this game, not a City figure: the City has published no savings estimate for the layoffs."
     },
     {
       "id": "voluntary-separations",
@@ -815,7 +823,8 @@ export const ACTIONS = {
           "url": "https://hollister.ca.gov/news_detail_T3_R120.php",
           "date": "2026-10-14"
         }
-      ]
+      ],
+      "locked": true
     },
     {
       "id": "cancel-nonprofit-contracts",

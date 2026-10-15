@@ -413,6 +413,11 @@ p:last-child { margin-bottom: 0; }
 .action[aria-pressed="true"] .action-check {
   background: var(--accent); border-color: var(--accent);
 }
+/* Already carried out by the City: shown ticked, with no toggle affordance. */
+.action.is-locked { cursor: default; }
+.action.is-locked:active { transform: none; }
+.action.is-locked .action-check { border-radius: 50%; }
+
 .action-check svg { width: 14px; height: 14px; opacity: 0; color: var(--on-accent); }
 .action[aria-pressed="true"] .action-check svg { opacity: 1; }
 .action-body { flex: 1; min-width: 0; }

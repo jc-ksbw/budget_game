@@ -273,6 +273,7 @@ export function actionCard(action, selected, meterNames, onToggle, statusLabels,
   if (action.conditional) tags.push(h('span', { class: 'tag is-ballot' }, ['Needs legislation, council and voters']));
   if (action.preliminary) tags.push(h('span', { class: 'tag is-ballot' }, ['Preliminary estimate']));
   if (action.enacted) tags.push(h('span', { class: 'tag is-real' }, ['Already enacted']));
+  if (action.locked) tags.push(h('span', { class: 'tag is-real' }, ['Already in effect \u2014 cannot be undone']));
 
   Object.entries(action.effects || {}).forEach(([k, v]) => {
     if (!v) return;
@@ -308,8 +309,9 @@ export function actionCard(action, selected, meterNames, onToggle, statusLabels,
   ]);
 
   const btn = h('button', {
-    class: 'action', type: 'button',
+    class: 'action' + (action.locked ? ' is-locked' : ''), type: 'button',
     'aria-pressed': selected ? 'true' : 'false',
+    ...(action.locked ? { 'aria-disabled': 'true' } : {}),
   }, [
     h('div', { class: 'action-top' }, [
       h('div', { class: 'action-check' }, [icon(ICONS.check, 14)]),

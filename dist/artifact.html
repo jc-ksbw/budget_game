@@ -419,6 +419,11 @@ p:last-child { margin-bottom: 0; }
 .action[aria-pressed="true"] .action-check {
   background: var(--accent); border-color: var(--accent);
 }
+/* Already carried out by the City: shown ticked, with no toggle affordance. */
+.action.is-locked { cursor: default; }
+.action.is-locked:active { transform: none; }
+.action.is-locked .action-check { border-radius: 50%; }
+
 .action-check svg { width: 14px; height: 14px; opacity: 0; color: var(--on-accent); }
 .action[aria-pressed="true"] .action-check svg { opacity: 1; }
 .action-body { flex: 1; min-width: 0; }
@@ -1634,7 +1639,7 @@ const ACTIONS = {
     {
       "id": "impact-fee-loan",
       "name": "Interfund loan from impact fee funds",
-      "category": "onetime",
+      "category": "revenue",
       "type": "onetime",
       "status": "adopted",
       "amountKnown": true,
@@ -1642,10 +1647,9 @@ const ACTIONS = {
       "amountKind": "published",
       "amountBasis": "The City's own October 2026 infographic states $11M borrowing \"to support cash flow and prior deficits.\"",
       "desc": "The City borrowed $11M into the General Fund to support cash flow and prior deficits.",
-      "consequence": "Near-term operating cash, not a reduction in ongoing spending. It is repayable by June 30, 2027, and the structural gap is exactly as large after it as before.",
+      "consequence": "Temporary cash for operating needs. It is not recurring revenue and not a structural fix — the gap is exactly as large after it as before — and it is repayable by June 30, 2027, so it creates an obligation that lands back on the General Fund.",
       "effects": {
-        "trust": -9,
-        "infrastructure": -8
+        "trust": -9
       },
       "cashBridge": true,
       "realWorld": true,
@@ -1672,11 +1676,10 @@ const ACTIONS = {
       "category": "cuts",
       "type": "ongoing",
       "status": "adopted",
-      "amountKnown": false,
-      "amount": null,
-      "unpublishedNote": "Savings/revenue not published",
+      "amountKnown": true,
+      "amount": 3617997,
       "desc": "On October 14, 2026 the City began issuing layoff notices to represented and unrepresented employees across multiple departments.",
-      "consequence": "The City published neither a headcount nor a savings amount. Animal Control staff are unaffected and the City says it is not eliminating all civilian positions.",
+      "consequence": "The SEIU letter names 16 positions and freezes a vacant seventeenth. The City has published no citywide layoff count — 25 is the figure used here — and no savings amount. Three things the number does not account for: it is gross payroll, not General Fund savings, and five of the sixteen are water operators and one is at the airport, paid from enterprise funds; employees separate November 13, so FY 2026-27 carries only part of a year; and severance and leave payouts land against the first year. Animal Control staff are unaffected.",
       "effects": {
         "workforce": -11,
         "trust": -6,
@@ -1684,8 +1687,15 @@ const ACTIONS = {
         "safety": -2
       },
       "realWorld": true,
-      "realNote": "Announced October 14, 2026 with no number of positions and no dollar figure.",
+      "realNote": "Noticed October 14, 2026; employment severs November 13, 2026.",
       "sources": [
+        {
+          "title": "Notification of Staffing Reductions — letter to SEIU Local 521",
+          "publisher": "City of Hollister",
+          "url": "https://www.instagram.com/p/DedlTzsFP_7/?img_index=1",
+          "date": "2026-10-14",
+          "note": "City letter signed by the City Manager. It is not posted on the City website; this is the public copy it was released through."
+        },
         {
           "title": "Press release: workforce reductions and financial emergency",
           "publisher": "City of Hollister",
@@ -1698,7 +1708,10 @@ const ACTIONS = {
           "url": "https://hollister.ca.gov/news_detail_T3_R120.php",
           "date": "2026-10-14"
         }
-      ]
+      ],
+      "locked": true,
+      "amountKind": "derived",
+      "amountBasis": "Averaged from the City's October 14, 2026 notification to SEIU Local 521: 16 named employees at a combined $2,315,518 of annual payroll, an average of $144,720 each, applied to 25 positions. A derivation for this game, not a City figure: the City has published no savings estimate for the layoffs."
     },
     {
       "id": "voluntary-separations",
@@ -1724,7 +1737,8 @@ const ACTIONS = {
           "url": "https://hollister.ca.gov/news_detail_T3_R120.php",
           "date": "2026-10-14"
         }
-      ]
+      ],
+      "locked": true
     },
     {
       "id": "cancel-nonprofit-contracts",
@@ -2865,9 +2879,14 @@ function createState(budget, actions) {
   budget.generalFund.departments.forEach((d) => { dept[d.id] = 100; });
   const meters = {};
   actions.meta.meters.forEach((m) => { meters[m.id] = m.start; });
+  // Measures the City has already carried out are on the board from the first
+  // screen and cannot be switched off.
+  const chosen = new Set();
+  actions.actions.forEach((a) => { if (a.locked) chosen.add(a.id); });
+
   return {
     deptPct: dept,
-    chosen: new Set(),
+    chosen,
     startMeters: meters,
     ballotResults: null,   // filled in at submission
     submitted: false,
@@ -3438,6 +3457,7 @@ function actionCard(action, selected, meterNames, onToggle, statusLabels, kindLa
   if (action.conditional) tags.push(h('span', { class: 'tag is-ballot' }, ['Needs legislation, council and voters']));
   if (action.preliminary) tags.push(h('span', { class: 'tag is-ballot' }, ['Preliminary estimate']));
   if (action.enacted) tags.push(h('span', { class: 'tag is-real' }, ['Already enacted']));
+  if (action.locked) tags.push(h('span', { class: 'tag is-real' }, ['Already in effect \u2014 cannot be undone']));
 
   Object.entries(action.effects || {}).forEach(([k, v]) => {
     if (!v) return;
@@ -3473,8 +3493,9 @@ function actionCard(action, selected, meterNames, onToggle, statusLabels, kindLa
   ]);
 
   const btn = h('button', {
-    class: 'action', type: 'button',
+    class: 'action' + (action.locked ? ' is-locked' : ''), type: 'button',
     'aria-pressed': selected ? 'true' : 'false',
+    ...(action.locked ? { 'aria-disabled': 'true' } : {}),
   }, [
     h('div', { class: 'action-top' }, [
       h('div', { class: 'action-check' }, [icon(ICONS.check, 14)]),
@@ -3661,9 +3682,10 @@ function changed() {
 }
 
 function toggleAction(id) {
+  const a = ACTIONS.actions.find((x) => x.id === id);
+  if (a && a.locked) return;   // already done in the real world
   if (state.chosen.has(id)) state.chosen.delete(id);
   else state.chosen.add(id);
-  const a = ACTIONS.actions.find((x) => x.id === id);
   document.querySelectorAll(`[data-action="${id}"]`).forEach((n) => {
     n.setAttribute('aria-pressed', state.chosen.has(id) ? 'true' : 'false');
   });
@@ -3690,14 +3712,24 @@ function renderBudget() {
     })
   ));
 
-  p.replaceChildren(
+  const lockedCuts = ACTIONS.actions.filter((a) => a.locked);
+  const lockedMoney = lockedCuts.reduce((n, a) => n + (a.amountKnown ? a.amount : 0), 0);
+
+  setChildren(p, [
     h('div', { class: 'panel-head' }, [
       h('h2', { text: 'General fund spending' }),
       h('p', { text: 'Drag to change what each department gets. The floors are set where a department stops being able to do its job.' }),
     ]),
+    lockedCuts.length ? h('div', { class: 'callout' , html:
+      `The adopted budget opened <b>${fmt.full(t.startGap)}</b> short. The City has already acted on `
+      + `<b>${lockedCuts.length}</b> of the measures below, worth about <b>${fmt.money(lockedMoney)}</b>, `
+      + `so you start with <b>${fmt.full(Math.max(0, t.cashGap))}</b> left to close. Those measures are `
+      + `locked on &mdash; they have happened.` }) : null,
     h('div', { class: 'card' }, [
       h('div', { class: 'card-title' }, ['Where the money goes']),
-      h('div', { class: 'chart-sub', text: 'Share of general fund spending, as you have it now.' }),
+      h('div', { class: 'chart-sub', text: lockedMoney
+        ? 'Department budgets, as you have them now. The citywide measures below are not in this ring, because they are not charged to one department \u2014 which is why the banner above reads lower.'
+        : 'Share of general fund spending, as you have it now.' }),
       budgetChartHost,
       budgetReadout,
       legendFor(DEPTS.map((d) => ({ label: d.short, color: DEPT_COLOR[d.id] }))),
@@ -3705,7 +3737,7 @@ function renderBudget() {
     sliders,
     h('div', { class: 'source-note', html:
       '<b>About these figures.</b> Every department total here is taken from the City of Hollister\'s published FY 2026-27 Approved Budget and sums exactly to its $56,588,184 General Fund expense total. The policy options on the other tabs are game-design estimates — see SOURCES.md.' }),
-  );
+  ]);
 
   refreshBudgetChart();
 }
@@ -3785,7 +3817,7 @@ function renderActionPanel(which) {
   const unpub = list.filter((a) => !a.amountKnown).length;
   if (unpub) {
     kids.push(h('div', { class: 'callout is-warning', html:
-      `<b>${unpub} of these ${list.length}</b> have no published savings or revenue figure. You can still pick them &mdash; they are real proposals &mdash; but they cannot move the deficit, because nobody has put a number on them.` }));
+      `<b>${unpub} of these ${list.length}</b> have no published savings or revenue figure. They are real measures, but they cannot move the deficit, because nobody has put a number on them.` }));
   }
 
   list.forEach((a) => {
@@ -3816,6 +3848,9 @@ function renderImpact() {
   const proj = E.projection(state, BUDGET, ACTIONS);
 
   /* --- service meters --- */
+  const lockedTotal = ACTIONS.actions
+    .reduce((n, a) => n + (a.locked && a.amountKnown ? a.amount : 0), 0);
+
   const metersCard = h('div', { class: 'card' }, [
     h('div', { class: 'card-title' }, ['What residents will notice']),
     h('div', { class: 'chart-sub', text: 'The notch on each bar is where you started.' }),
@@ -3897,6 +3932,10 @@ function renderImpact() {
           h('td', { text: rv.label + ' (' + rv.asOfPeriod + ')' }),
           h('td', { class: 'neg', text: fmt.full(rv.amount) }),
         ]),
+        ...(lockedTotal ? [h('tr', {}, [
+          h('td', { text: 'Measures the City has already carried out, as this game sizes them' }),
+          h('td', { class: 'pos', text: fmt.full(lockedTotal) }),
+        ])] : []),
       ]),
     ]),
     h('div', { class: 'basis', style: 'margin-left:0', text: rv.note }),

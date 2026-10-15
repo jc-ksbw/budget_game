@@ -56,7 +56,7 @@ are official; the names attached to them are a reading of the account structure.
 | Option | Status | Amount | Kind | City sources |
 |---|---|---|---|---|
 | Interfund loan from impact fee funds | Adopted | $11,000,000 | City figure | A Clear Look At Our Financial Situation, Financial Emergency Information Guide |
-| Layoff notices | Adopted | not published | — | Press release #2: workforce reductions and financial emergency, Press release: workforce reductions and financial emergency |
+| Layoff notices (locked on) | Adopted | $3,617,997 | Derived | Notification of Staffing Reductions — letter to SEIU Local 521, Press release #2: workforce reductions and financial emergency, Press release: workforce reductions and financial emergency |
 | Voluntary separation and retirement incentives | Adopted | not published | — | Press release #2: workforce reductions and financial emergency |
 | Cancelled contracts with non-profits | Adopted | not published | — | Financial Emergency Information Guide |
 | Release the budgeted contingency | Discussed | $1,200,000 | City figure | FY 2026-27 Approved Budget Document, Financial Emergency Information Guide |
@@ -113,9 +113,13 @@ published a depth for any of these. The bases are all published City figures.
 ## The specific corrections
 
 **The loan** — approved October 2, 2026: $18M from impact fee funds, $11M to the
-General Fund, repayable by **June 30, 2027**. Modelled as a **cash bridge**: it
-supplies near-term operating cash and is barred in code from touching recurring
-savings or the structural gap.
+General Fund, repayable by **June 30, 2027**. It sits on the **Revenue** tab, because
+that is where the money arrives, and is modelled as a **cash bridge**: it supplies
+near-term operating cash and is barred in code from touching recurring savings or the
+structural gap. Its only meter effect is on public trust. It carries **no
+infrastructure penalty**: no City document shows a capital project delayed because of
+it, so the game does not claim one. If a later City document shows a project was
+actually delayed, add it then.
 
 > **Rate discrepancy, preserved.** City staff have been quoted putting the rate at
 > **4%**; the adopted resolution has been described as stating **3–4%**. The
@@ -144,9 +148,35 @@ to close it on its own. None of the steps above could complete inside FY 2026-27
 the card is tagged **Needs legislation, council and voters** and its text says the
 collections could not begin until all of them cleared.
 
-**The Oct 14 layoffs** — the City states voluntary separations "did not generate
-sufficient savings" and that it began issuing layoff notices on October 14, 2026.
-**No headcount and no savings amount were published**, so neither is shown.
+**The Oct 14 layoffs and the voluntary separations** — both have already happened,
+so both are **locked on** from the first screen and cannot be switched off. The
+opening board is therefore $2,745,287, not the adopted $6,363,284; the adopted figure
+is still reported as the starting point, and the Budget tab says in as many words
+what the difference is.
+
+The savings figure is **derived, not published**. The City's October 14, 2026
+*Notification of Staffing Reductions* to SEIU Local 521 — signed by the City Manager
+— lists **16 employees** being laid off, plus one frozen vacancy, with a combined
+annual payroll of **$2,315,518**, an average of **$144,720** each. That average
+applied to **25** positions gives **$3,617,997**.
+
+> **What that number is not.** It is gross payroll, not General Fund savings: five of
+> the sixteen are water operators and one is at the airport, paid from enterprise
+> funds. Employment severs November 13, 2026, so FY 2026-27 carries only part of a
+> year. Severance and leave payouts land against the first year. And **25 is not a
+> City count** — the letter covers SEIU-represented staff only, and the City has
+> published no citywide total. The card says all of this.
+
+> **Where the letter came from.** The City has not posted it on hollister.ca.gov. The
+> public copy is an [Instagram
+> post](https://www.instagram.com/p/DedlTzsFP_7/?img_index=1) carrying both pages. It
+> is cited as what it is — a City of Hollister letter — with a note saying where the
+> copy lives. This is the **only** citation in the game that is not hosted on
+> hollister.ca.gov, and the verification script allows it by exact URL so that nothing
+> else can slip through.
+
+The City separately states the voluntary separations "did not generate sufficient
+savings". **No savings amount was published for them**, so that card still shows none.
 
 ---
 

@@ -86,9 +86,10 @@ function changed() {
 }
 
 function toggleAction(id) {
+  const a = ACTIONS.actions.find((x) => x.id === id);
+  if (a && a.locked) return;   // already done in the real world
   if (state.chosen.has(id)) state.chosen.delete(id);
   else state.chosen.add(id);
-  const a = ACTIONS.actions.find((x) => x.id === id);
   document.querySelectorAll(`[data-action="${id}"]`).forEach((n) => {
     n.setAttribute('aria-pressed', state.chosen.has(id) ? 'true' : 'false');
   });
@@ -115,14 +116,24 @@ function renderBudget() {
     })
   ));
 
-  p.replaceChildren(
+  const lockedCuts = ACTIONS.actions.filter((a) => a.locked);
+  const lockedMoney = lockedCuts.reduce((n, a) => n + (a.amountKnown ? a.amount : 0), 0);
+
+  setChildren(p, [
     h('div', { class: 'panel-head' }, [
       h('h2', { text: 'General fund spending' }),
       h('p', { text: 'Drag to change what each department gets. The floors are set where a department stops being able to do its job.' }),
     ]),
+    lockedCuts.length ? h('div', { class: 'callout' , html:
+      `The adopted budget opened <b>${fmt.full(t.startGap)}</b> short. The City has already acted on `
+      + `<b>${lockedCuts.length}</b> of the measures below, worth about <b>${fmt.money(lockedMoney)}</b>, `
+      + `so you start with <b>${fmt.full(Math.max(0, t.cashGap))}</b> left to close. Those measures are `
+      + `locked on &mdash; they have happened.` }) : null,
     h('div', { class: 'card' }, [
       h('div', { class: 'card-title' }, ['Where the money goes']),
-      h('div', { class: 'chart-sub', text: 'Share of general fund spending, as you have it now.' }),
+      h('div', { class: 'chart-sub', text: lockedMoney
+        ? 'Department budgets, as you have them now. The citywide measures below are not in this ring, because they are not charged to one department \u2014 which is why the banner above reads lower.'
+        : 'Share of general fund spending, as you have it now.' }),
       budgetChartHost,
       budgetReadout,
       legendFor(DEPTS.map((d) => ({ label: d.short, color: DEPT_COLOR[d.id] }))),
@@ -130,7 +141,7 @@ function renderBudget() {
     sliders,
     h('div', { class: 'source-note', html:
       '<b>About these figures.</b> Every department total here is taken from the City of Hollister\'s published FY 2026-27 Approved Budget and sums exactly to its $56,588,184 General Fund expense total. The policy options on the other tabs are game-design estimates — see SOURCES.md.' }),
-  );
+  ]);
 
   refreshBudgetChart();
 }
@@ -210,7 +221,7 @@ function renderActionPanel(which) {
   const unpub = list.filter((a) => !a.amountKnown).length;
   if (unpub) {
     kids.push(h('div', { class: 'callout is-warning', html:
-      `<b>${unpub} of these ${list.length}</b> have no published savings or revenue figure. You can still pick them &mdash; they are real proposals &mdash; but they cannot move the deficit, because nobody has put a number on them.` }));
+      `<b>${unpub} of these ${list.length}</b> have no published savings or revenue figure. They are real measures, but they cannot move the deficit, because nobody has put a number on them.` }));
   }
 
   list.forEach((a) => {
@@ -241,6 +252,9 @@ function renderImpact() {
   const proj = E.projection(state, BUDGET, ACTIONS);
 
   /* --- service meters --- */
+  const lockedTotal = ACTIONS.actions
+    .reduce((n, a) => n + (a.locked && a.amountKnown ? a.amount : 0), 0);
+
   const metersCard = h('div', { class: 'card' }, [
     h('div', { class: 'card-title' }, ['What residents will notice']),
     h('div', { class: 'chart-sub', text: 'The notch on each bar is where you started.' }),
@@ -322,6 +336,10 @@ function renderImpact() {
           h('td', { text: rv.label + ' (' + rv.asOfPeriod + ')' }),
           h('td', { class: 'neg', text: fmt.full(rv.amount) }),
         ]),
+        ...(lockedTotal ? [h('tr', {}, [
+          h('td', { text: 'Measures the City has already carried out, as this game sizes them' }),
+          h('td', { class: 'pos', text: fmt.full(lockedTotal) }),
+        ])] : []),
       ]),
     ]),
     h('div', { class: 'basis', style: 'margin-left:0', text: rv.note }),

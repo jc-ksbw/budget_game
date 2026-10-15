@@ -16,9 +16,14 @@ export function createState(budget, actions) {
   budget.generalFund.departments.forEach((d) => { dept[d.id] = 100; });
   const meters = {};
   actions.meta.meters.forEach((m) => { meters[m.id] = m.start; });
+  // Measures the City has already carried out are on the board from the first
+  // screen and cannot be switched off.
+  const chosen = new Set();
+  actions.actions.forEach((a) => { if (a.locked) chosen.add(a.id); });
+
   return {
     deptPct: dept,
-    chosen: new Set(),
+    chosen,
     startMeters: meters,
     ballotResults: null,   // filled in at submission
     submitted: false,

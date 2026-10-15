@@ -68,7 +68,7 @@ scorecard separates:
   a California council cannot adopt an unbalanced general fund budget.)
 - **Structural balance** — does recurring revenue cover recurring cost?
 
-You can cover the whole $6,363,284 with the $11M interfund loan the City actually
+You can cover the whole remaining gap with the $11M interfund loan the City actually
 took, share it, and watch it go down well — and still be told, correctly, that the
 structural hole is exactly as deep as before. The loan is modelled as a **cash
 bridge** and is barred in code from touching recurring savings or the structural
@@ -125,7 +125,15 @@ Two cards carry heavy caveats:
   **Needs legislation, council and voters** and the game counts a full year of
   collections that could not begin until all of that cleared.
 - **The $11M interfund loan** is a **cash bridge**, barred in code from touching
-  recurring savings or the structural gap.
+  recurring savings or the structural gap. It sits on the Revenue tab and carries no
+  infrastructure penalty, because no City document shows a project delayed by it.
+
+Two cards are **locked on** from the first screen, because the City has already done
+them: the **October 14 layoffs** and the **voluntary separations**. The board
+therefore opens at **$2,745,287**, not the adopted **$6,363,284**, and the Budget tab
+says why. The layoff figure of **$3,617,997** is derived — the City's October 14
+letter to SEIU Local 521 names 16 employees at a combined $2,315,518, an average of
+$144,720, applied to 25 positions. See SOURCES.md for what that number is not.
 
 ### The community
 

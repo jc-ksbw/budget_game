@@ -138,10 +138,11 @@ required, and the City Manager estimated roughly six months just for the legisla
 and a fiscal analysis.
 
 The card carries **$9,682,000/yr**, inferred by matching the existing 1% Measure W
-tax — **not an official forecast** — with the rate moving **9.25% → 10.25%**. Because
-none of those steps could complete inside FY 2026-27, the revenue is modelled as
-**deferred**: it cannot close the adopted-year gap, and appears in the outlook from
-**FY 2027-28**. Picking it alone leaves this year exactly as short as before.
+tax — **not an official forecast** — with the rate moving **9.25% → 10.25%**. The
+game counts a full year of collections against the adopted-year gap, which is enough
+to close it on its own. None of the steps above could complete inside FY 2026-27, so
+the card is tagged **Needs legislation, council and voters** and its text says the
+collections could not begin until all of them cleared.
 
 **The Oct 14 layoffs** — the City states voluntary separations "did not generate
 sufficient savings" and that it began issuing layoff notices on October 14, 2026.
@@ -290,7 +291,7 @@ visually and is quoted above. Every URL returned HTTP 200 when this was written.
 `data/actions.json` carries per card: `status` (`adopted` / `discussed` /
 `exploratory` / `benchmark`), `amountKnown`, `amount` (**null** when unpublished —
 never 0), `amountKind` (`published` / `derived` / `benchmark`), `amountBasis` or
-`unpublishedNote`, optional `cashBridge`, `conditional`, `deferredFrom` +
-`amountTiming`, and `sources[]` with title, publisher, url and date.
+`unpublishedNote`, optional `cashBridge`, `conditional` and `amountTiming`, and
+`sources[]` with title, publisher, url and date.
 `data/hollister-fy2027.json` carries `deficitLabel`, `deficitSource` and a separate
 `revisedDeficit` block.

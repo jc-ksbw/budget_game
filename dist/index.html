@@ -2071,7 +2071,7 @@ const ACTIONS = {
       "amountKind": "derived",
       "amountBasis": "Sized by matching the existing 1% Measure W transactions-and-use tax, which the adopted budget projects at $9,682,000. An inference from the existing tax, not an official forecast for a new one.",
       "desc": "In October 2026 the Council authorised staff to pursue special state legislation that would let the City raise its sales tax cap by up to 1%, taking the rate from 9.25% to 10.25%.",
-      "consequence": "Nothing is enacted yet. The October action imposed no tax, set no rate and placed nothing on a ballot — legislation, a later Council action and voter approval would all be required, and the City Manager estimated roughly six months just for the legislation and a fiscal analysis. It cannot close this year's budget; it shows up in the outlook from FY 2027-28.",
+      "consequence": "Nothing is enacted yet. The October action imposed no tax, set no rate and placed nothing on a ballot — legislation, a later Council action and voter approval would all be required, and the City Manager estimated roughly six months just for the legislation and a fiscal analysis. The game counts a full year of collections, which in the real world could not begin until every one of those steps cleared.",
       "effects": {
         "trust": -11,
         "community": -3
@@ -2092,9 +2092,7 @@ const ACTIONS = {
           "url": "https://hollister.ca.gov/City%20Managers/Documents/Hollister_FY2026-27_Approved_Budget_July4_Cover.pdf",
           "date": "2026-07-04"
         }
-      ],
-      "deferredFrom": 1,
-      "amountTiming": "Earliest FY 2027-28"
+      ]
     },
     {
       "id": "cost-recovery",
@@ -2892,7 +2890,7 @@ function totals(state, budget, actions) {
 
   let ongoingCuts = 0, ongoingRevenue = 0, oneTime = 0;
   let taxBurden = 0, bizBurden = 0;
-  let unquantified = 0, cashBridge = 0, scenarioRevenue = 0, deferredRevenue = 0;
+  let unquantified = 0, cashBridge = 0, scenarioRevenue = 0;
   const picked = [];
 
   actions.actions.forEach((a) => {
@@ -2913,11 +2911,6 @@ function totals(state, budget, actions) {
     // A cash bridge supplies operating cash. It is one-time by construction and
     // must never reach the recurring side of the ledger.
     if (a.cashBridge) { cashBridge += value; oneTime += value; return; }
-
-    // Revenue that cannot be collected this budget year — it still needs
-    // legislation, a council action and an election — lands in the outlook
-    // from a later year, never in this year's gap.
-    if (a.deferredFrom != null) { deferredRevenue += value; return; }
 
     if (a.type === 'onetime') oneTime += value;
     else if (a.category === 'revenue') {
@@ -2944,7 +2937,7 @@ function totals(state, budget, actions) {
   return {
     baseExp, curExp, deptSavings, baseRev,
     ongoingCuts, ongoingRevenue, oneTime, taxBurden, bizBurden,
-    unquantified, cashBridge, scenarioRevenue, scenarioStructuralGap, deferredRevenue,
+    unquantified, cashBridge, scenarioRevenue, scenarioStructuralGap,
     atRisk: 0,
     ongoingExp, ongoingRev,
     structuralGap, cashGap, startGap, closed,
@@ -2999,22 +2992,11 @@ function projection(state, budget, actions) {
   const p = budget.projection;
   const years = p.years;
 
-  // Earliest year any deferred revenue could actually arrive.
-  let deferFrom = Infinity;
-  actions.actions.forEach((a) => {
-    if (state.chosen.has(a.id) && a.deferredFrom != null && a.amountKnown) {
-      deferFrom = Math.min(deferFrom, a.deferredFrom);
-    }
-  });
-
   const rev = [], exp = [];
   for (let i = 0; i < years.length; i++) {
     // One-time money is in the first year and only the first year.
     const oneTimeThisYear = i === 0 ? t.oneTime : 0;
-    const deferred = i >= deferFrom
-      ? t.deferredRevenue * Math.pow(1 + p.revenueGrowth, i - deferFrom)
-      : 0;
-    rev.push(t.ongoingRev * Math.pow(1 + p.revenueGrowth, i) + oneTimeThisYear + deferred);
+    rev.push(t.ongoingRev * Math.pow(1 + p.revenueGrowth, i) + oneTimeThisYear);
     exp.push(t.ongoingExp * Math.pow(1 + p.expenditureGrowth, i));
   }
   const gaps = exp.map((e, i) => e - rev[i]);

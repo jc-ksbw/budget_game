@@ -114,15 +114,16 @@ is no decision left in them. That rules out Measure V (already inside the $975,0
 of hotel tax) and the July 2026 fee update (already inside the $4,211,000 of
 licences and permits).
 
-Two cards model timing, not just money:
+Two cards carry heavy caveats:
 
 - **The additional 1% sales tax** carries **$9,682,000/yr**, inferred by matching
-  the existing 1% Measure W tax, with the rate moving **9.25% → 10.25%**. But the
-  October 2026 action only authorised pursuing state legislation — legislation, a
-  later Council action and an election would all have to happen first, roughly six
-  months for the legislation alone. So it is **deferred**: it cannot close the
-  adopted-year gap and appears in the outlook from **FY 2027-28**. It fixes the
-  out-years while this year stays exactly as short as it was.
+  the existing 1% Measure W tax, with the rate moving **9.25% → 10.25%**. It is the
+  single largest option on the board and, picked alone, closes the whole gap. The
+  October 2026 action only authorised pursuing state legislation, though —
+  legislation, a later Council action and an election would all have to happen
+  first, roughly six months for the legislation alone — so the card is tagged
+  **Needs legislation, council and voters** and the game counts a full year of
+  collections that could not begin until all of that cleared.
 - **The $11M interfund loan** is a **cash bridge**, barred in code from touching
   recurring savings or the structural gap.
 

@@ -1157,7 +1157,7 @@ export const ACTIONS = {
       "amountKind": "derived",
       "amountBasis": "Sized by matching the existing 1% Measure W transactions-and-use tax, which the adopted budget projects at $9,682,000. An inference from the existing tax, not an official forecast for a new one.",
       "desc": "In October 2026 the Council authorised staff to pursue special state legislation that would let the City raise its sales tax cap by up to 1%, taking the rate from 9.25% to 10.25%.",
-      "consequence": "Nothing is enacted yet. The October action imposed no tax, set no rate and placed nothing on a ballot — legislation, a later Council action and voter approval would all be required, and the City Manager estimated roughly six months just for the legislation and a fiscal analysis. It cannot close this year's budget; it shows up in the outlook from FY 2027-28.",
+      "consequence": "Nothing is enacted yet. The October action imposed no tax, set no rate and placed nothing on a ballot — legislation, a later Council action and voter approval would all be required, and the City Manager estimated roughly six months just for the legislation and a fiscal analysis. The game counts a full year of collections, which in the real world could not begin until every one of those steps cleared.",
       "effects": {
         "trust": -11,
         "community": -3
@@ -1178,9 +1178,7 @@ export const ACTIONS = {
           "url": "https://hollister.ca.gov/City%20Managers/Documents/Hollister_FY2026-27_Approved_Budget_July4_Cover.pdf",
           "date": "2026-07-04"
         }
-      ],
-      "deferredFrom": 1,
-      "amountTiming": "Earliest FY 2027-28"
+      ]
     },
     {
       "id": "cost-recovery",

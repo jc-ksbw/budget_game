@@ -37,7 +37,7 @@ export function totals(state, budget, actions) {
 
   let ongoingCuts = 0, ongoingRevenue = 0, oneTime = 0;
   let taxBurden = 0, bizBurden = 0;
-  let unquantified = 0, cashBridge = 0, scenarioRevenue = 0, deferredRevenue = 0;
+  let unquantified = 0, cashBridge = 0, scenarioRevenue = 0;
   const picked = [];
 
   actions.actions.forEach((a) => {
@@ -58,11 +58,6 @@ export function totals(state, budget, actions) {
     // A cash bridge supplies operating cash. It is one-time by construction and
     // must never reach the recurring side of the ledger.
     if (a.cashBridge) { cashBridge += value; oneTime += value; return; }
-
-    // Revenue that cannot be collected this budget year — it still needs
-    // legislation, a council action and an election — lands in the outlook
-    // from a later year, never in this year's gap.
-    if (a.deferredFrom != null) { deferredRevenue += value; return; }
 
     if (a.type === 'onetime') oneTime += value;
     else if (a.category === 'revenue') {
@@ -89,7 +84,7 @@ export function totals(state, budget, actions) {
   return {
     baseExp, curExp, deptSavings, baseRev,
     ongoingCuts, ongoingRevenue, oneTime, taxBurden, bizBurden,
-    unquantified, cashBridge, scenarioRevenue, scenarioStructuralGap, deferredRevenue,
+    unquantified, cashBridge, scenarioRevenue, scenarioStructuralGap,
     atRisk: 0,
     ongoingExp, ongoingRev,
     structuralGap, cashGap, startGap, closed,
@@ -147,22 +142,11 @@ export function projection(state, budget, actions) {
   const p = budget.projection;
   const years = p.years;
 
-  // Earliest year any deferred revenue could actually arrive.
-  let deferFrom = Infinity;
-  actions.actions.forEach((a) => {
-    if (state.chosen.has(a.id) && a.deferredFrom != null && a.amountKnown) {
-      deferFrom = Math.min(deferFrom, a.deferredFrom);
-    }
-  });
-
   const rev = [], exp = [];
   for (let i = 0; i < years.length; i++) {
     // One-time money is in the first year and only the first year.
     const oneTimeThisYear = i === 0 ? t.oneTime : 0;
-    const deferred = i >= deferFrom
-      ? t.deferredRevenue * Math.pow(1 + p.revenueGrowth, i - deferFrom)
-      : 0;
-    rev.push(t.ongoingRev * Math.pow(1 + p.revenueGrowth, i) + oneTimeThisYear + deferred);
+    rev.push(t.ongoingRev * Math.pow(1 + p.revenueGrowth, i) + oneTimeThisYear);
     exp.push(t.ongoingExp * Math.pow(1 + p.expenditureGrowth, i));
   }
   const gaps = exp.map((e, i) => e - rev[i]);

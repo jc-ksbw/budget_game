@@ -187,69 +187,6 @@
       ]
     },
     {
-      "id": "measure-v-tot",
-      "name": "Hotel tax increase (Measure V)",
-      "category": "revenue",
-      "type": "ongoing",
-      "status": "adopted",
-      "amountKnown": true,
-      "amount": 0,
-      "amountKind": "published",
-      "amountBasis": "Already enacted, so it adds nothing further. The City's ballot language estimated approximately $300,000.00 annually.",
-      "desc": "Voters raised the transient occupancy tax from 8% to 12%, effective April 1, 2025.",
-      "consequence": "Already enacted and already inside the $975,000 of hotel tax in the adopted budget. Nothing further to claim.",
-      "effects": {},
-      "enacted": true,
-      "realWorld": true,
-      "realNote": "Ballot question: a four percentage point (4%) increase \"increasing the total tax levied on hotel occupants from 8 to 12 percent … generating approximately $300,000.00 annually.\"",
-      "sources": [
-        {
-          "title": "Hotel Tax (Measure V)",
-          "publisher": "City of Hollister, City Clerk",
-          "url": "https://hollister.ca.gov/government/city_clerk/hotel_tax_(measure_v).php",
-          "date": "2024-11-05"
-        },
-        {
-          "title": "FY 2026-27 Approved Budget Document",
-          "publisher": "City of Hollister",
-          "url": "https://hollister.ca.gov/City%20Managers/Documents/Hollister_FY2026-27_Approved_Budget_July4_Cover.pdf",
-          "date": "2026-07-04"
-        }
-      ]
-    },
-    {
-      "id": "building-fee-update",
-      "name": "Updated building permit and user fees",
-      "category": "revenue",
-      "type": "ongoing",
-      "status": "adopted",
-      "amountKnown": true,
-      "amount": 0,
-      "amountKind": "published",
-      "amountBasis": "Already in effect before the adopted budget, so it adds nothing further to it.",
-      "desc": "The City published an updated building permit and user fee schedule on July 23, 2026.",
-      "consequence": "Already in effect, so its yield is already inside the $4,211,000 of licences and permits in the adopted budget.",
-      "effects": {
-        "community": -2,
-        "trust": -2
-      },
-      "enacted": true,
-      "sources": [
-        {
-          "title": "Updated Building Permit and User Fees",
-          "publisher": "City of Hollister",
-          "url": "https://hollister.ca.gov/news_detail_T3_R107.php",
-          "date": "2026-07-23"
-        },
-        {
-          "title": "FY 2026-27 Approved Budget Document",
-          "publisher": "City of Hollister",
-          "url": "https://hollister.ca.gov/City%20Managers/Documents/Hollister_FY2026-27_Approved_Budget_July4_Cover.pdf",
-          "date": "2026-07-04"
-        }
-      ]
-    },
-    {
       "id": "layoff-notices",
       "name": "Layoff notices",
       "category": "cuts",
@@ -443,7 +380,7 @@
       "amountKnown": true,
       "amount": 970035,
       "amountKind": "derived",
-      "amountBasis": "10% of the published General Fund services and supplies total of $9,700,350. The 10% depth is this game's illustration.",
+      "amountBasis": "10% of the published General Fund services and supplies total of $9,700,350. The 10% depth is this game's illustration, not a City figure.",
       "desc": "The City lists administrative services among the areas that could be reduced.",
       "consequence": "Spread thinly across every department. It is the easiest cut to make and the easiest to reverse.",
       "effects": {
@@ -475,7 +412,7 @@
       "amountKnown": true,
       "amount": 594815,
       "amountKind": "derived",
-      "amountBasis": "5% of the published General Fund contractual total of $11,896,300. The 5% depth is this game's illustration.",
+      "amountBasis": "5% of the published General Fund contractual total of $11,896,300. The 5% depth is this game's illustration, not a City figure.",
       "desc": "Reviewing contracts is one of the steps named in the City's financial emergency response.",
       "consequence": "Much of this is dispatch, legal and solid waste under contract. Some of it cannot be cut without renegotiating.",
       "effects": {
@@ -645,22 +582,16 @@
       "type": "ongoing",
       "status": "discussed",
       "amountKnown": true,
-      "amount": 0,
-      "amountKind": "published",
-      "amountBasis": "No tax is enacted, so current revenue from this proposal is $0.",
-      "desc": "In October 2026 the Council authorised staff to pursue special state legislation that would let the City raise its sales tax cap by up to 1%.",
-      "consequence": "This did not impose a tax, set a rate, or place a measure on the ballot. Legislation, a later Council action and voter approval would all be required first.",
+      "amount": 9682000,
+      "amountKind": "derived",
+      "amountBasis": "Sized by matching the existing 1% Measure W transactions-and-use tax, which the adopted budget projects at $9,682,000. An inference from the existing tax, not an official forecast for a new one.",
+      "desc": "In October 2026 the Council authorised staff to pursue special state legislation that would let the City raise its sales tax cap by up to 1%, taking the rate from 9.25% to 10.25%.",
+      "consequence": "Nothing is enacted yet. The October action imposed no tax, set no rate and placed nothing on a ballot — legislation, a later Council action and voter approval would all be required, and the City Manager estimated roughly six months just for the legislation and a fiscal analysis. It cannot close this year's budget; it shows up in the outlook from FY 2027-28.",
       "effects": {
-        "trust": -5
+        "trust": -11,
+        "community": -3
       },
       "conditional": true,
-      "scenario": {
-        "amount": 9682000,
-        "label": "If a full additional 1% were enacted",
-        "basis": "Inferred by matching the existing 1% Measure W transactions-and-use tax, which the adopted budget projects at $9,682,000. An inference from the existing tax, not an official forecast for a new one.",
-        "rateFrom": 9.25,
-        "rateTo": 10.25
-      },
       "realWorld": true,
       "realNote": "The October 2, 2026 action only authorised pursuing special state legislation.",
       "sources": [
@@ -676,7 +607,9 @@
           "url": "https://hollister.ca.gov/City%20Managers/Documents/Hollister_FY2026-27_Approved_Budget_July4_Cover.pdf",
           "date": "2026-07-04"
         }
-      ]
+      ],
+      "deferredFrom": 1,
+      "amountTiming": "Earliest FY 2027-28"
     },
     {
       "id": "cost-recovery",

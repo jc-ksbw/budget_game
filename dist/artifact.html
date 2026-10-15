@@ -658,16 +658,6 @@ table.dt .neg { color: var(--critical); }
 .callout.is-warning { border-left-color: var(--warning); }
 .callout.is-critical { border-left-color: var(--critical); }
 
-.toast {
-  position: fixed; left: 50%; bottom: calc(var(--nav-h) + env(safe-area-inset-bottom) + 14px);
-  transform: translate(-50%, 16px); z-index: 60;
-  background: var(--text-1); color: var(--plane);
-  padding: 11px 17px; border-radius: 999px; font-size: 13.5px; font-weight: 600;
-  box-shadow: var(--shadow-2); opacity: 0; pointer-events: none;
-  transition: opacity .22s ease, transform .22s ease; max-width: calc(100vw - 32px);
-}
-.toast.is-on { opacity: 1; transform: translate(-50%, 0); }
-
 .theme-toggle {
   position: absolute; top: 10px; right: max(14px, env(safe-area-inset-right, 0px));
   width: 40px; height: 40px; border-radius: 50%; z-index: 50;
@@ -821,7 +811,6 @@ table.dt .neg { color: var(--critical); }
     <div class="panel is-active" id="panel-result"></div>
   </section>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <dialog class="sheet" id="about-sheet" aria-labelledby="about-title">
     <div class="sheet-head">
@@ -1301,7 +1290,9 @@ const BUDGET = {
     "years": [
       "FY 2026-27",
       "FY 2027-28",
-      "FY 2028-29"
+      "FY 2028-29",
+      "FY 2029-30",
+      "FY 2030-31"
     ],
     "confidence": "modeled"
   },
@@ -1519,69 +1510,6 @@ const ACTIONS = {
       ]
     },
     {
-      "id": "measure-v-tot",
-      "name": "Hotel tax increase (Measure V)",
-      "category": "revenue",
-      "type": "ongoing",
-      "status": "adopted",
-      "amountKnown": true,
-      "amount": 0,
-      "amountKind": "published",
-      "amountBasis": "Already enacted, so it adds nothing further. The City's ballot language estimated approximately $300,000.00 annually.",
-      "desc": "Voters raised the transient occupancy tax from 8% to 12%, effective April 1, 2025.",
-      "consequence": "Already enacted and already inside the $975,000 of hotel tax in the adopted budget. Nothing further to claim.",
-      "effects": {},
-      "enacted": true,
-      "realWorld": true,
-      "realNote": "Ballot question: a four percentage point (4%) increase \"increasing the total tax levied on hotel occupants from 8 to 12 percent … generating approximately $300,000.00 annually.\"",
-      "sources": [
-        {
-          "title": "Hotel Tax (Measure V)",
-          "publisher": "City of Hollister, City Clerk",
-          "url": "https://hollister.ca.gov/government/city_clerk/hotel_tax_(measure_v).php",
-          "date": "2024-11-05"
-        },
-        {
-          "title": "FY 2026-27 Approved Budget Document",
-          "publisher": "City of Hollister",
-          "url": "https://hollister.ca.gov/City%20Managers/Documents/Hollister_FY2026-27_Approved_Budget_July4_Cover.pdf",
-          "date": "2026-07-04"
-        }
-      ]
-    },
-    {
-      "id": "building-fee-update",
-      "name": "Updated building permit and user fees",
-      "category": "revenue",
-      "type": "ongoing",
-      "status": "adopted",
-      "amountKnown": true,
-      "amount": 0,
-      "amountKind": "published",
-      "amountBasis": "Already in effect before the adopted budget, so it adds nothing further to it.",
-      "desc": "The City published an updated building permit and user fee schedule on July 23, 2026.",
-      "consequence": "Already in effect, so its yield is already inside the $4,211,000 of licences and permits in the adopted budget.",
-      "effects": {
-        "community": -2,
-        "trust": -2
-      },
-      "enacted": true,
-      "sources": [
-        {
-          "title": "Updated Building Permit and User Fees",
-          "publisher": "City of Hollister",
-          "url": "https://hollister.ca.gov/news_detail_T3_R107.php",
-          "date": "2026-07-23"
-        },
-        {
-          "title": "FY 2026-27 Approved Budget Document",
-          "publisher": "City of Hollister",
-          "url": "https://hollister.ca.gov/City%20Managers/Documents/Hollister_FY2026-27_Approved_Budget_July4_Cover.pdf",
-          "date": "2026-07-04"
-        }
-      ]
-    },
-    {
       "id": "layoff-notices",
       "name": "Layoff notices",
       "category": "cuts",
@@ -1775,7 +1703,7 @@ const ACTIONS = {
       "amountKnown": true,
       "amount": 970035,
       "amountKind": "derived",
-      "amountBasis": "10% of the published General Fund services and supplies total of $9,700,350. The 10% depth is this game's illustration.",
+      "amountBasis": "10% of the published General Fund services and supplies total of $9,700,350. The 10% depth is this game's illustration, not a City figure.",
       "desc": "The City lists administrative services among the areas that could be reduced.",
       "consequence": "Spread thinly across every department. It is the easiest cut to make and the easiest to reverse.",
       "effects": {
@@ -1807,7 +1735,7 @@ const ACTIONS = {
       "amountKnown": true,
       "amount": 594815,
       "amountKind": "derived",
-      "amountBasis": "5% of the published General Fund contractual total of $11,896,300. The 5% depth is this game's illustration.",
+      "amountBasis": "5% of the published General Fund contractual total of $11,896,300. The 5% depth is this game's illustration, not a City figure.",
       "desc": "Reviewing contracts is one of the steps named in the City's financial emergency response.",
       "consequence": "Much of this is dispatch, legal and solid waste under contract. Some of it cannot be cut without renegotiating.",
       "effects": {
@@ -1977,22 +1905,16 @@ const ACTIONS = {
       "type": "ongoing",
       "status": "discussed",
       "amountKnown": true,
-      "amount": 0,
-      "amountKind": "published",
-      "amountBasis": "No tax is enacted, so current revenue from this proposal is $0.",
-      "desc": "In October 2026 the Council authorised staff to pursue special state legislation that would let the City raise its sales tax cap by up to 1%.",
-      "consequence": "This did not impose a tax, set a rate, or place a measure on the ballot. Legislation, a later Council action and voter approval would all be required first.",
+      "amount": 9682000,
+      "amountKind": "derived",
+      "amountBasis": "Sized by matching the existing 1% Measure W transactions-and-use tax, which the adopted budget projects at $9,682,000. An inference from the existing tax, not an official forecast for a new one.",
+      "desc": "In October 2026 the Council authorised staff to pursue special state legislation that would let the City raise its sales tax cap by up to 1%, taking the rate from 9.25% to 10.25%.",
+      "consequence": "Nothing is enacted yet. The October action imposed no tax, set no rate and placed nothing on a ballot — legislation, a later Council action and voter approval would all be required, and the City Manager estimated roughly six months just for the legislation and a fiscal analysis. It cannot close this year's budget; it shows up in the outlook from FY 2027-28.",
       "effects": {
-        "trust": -5
+        "trust": -11,
+        "community": -3
       },
       "conditional": true,
-      "scenario": {
-        "amount": 9682000,
-        "label": "If a full additional 1% were enacted",
-        "basis": "Inferred by matching the existing 1% Measure W transactions-and-use tax, which the adopted budget projects at $9,682,000. An inference from the existing tax, not an official forecast for a new one.",
-        "rateFrom": 9.25,
-        "rateTo": 10.25
-      },
       "realWorld": true,
       "realNote": "The October 2, 2026 action only authorised pursuing special state legislation.",
       "sources": [
@@ -2008,7 +1930,9 @@ const ACTIONS = {
           "url": "https://hollister.ca.gov/City%20Managers/Documents/Hollister_FY2026-27_Approved_Budget_July4_Cover.pdf",
           "date": "2026-07-04"
         }
-      ]
+      ],
+      "deferredFrom": 1,
+      "amountTiming": "Earliest FY 2027-28"
     },
     {
       "id": "cost-recovery",
@@ -2515,9 +2439,18 @@ function lines(host, series, categories, opts = {}) {
       svg.appendChild(lab);
     }
 
-    categories.forEach((c, i) => {
+    // Past a few categories the full labels collide, so fall back to the short
+    // form when the widest one cannot fit its slot.
+    // The first label is left-anchored and the rest are centred, so the first
+    // pair needs one and a half label widths of clearance, not one.
+    const slotW = plotW / Math.max(1, categories.length - 1);
+    const widest = Math.max(...categories.map((c) => String(c).length)) * 10.5 * 0.55;
+    const shortCats = opts.categoriesShort || categories;
+    const labels = widest * 1.5 > slotW ? shortCats : categories;
+
+    labels.forEach((c, i) => {
       const lab = txt(X(i), H - 9, c, {
-        'text-anchor': i === 0 ? 'start' : i === categories.length - 1 ? 'end' : 'middle',
+        'text-anchor': i === 0 ? 'start' : i === labels.length - 1 ? 'end' : 'middle',
         'font-size': 10.5,
       });
       lab.style.fill = 'var(--muted)';
@@ -2797,7 +2730,7 @@ function totals(state, budget, actions) {
 
   let ongoingCuts = 0, ongoingRevenue = 0, oneTime = 0;
   let taxBurden = 0, bizBurden = 0;
-  let unquantified = 0, cashBridge = 0, scenarioRevenue = 0;
+  let unquantified = 0, cashBridge = 0, scenarioRevenue = 0, deferredRevenue = 0;
   const picked = [];
 
   actions.actions.forEach((a) => {
@@ -2818,6 +2751,11 @@ function totals(state, budget, actions) {
     // A cash bridge supplies operating cash. It is one-time by construction and
     // must never reach the recurring side of the ledger.
     if (a.cashBridge) { cashBridge += value; oneTime += value; return; }
+
+    // Revenue that cannot be collected this budget year — it still needs
+    // legislation, a council action and an election — lands in the outlook
+    // from a later year, never in this year's gap.
+    if (a.deferredFrom != null) { deferredRevenue += value; return; }
 
     if (a.type === 'onetime') oneTime += value;
     else if (a.category === 'revenue') {
@@ -2844,7 +2782,7 @@ function totals(state, budget, actions) {
   return {
     baseExp, curExp, deptSavings, baseRev,
     ongoingCuts, ongoingRevenue, oneTime, taxBurden, bizBurden,
-    unquantified, cashBridge, scenarioRevenue, scenarioStructuralGap,
+    unquantified, cashBridge, scenarioRevenue, scenarioStructuralGap, deferredRevenue,
     atRisk: 0,
     ongoingExp, ongoingRev,
     structuralGap, cashGap, startGap, closed,
@@ -2899,11 +2837,22 @@ function projection(state, budget, actions) {
   const p = budget.projection;
   const years = p.years;
 
+  // Earliest year any deferred revenue could actually arrive.
+  let deferFrom = Infinity;
+  actions.actions.forEach((a) => {
+    if (state.chosen.has(a.id) && a.deferredFrom != null && a.amountKnown) {
+      deferFrom = Math.min(deferFrom, a.deferredFrom);
+    }
+  });
+
   const rev = [], exp = [];
   for (let i = 0; i < years.length; i++) {
     // One-time money is in the first year and only the first year.
     const oneTimeThisYear = i === 0 ? t.oneTime : 0;
-    rev.push(t.ongoingRev * Math.pow(1 + p.revenueGrowth, i) + oneTimeThisYear);
+    const deferred = i >= deferFrom
+      ? t.deferredRevenue * Math.pow(1 + p.revenueGrowth, i - deferFrom)
+      : 0;
+    rev.push(t.ongoingRev * Math.pow(1 + p.revenueGrowth, i) + oneTimeThisYear + deferred);
     exp.push(t.ongoingExp * Math.pow(1 + p.expenditureGrowth, i));
   }
   const gaps = exp.map((e, i) => e - rev[i]);
@@ -3041,12 +2990,14 @@ function verdicts(s, budget, actions) {
     push('critical', `<b>${name}</b> has collapsed. Cuts this deep stop being budget decisions and start being service failures.`);
   });
 
-  const y3 = s.proj.gaps[2];
-  if (y3 > 0) {
-    push(y3 > 5e6 ? 'critical' : 'warning',
-      `By <b>${s.proj.years[2]}</b> the projected gap is <b>${money(y3)}</b>. Salary steps and pension costs grow faster than this revenue base.`);
+  const last = s.proj.gaps.length - 1;
+  const yEnd = s.proj.gaps[last];
+  const yrs = s.proj.years.length;
+  if (yEnd > 0) {
+    push(yEnd > 5e6 ? 'critical' : 'warning',
+      `By <b>${s.proj.years[last]}</b> the projected gap is <b>${money(yEnd)}</b>. Salary steps and pension costs grow faster than this revenue base.`);
   } else {
-    push('good', `The three-year outlook holds: <b>${s.proj.years[2]}</b> still projects in the black.`);
+    push('good', `The ${yrs}-year outlook holds: <b>${s.proj.years[last]}</b> still projects in the black.`);
   }
 
   if (t.reservePct > 0) {
@@ -3327,6 +3278,8 @@ function actionCard(action, selected, meterNames, onToggle, statusLabels, kindLa
   // Status rides with the figure, so you read "how much" and "how real" together.
   const moneyCol = h('div', { class: 'money-col' }, [
     amtEl,
+    action.amountTiming
+      ? h('div', { class: 'kind', text: action.amountTiming }) : null,
     action.amountKind && kindLabels && kindLabels[action.amountKind]
       ? h('div', { class: 'kind', text: kindLabels[action.amountKind] }) : null,
     h('span', { class: 'status is-' + action.status }, [
@@ -3459,16 +3412,6 @@ let state = E.createState(BUDGET, ACTIONS);
 let activePanel = 'budget';
 let statusFilter = 'all';
 
-/* ---------- toast ---------- */
-let toastTimer;
-function toast(msg) {
-  const t = $('toast');
-  t.textContent = msg;
-  t.classList.add('is-on');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('is-on'), 2200);
-}
-
 /* ---------- theme ---------- */
 (function theme() {
   const saved = (() => { try { return localStorage.getItem('bh-theme'); } catch { return null; } })();
@@ -3540,15 +3483,6 @@ function toggleAction(id) {
   document.querySelectorAll(`[data-action="${id}"]`).forEach((n) => {
     n.setAttribute('aria-pressed', state.chosen.has(id) ? 'true' : 'false');
   });
-  if (state.chosen.has(id)) {
-    let note;
-    if (!a.amountKnown) note = 'no published figure';
-    else if (a.amount > 0) note = '+' + fmt.money(a.amount);
-    else if (a.enacted) note = 'already enacted';
-    else if (a.conditional) note = '$0 until it is enacted';
-    else note = '$0';
-    toast(`${a.name} · ${note}`);
-  }
   changed();
 }
 
@@ -3683,6 +3617,14 @@ function renderActionPanel(which) {
    Panel: Impact
    ============================================================ */
 
+/** replaceChildren() renders a null child as the literal text "null". */
+function setChildren(el, kids) {
+  el.replaceChildren(...kids.filter(Boolean));
+}
+
+/** "FY 2026-27" -> "FY27", for axes too narrow for the full label. */
+const shortYear = (y) => String(y).replace(/^FY\s*\d{4}-/, 'FY');
+
 function renderImpact() {
   const p = $('panel-impact');
   const t = E.totals(state, BUDGET, ACTIONS);
@@ -3730,9 +3672,10 @@ function renderImpact() {
   /* --- three-year outlook --- */
   const projHost = h('div', { class: 'chart-wrap' });
   const projReadout = h('div', { class: 'readout is-empty', text: 'Tap a year to compare.' });
-  const y3 = proj.gaps[2];
+  const lastYr = proj.gaps.length - 1;
+  const yEnd = proj.gaps[lastYr];
   const projCard = h('div', { class: 'card' }, [
-    h('div', { class: 'card-title' }, ['Three-year outlook']),
+    h('div', { class: 'card-title' }, [`${proj.years.length}-year outlook`]),
     h('div', { class: 'chart-sub', html:
       `Costs grow about <b>4.2%</b> a year, revenue about <b>2.2%</b>. One-time money lands in year one only. The shaded band is the gap.` }),
     projHost,
@@ -3743,10 +3686,10 @@ function renderImpact() {
       { label: 'Short', color: 'var(--neg)' },
     ]),
     projReadout,
-    h('div', { class: 'callout ' + (y3 > 3e6 ? 'is-critical' : y3 > 0 ? 'is-warning' : ''), html:
-      y3 > 0
-        ? `By <b>${proj.years[2]}</b> this plan projects a <b>${fmt.money(y3)}</b> gap. ${t.structurallyBalanced ? 'Even a structurally balanced budget erodes when costs outgrow revenue.' : 'The structural problem has not been solved.'}`
-        : `<b>${proj.years[2]}</b> still projects in the black. That is a genuinely durable fix.` }),
+    h('div', { class: 'callout ' + (yEnd > 3e6 ? 'is-critical' : yEnd > 0 ? 'is-warning' : ''), html:
+      yEnd > 0
+        ? `By <b>${proj.years[lastYr]}</b> this plan projects a <b>${fmt.money(yEnd)}</b> gap. ${t.structurallyBalanced ? 'Even a structurally balanced budget erodes when costs outgrow revenue.' : 'The structural problem has not been solved.'}`
+        : `<b>${proj.years[lastYr]}</b> still projects in the black. That is a genuinely durable fix.` }),
   ]);
 
   /* --- how the gap was closed --- */
@@ -3813,13 +3756,13 @@ function renderImpact() {
     dataTable(t, proj),
   ]);
 
-  p.replaceChildren(
+  setChildren(p, [
     h('div', { class: 'panel-head' }, [
       h('h2', { text: 'Impact' }),
-      h('p', { text: 'What your budget does to the city, and whether it holds up past June.' }),
+      h('p', { text: 'Whether your budget holds up, and what it does to the city.' }),
     ]),
-    metersCard, figuresCard, scenarioCard, wfCard, projCard, changeCard, revCard, tableCard,
-  );
+    projCard, metersCard, figuresCard, scenarioCard, wfCard, changeCard, revCard, tableCard,
+  ]);
 
   /* draw */
   C.divergingBars(changeHost, changed_, {
@@ -3850,6 +3793,7 @@ function renderImpact() {
     { name: 'Spending', color: 'var(--series-2)', values: proj.exp },
   ], proj.years, {
     height: 200, zeroBased: false, band: true,
+    categoriesShort: proj.years.map(shortYear),
     ariaLabel: 'Three-year revenue and spending outlook',
     onPick: (d) => {
       const gap = proj.gaps[d.index];
@@ -3900,8 +3844,8 @@ function dataTable(t, proj) {
         row('One-time money used', t.oneTime),
         row('Budget as adopted', t.cashGap > 0 ? fmt.full(t.cashGap) + ' short' : fmt.full(-t.cashGap) + ' surplus',
             t.cashGap > 0 ? 'neg' : 'pos'),
-        row(`${proj.years[1]} projected gap`, proj.gaps[1], proj.gaps[1] > 0 ? 'neg' : 'pos'),
-        row(`${proj.years[2]} projected gap`, proj.gaps[2], proj.gaps[2] > 0 ? 'neg' : 'pos'),
+        ...proj.years.slice(1).map((y, i) =>
+          row(`${y} projected gap`, proj.gaps[i + 1], proj.gaps[i + 1] > 0 ? 'neg' : 'pos')),
       ]),
     ]),
   ]);
@@ -3988,15 +3932,10 @@ function renderCommunity() {
    ============================================================ */
 
 function submit() {
-  state.ballotResults = E.resolveBallots(state, ACTIONS);
+  state.ballotResults = {};
   state.submitted = true;
-  const failed = Object.entries(state.ballotResults).filter(([, ok]) => !ok);
-  if (failed.length) {
-    const names = failed.map(([id]) => ACTIONS.actions.find((a) => a.id === id).name.toLowerCase());
-    toast(`Voters rejected ${names.join(' and ')}`);
-  }
   renderCommunity();
-  setTimeout(showResult, failed.length ? 1400 : 650);
+  setTimeout(showResult, 650);
 }
 
 function showResult() {
@@ -4047,7 +3986,7 @@ function showResult() {
     ]),
 
     h('div', { class: 'card' }, [
-      h('div', { class: 'card-title' }, ['Three-year outlook']),
+      h('div', { class: 'card-title' }, [`${s.proj.years.length}-year outlook`]),
       h('div', { class: 'chart-sub', text: 'Whether this budget survives past next June. The shaded band is the gap.' }),
       projHost,
       legendFor([
@@ -4087,7 +4026,11 @@ function showResult() {
   C.lines(projHost, [
     { name: 'Revenue', color: 'var(--series-1)', values: s.proj.rev },
     { name: 'Spending', color: 'var(--series-2)', values: s.proj.exp },
-  ], s.proj.years, { height: 200, zeroBased: false, band: true, ariaLabel: 'Three-year outlook' });
+  ], s.proj.years, {
+    height: 200, zeroBased: false, band: true,
+    categoriesShort: s.proj.years.map(shortYear),
+    ariaLabel: `${s.proj.years.length}-year outlook`,
+  });
 
   const t = s.totals;
   C.stackPair(stackHost, [

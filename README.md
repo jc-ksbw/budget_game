@@ -54,7 +54,7 @@ Five tabs, built to be driven with a thumb:
 | **Budget** | Drag each department's funding between a service floor and a ceiling |
 | **Cuts** | Pick from the reductions, deferrals and borrowing the City has actually discussed |
 | **Revenue** | The revenue proposals on the record, including one that is not enacted |
-| **Impact** | See what your budget does to services and whether it survives past June |
+| **Impact** | The five-year outlook first, then what your budget does to services |
 | **Community** | Share it and see how five residents rank it |
 
 The deficit meter is pinned to the top of the screen and updates as you move.
@@ -86,7 +86,7 @@ practical ceiling found by a hill-climbing search is an **A-** with all five on 
 
 ### Every card cites a City document
 
-There are **22** options. Every source link on every card points at a
+There are **20** options. Every source link on every card points at a
 `hollister.ca.gov` document — BenitoLink and other reporting were used as research
 and are credited in [SOURCES.md](SOURCES.md), but are not cited in the game.
 
@@ -98,7 +98,7 @@ Each card shows three things beside its dollar figure:
 | **Amount kind** | **City figure**, **Derived from City figure** (the card shows the arithmetic), or **Benchmark estimate** (sized from a published City line) |
 | **Sources** | title, publisher and date, printed at the bottom of the card |
 
-**12 of the 22 carry a dollar figure; 7 carry none.** Where the City has published
+**13 of the 20 carry a dollar figure; 7 carry none.** Where the City has published
 nothing, the card reads *"Savings/revenue not published"* and the engine stores
 `null` rather than substituting `0` — it cannot move the deficit, and the scorecard
 says how many you picked that moved nothing.
@@ -109,20 +109,22 @@ hotel tax divided by its 12% rate. **The percentages are this game's choice, not
 City's**, and every card says so. The arithmetic is tabulated in SOURCES.md and
 checked by the test suite.
 
-Two cards are special:
+Options already baked into the adopted budget are **not offered as cards** — there
+is no decision left in them. That rules out Measure V (already inside the $975,000
+of hotel tax) and the July 2026 fee update (already inside the $4,211,000 of
+licences and permits).
 
-- **The additional 1% sales tax.** The October 2, 2026 Council action only
-  authorised staff to pursue special state legislation. It imposed no tax, set no
-  rate and placed nothing on a ballot, so enacted revenue is **$0**. A conditional
-  scenario shows **$9,682,000/yr** — inferred by matching the existing 1% Measure W
-  tax, not an official forecast — and the rate moving **9.25% → 10.25%**. It is
-  computed separately and never touches the gap.
-- **The hotel tax.** Measure V already raised it **8% → 12%**, effective April 1,
-  2025, with a City estimate of about $300,000/yr. Marked already enacted, **$0**
-  further.
+Two cards model timing, not just money:
 
-The $11M interfund loan is modelled as a **cash bridge** and is barred in code from
-touching recurring savings or the structural gap.
+- **The additional 1% sales tax** carries **$9,682,000/yr**, inferred by matching
+  the existing 1% Measure W tax, with the rate moving **9.25% → 10.25%**. But the
+  October 2026 action only authorised pursuing state legislation — legislation, a
+  later Council action and an election would all have to happen first, roughly six
+  months for the legislation alone. So it is **deferred**: it cannot close the
+  adopted-year gap and appears in the outlook from **FY 2027-28**. It fixes the
+  out-years while this year stays exactly as short as it was.
+- **The $11M interfund loan** is a **cash bridge**, barred in code from touching
+  recurring savings or the structural gap.
 
 ### The community
 

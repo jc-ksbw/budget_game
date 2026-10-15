@@ -13,7 +13,7 @@ Four kinds of fact live here, kept apart:
 3. **Benchmark options** — revenue tools other California cities use that Hollister
    has **not** proposed, sized from Hollister's own published lines and labelled
    "Common elsewhere" so they can never be mistaken for City proposals.
-4. **Game-design values** — the five service meters and the three-year growth rates.
+4. **Game-design values** — the five service meters and the five-year growth rates.
 
 ---
 
@@ -54,8 +54,6 @@ are official; the names attached to them are a reading of the account structure.
 | Option | Status | Amount | Kind | City sources |
 |---|---|---|---|---|
 | Interfund loan from impact fee funds | Adopted | $11,000,000 | City figure | A Clear Look At Our Financial Situation, Financial Emergency Information Guide |
-| Hotel tax increase (Measure V) | Adopted | $0 | City figure | FY 2026-27 Approved Budget Document, Hotel Tax (Measure V) |
-| Updated building permit and user fees | Adopted | $0 | City figure | FY 2026-27 Approved Budget Document, Updated Building Permit and User Fees |
 | Layoff notices | Adopted | not published | — | Press release #2: workforce reductions and financial emergency, Press release: workforce reductions and financial emergency |
 | Voluntary separation and retirement incentives | Adopted | not published | — | Press release #2: workforce reductions and financial emergency |
 | Cancelled contracts with non-profits | Adopted | not published | — | Financial Emergency Information Guide |
@@ -69,7 +67,7 @@ are official; the names attached to them are a reading of the account structure.
 | Shift customer service to AI | Discussed | not published | — | Financial Emergency Information Guide |
 | Sell assets | Discussed | not published | — | Financial Emergency Information Guide |
 | Collect outstanding debt | Discussed | not published | — | Financial Emergency Information Guide |
-| Additional 1% sales tax | Discussed | $0 | City figure | FY 2026-27 Approved Budget Document, Financial Emergency Information Guide |
+| Additional 1% sales tax | Discussed | $9,682,000 | Derived · Earliest FY 2027-28 | FY 2026-27 Approved Budget Document, Financial Emergency Information Guide |
 | Full cost-recovery fee study | Common elsewhere | $537,685 | Benchmark | FY 2026-27 Approved Budget Document |
 | Modernise the business licence tax | Common elsewhere | $240,000 | Benchmark | FY 2026-27 Approved Budget Document |
 | Raise the hotel tax two more points | Common elsewhere | $162,500 | Benchmark | FY 2026-27 Approved Budget Document |
@@ -125,17 +123,23 @@ savings or the structural gap.
 **Measure V** — passed Nov 5, 2024, effective April 1, 2025. The City's ballot
 question: *"a four percentage point (4%) increase to transient occupancy tax,
 increasing the total tax levied on hotel occupants from 8 to 12 percent … generating
-approximately $300,000.00 annually."* It is **8% → 12%**, not 10% → 12%, it is
-already inside the $975,000 of hotel tax in the adopted budget, and it offers
-**$0** further.
+approximately $300,000.00 annually."* It is **8% → 12%**, not 10% → 12%. Because it
+is already enacted and already inside the $975,000 of hotel tax in the adopted
+budget, **it is not offered as a card** — there is no decision left to make. The same
+applies to the July 2026 building permit and user fee update, already inside the
+$4,211,000 of licences and permits.
 
 **The 1% sales tax** — the October 2, 2026 action **only authorised staff to pursue
 special state legislation**. It imposed no tax, set no rate and placed nothing on a
 ballot; legislation, a later Council action and voter approval would all be
-required. Enacted revenue is **$0** and the card cannot add revenue to the live
-budget. A conditional scenario shows **$9,682,000/yr**, inferred by matching the
-existing 1% Measure W tax — **not an official forecast** — with the rate moving
-**9.25% → 10.25%**.
+required, and the City Manager estimated roughly six months just for the legislation
+and a fiscal analysis.
+
+The card carries **$9,682,000/yr**, inferred by matching the existing 1% Measure W
+tax — **not an official forecast** — with the rate moving **9.25% → 10.25%**. Because
+none of those steps could complete inside FY 2026-27, the revenue is modelled as
+**deferred**: it cannot close the adopted-year gap, and appears in the outlook from
+**FY 2027-28**. Picking it alone leaves this year exactly as short as before.
 
 **The Oct 14 layoffs** — the City states voluntary separations "did not generate
 sufficient savings" and that it began issuing layoff notices on October 14, 2026.
@@ -178,7 +182,7 @@ surplus property sale.
 ## Still estimated
 
 - **The five service meters** and every movement in them.
-- **Growth rates** in the three-year outlook: revenue +2.2%/yr, expenditures
+- **Growth rates** in the five-year outlook: revenue +2.2%/yr, expenditures
   +4.2%/yr. Directionally right for a California city facing CalPERS rate increases
   and salary steps, but not a City projection.
 - **The five community voices**, deliberately fictional archetypes. Not portrayals
@@ -214,7 +218,7 @@ visually and is quoted above. Every URL returned HTTP 200 when this was written.
 `data/actions.json` carries per card: `status` (`adopted` / `discussed` /
 `exploratory` / `benchmark`), `amountKnown`, `amount` (**null** when unpublished —
 never 0), `amountKind` (`published` / `derived` / `benchmark`), `amountBasis` or
-`unpublishedNote`, optional `cashBridge`, `conditional` + `scenario`, `enacted`,
-and `sources[]` with title, publisher, url and date.
+`unpublishedNote`, optional `cashBridge`, `conditional`, `deferredFrom` +
+`amountTiming`, and `sources[]` with title, publisher, url and date.
 `data/hollister-fy2027.json` carries `deficitLabel`, `deficitSource` and a separate
 `revisedDeficit` block.

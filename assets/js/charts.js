@@ -381,9 +381,18 @@ export function lines(host, series, categories, opts = {}) {
       svg.appendChild(lab);
     }
 
-    categories.forEach((c, i) => {
+    // Past a few categories the full labels collide, so fall back to the short
+    // form when the widest one cannot fit its slot.
+    // The first label is left-anchored and the rest are centred, so the first
+    // pair needs one and a half label widths of clearance, not one.
+    const slotW = plotW / Math.max(1, categories.length - 1);
+    const widest = Math.max(...categories.map((c) => String(c).length)) * 10.5 * 0.55;
+    const shortCats = opts.categoriesShort || categories;
+    const labels = widest * 1.5 > slotW ? shortCats : categories;
+
+    labels.forEach((c, i) => {
       const lab = txt(X(i), H - 9, c, {
-        'text-anchor': i === 0 ? 'start' : i === categories.length - 1 ? 'end' : 'middle',
+        'text-anchor': i === 0 ? 'start' : i === labels.length - 1 ? 'end' : 'middle',
         'font-size': 10.5,
       });
       lab.style.fill = 'var(--muted)';

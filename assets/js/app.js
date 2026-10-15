@@ -21,16 +21,6 @@ let state = E.createState(BUDGET, ACTIONS);
 let activePanel = 'budget';
 let statusFilter = 'all';
 
-/* ---------- toast ---------- */
-let toastTimer;
-function toast(msg) {
-  const t = $('toast');
-  t.textContent = msg;
-  t.classList.add('is-on');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('is-on'), 2200);
-}
-
 /* ---------- theme ---------- */
 (function theme() {
   const saved = (() => { try { return localStorage.getItem('bh-theme'); } catch { return null; } })();
@@ -102,15 +92,6 @@ function toggleAction(id) {
   document.querySelectorAll(`[data-action="${id}"]`).forEach((n) => {
     n.setAttribute('aria-pressed', state.chosen.has(id) ? 'true' : 'false');
   });
-  if (state.chosen.has(id)) {
-    let note;
-    if (!a.amountKnown) note = 'no published figure';
-    else if (a.amount > 0) note = '+' + fmt.money(a.amount);
-    else if (a.enacted) note = 'already enacted';
-    else if (a.conditional) note = '$0 until it is enacted';
-    else note = '$0';
-    toast(`${a.name} · ${note}`);
-  }
   changed();
 }
 
@@ -245,6 +226,14 @@ function renderActionPanel(which) {
    Panel: Impact
    ============================================================ */
 
+/** replaceChildren() renders a null child as the literal text "null". */
+function setChildren(el, kids) {
+  el.replaceChildren(...kids.filter(Boolean));
+}
+
+/** "FY 2026-27" -> "FY27", for axes too narrow for the full label. */
+const shortYear = (y) => String(y).replace(/^FY\s*\d{4}-/, 'FY');
+
 function renderImpact() {
   const p = $('panel-impact');
   const t = E.totals(state, BUDGET, ACTIONS);
@@ -292,9 +281,10 @@ function renderImpact() {
   /* --- three-year outlook --- */
   const projHost = h('div', { class: 'chart-wrap' });
   const projReadout = h('div', { class: 'readout is-empty', text: 'Tap a year to compare.' });
-  const y3 = proj.gaps[2];
+  const lastYr = proj.gaps.length - 1;
+  const yEnd = proj.gaps[lastYr];
   const projCard = h('div', { class: 'card' }, [
-    h('div', { class: 'card-title' }, ['Three-year outlook']),
+    h('div', { class: 'card-title' }, [`${proj.years.length}-year outlook`]),
     h('div', { class: 'chart-sub', html:
       `Costs grow about <b>4.2%</b> a year, revenue about <b>2.2%</b>. One-time money lands in year one only. The shaded band is the gap.` }),
     projHost,
@@ -305,10 +295,10 @@ function renderImpact() {
       { label: 'Short', color: 'var(--neg)' },
     ]),
     projReadout,
-    h('div', { class: 'callout ' + (y3 > 3e6 ? 'is-critical' : y3 > 0 ? 'is-warning' : ''), html:
-      y3 > 0
-        ? `By <b>${proj.years[2]}</b> this plan projects a <b>${fmt.money(y3)}</b> gap. ${t.structurallyBalanced ? 'Even a structurally balanced budget erodes when costs outgrow revenue.' : 'The structural problem has not been solved.'}`
-        : `<b>${proj.years[2]}</b> still projects in the black. That is a genuinely durable fix.` }),
+    h('div', { class: 'callout ' + (yEnd > 3e6 ? 'is-critical' : yEnd > 0 ? 'is-warning' : ''), html:
+      yEnd > 0
+        ? `By <b>${proj.years[lastYr]}</b> this plan projects a <b>${fmt.money(yEnd)}</b> gap. ${t.structurallyBalanced ? 'Even a structurally balanced budget erodes when costs outgrow revenue.' : 'The structural problem has not been solved.'}`
+        : `<b>${proj.years[lastYr]}</b> still projects in the black. That is a genuinely durable fix.` }),
   ]);
 
   /* --- how the gap was closed --- */
@@ -375,13 +365,13 @@ function renderImpact() {
     dataTable(t, proj),
   ]);
 
-  p.replaceChildren(
+  setChildren(p, [
     h('div', { class: 'panel-head' }, [
       h('h2', { text: 'Impact' }),
-      h('p', { text: 'What your budget does to the city, and whether it holds up past June.' }),
+      h('p', { text: 'Whether your budget holds up, and what it does to the city.' }),
     ]),
-    metersCard, figuresCard, scenarioCard, wfCard, projCard, changeCard, revCard, tableCard,
-  );
+    projCard, metersCard, figuresCard, scenarioCard, wfCard, changeCard, revCard, tableCard,
+  ]);
 
   /* draw */
   C.divergingBars(changeHost, changed_, {
@@ -412,6 +402,7 @@ function renderImpact() {
     { name: 'Spending', color: 'var(--series-2)', values: proj.exp },
   ], proj.years, {
     height: 200, zeroBased: false, band: true,
+    categoriesShort: proj.years.map(shortYear),
     ariaLabel: 'Three-year revenue and spending outlook',
     onPick: (d) => {
       const gap = proj.gaps[d.index];
@@ -462,8 +453,8 @@ function dataTable(t, proj) {
         row('One-time money used', t.oneTime),
         row('Budget as adopted', t.cashGap > 0 ? fmt.full(t.cashGap) + ' short' : fmt.full(-t.cashGap) + ' surplus',
             t.cashGap > 0 ? 'neg' : 'pos'),
-        row(`${proj.years[1]} projected gap`, proj.gaps[1], proj.gaps[1] > 0 ? 'neg' : 'pos'),
-        row(`${proj.years[2]} projected gap`, proj.gaps[2], proj.gaps[2] > 0 ? 'neg' : 'pos'),
+        ...proj.years.slice(1).map((y, i) =>
+          row(`${y} projected gap`, proj.gaps[i + 1], proj.gaps[i + 1] > 0 ? 'neg' : 'pos')),
       ]),
     ]),
   ]);
@@ -550,15 +541,10 @@ function renderCommunity() {
    ============================================================ */
 
 function submit() {
-  state.ballotResults = E.resolveBallots(state, ACTIONS);
+  state.ballotResults = {};
   state.submitted = true;
-  const failed = Object.entries(state.ballotResults).filter(([, ok]) => !ok);
-  if (failed.length) {
-    const names = failed.map(([id]) => ACTIONS.actions.find((a) => a.id === id).name.toLowerCase());
-    toast(`Voters rejected ${names.join(' and ')}`);
-  }
   renderCommunity();
-  setTimeout(showResult, failed.length ? 1400 : 650);
+  setTimeout(showResult, 650);
 }
 
 function showResult() {
@@ -609,7 +595,7 @@ function showResult() {
     ]),
 
     h('div', { class: 'card' }, [
-      h('div', { class: 'card-title' }, ['Three-year outlook']),
+      h('div', { class: 'card-title' }, [`${s.proj.years.length}-year outlook`]),
       h('div', { class: 'chart-sub', text: 'Whether this budget survives past next June. The shaded band is the gap.' }),
       projHost,
       legendFor([
@@ -649,7 +635,11 @@ function showResult() {
   C.lines(projHost, [
     { name: 'Revenue', color: 'var(--series-1)', values: s.proj.rev },
     { name: 'Spending', color: 'var(--series-2)', values: s.proj.exp },
-  ], s.proj.years, { height: 200, zeroBased: false, band: true, ariaLabel: 'Three-year outlook' });
+  ], s.proj.years, {
+    height: 200, zeroBased: false, band: true,
+    categoriesShort: s.proj.years.map(shortYear),
+    ariaLabel: `${s.proj.years.length}-year outlook`,
+  });
 
   const t = s.totals;
   C.stackPair(stackHost, [

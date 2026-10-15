@@ -252,6 +252,8 @@ export function actionCard(action, selected, meterNames, onToggle, statusLabels,
   // Status rides with the figure, so you read "how much" and "how real" together.
   const moneyCol = h('div', { class: 'money-col' }, [
     amtEl,
+    action.amountTiming
+      ? h('div', { class: 'kind', text: action.amountTiming }) : null,
     action.amountKind && kindLabels && kindLabels[action.amountKind]
       ? h('div', { class: 'kind', text: kindLabels[action.amountKind] }) : null,
     h('span', { class: 'status is-' + action.status }, [

@@ -652,16 +652,6 @@ table.dt .neg { color: var(--critical); }
 .callout.is-warning { border-left-color: var(--warning); }
 .callout.is-critical { border-left-color: var(--critical); }
 
-.toast {
-  position: fixed; left: 50%; bottom: calc(var(--nav-h) + env(safe-area-inset-bottom) + 14px);
-  transform: translate(-50%, 16px); z-index: 60;
-  background: var(--text-1); color: var(--plane);
-  padding: 11px 17px; border-radius: 999px; font-size: 13.5px; font-weight: 600;
-  box-shadow: var(--shadow-2); opacity: 0; pointer-events: none;
-  transition: opacity .22s ease, transform .22s ease; max-width: calc(100vw - 32px);
-}
-.toast.is-on { opacity: 1; transform: translate(-50%, 0); }
-
 .theme-toggle {
   position: absolute; top: calc(env(safe-area-inset-top) + 10px); right: 14px;
   width: 40px; height: 40px; border-radius: 50%; z-index: 50;

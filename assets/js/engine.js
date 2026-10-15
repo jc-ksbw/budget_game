@@ -37,7 +37,7 @@ export function totals(state, budget, actions) {
 
   let ongoingCuts = 0, ongoingRevenue = 0, oneTime = 0;
   let taxBurden = 0, bizBurden = 0;
-  let unquantified = 0, cashBridge = 0, scenarioRevenue = 0;
+  let unquantified = 0, cashBridge = 0, scenarioRevenue = 0, deferredRevenue = 0;
   const picked = [];
 
   actions.actions.forEach((a) => {
@@ -58,6 +58,11 @@ export function totals(state, budget, actions) {
     // A cash bridge supplies operating cash. It is one-time by construction and
     // must never reach the recurring side of the ledger.
     if (a.cashBridge) { cashBridge += value; oneTime += value; return; }
+
+    // Revenue that cannot be collected this budget year — it still needs
+    // legislation, a council action and an election — lands in the outlook
+    // from a later year, never in this year's gap.
+    if (a.deferredFrom != null) { deferredRevenue += value; return; }
 
     if (a.type === 'onetime') oneTime += value;
     else if (a.category === 'revenue') {
@@ -84,7 +89,7 @@ export function totals(state, budget, actions) {
   return {
     baseExp, curExp, deptSavings, baseRev,
     ongoingCuts, ongoingRevenue, oneTime, taxBurden, bizBurden,
-    unquantified, cashBridge, scenarioRevenue, scenarioStructuralGap,
+    unquantified, cashBridge, scenarioRevenue, scenarioStructuralGap, deferredRevenue,
     atRisk: 0,
     ongoingExp, ongoingRev,
     structuralGap, cashGap, startGap, closed,
@@ -142,11 +147,22 @@ export function projection(state, budget, actions) {
   const p = budget.projection;
   const years = p.years;
 
+  // Earliest year any deferred revenue could actually arrive.
+  let deferFrom = Infinity;
+  actions.actions.forEach((a) => {
+    if (state.chosen.has(a.id) && a.deferredFrom != null && a.amountKnown) {
+      deferFrom = Math.min(deferFrom, a.deferredFrom);
+    }
+  });
+
   const rev = [], exp = [];
   for (let i = 0; i < years.length; i++) {
     // One-time money is in the first year and only the first year.
     const oneTimeThisYear = i === 0 ? t.oneTime : 0;
-    rev.push(t.ongoingRev * Math.pow(1 + p.revenueGrowth, i) + oneTimeThisYear);
+    const deferred = i >= deferFrom
+      ? t.deferredRevenue * Math.pow(1 + p.revenueGrowth, i - deferFrom)
+      : 0;
+    rev.push(t.ongoingRev * Math.pow(1 + p.revenueGrowth, i) + oneTimeThisYear + deferred);
     exp.push(t.ongoingExp * Math.pow(1 + p.expenditureGrowth, i));
   }
   const gaps = exp.map((e, i) => e - rev[i]);
@@ -288,12 +304,14 @@ export function verdicts(s, budget, actions) {
     push('critical', `<b>${name}</b> has collapsed. Cuts this deep stop being budget decisions and start being service failures.`);
   });
 
-  const y3 = s.proj.gaps[2];
-  if (y3 > 0) {
-    push(y3 > 5e6 ? 'critical' : 'warning',
-      `By <b>${s.proj.years[2]}</b> the projected gap is <b>${money(y3)}</b>. Salary steps and pension costs grow faster than this revenue base.`);
+  const last = s.proj.gaps.length - 1;
+  const yEnd = s.proj.gaps[last];
+  const yrs = s.proj.years.length;
+  if (yEnd > 0) {
+    push(yEnd > 5e6 ? 'critical' : 'warning',
+      `By <b>${s.proj.years[last]}</b> the projected gap is <b>${money(yEnd)}</b>. Salary steps and pension costs grow faster than this revenue base.`);
   } else {
-    push('good', `The three-year outlook holds: <b>${s.proj.years[2]}</b> still projects in the black.`);
+    push('good', `The ${yrs}-year outlook holds: <b>${s.proj.years[last]}</b> still projects in the black.`);
   }
 
   if (t.reservePct > 0) {

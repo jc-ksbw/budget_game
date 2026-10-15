@@ -204,7 +204,7 @@ function renderActionPanel(which) {
 
   // Adopted first, then discussed, then exploratory; published figures ahead
   // of unpublished ones inside each group.
-  const rank = { adopted: 0, discussed: 1, exploratory: 2 };
+  const rank = { adopted: 0, discussed: 1, exploratory: 2, benchmark: 3 };
   list = list.slice().sort((a, b) =>
     (rank[a.status] - rank[b.status]) ||
     (Number(b.amountKnown) - Number(a.amountKnown)) ||
@@ -214,13 +214,13 @@ function renderActionPanel(which) {
     h('h2', { text: isCuts ? 'Savings and one-time money' : 'Revenue options' }),
     h('p', { text: isCuts
       ? 'Reductions, deferrals and borrowing. The one-time options close this year and reopen next year.'
-      : 'Fees you can set, and taxes voters would have to approve. Ballot measures only pay out if they pass.' }),
+      : 'What the City has on the record, plus revenue tools other California cities use that Hollister has not proposed.' }),
   ]);
 
   const kids = [head];
 
   kids.push(h('div', { class: 'filter-row' }, [
-    ['all', 'All'], ['adopted', 'Adopted'], ['discussed', 'Discussed'], ['exploratory', 'Exploratory'],
+    ['all', 'All'], ['adopted', 'Adopted'], ['discussed', 'Discussed'], ['benchmark', 'Common elsewhere'],
   ].map(([k, label]) => h('button', {
     class: 'chip', 'aria-pressed': statusFilter === k ? 'true' : 'false', text: label,
     onclick: () => { statusFilter = k; renderActionPanel(which); },
@@ -233,7 +233,7 @@ function renderActionPanel(which) {
   }
 
   list.forEach((a) => {
-    const card = actionCard(a, state.chosen.has(a.id), METER_NAMES, toggleAction, ACTIONS.meta.statuses);
+    const card = actionCard(a, state.chosen.has(a.id), METER_NAMES, toggleAction, ACTIONS.meta.statuses, ACTIONS.meta.amountKinds);
     card.setAttribute('data-action', a.id);
     kids.push(card);
   });

@@ -214,7 +214,7 @@ function sourceList(sources) {
   ]);
 }
 
-export function actionCard(action, selected, meterNames, onToggle, statusLabels) {
+export function actionCard(action, selected, meterNames, onToggle, statusLabels, kindLabels) {
   const tags = [];
 
   if (action.cashBridge) {
@@ -249,21 +249,28 @@ export function actionCard(action, selected, meterNames, onToggle, statusLabels)
 
   const sc = action.scenario;
 
+  // Status rides with the figure, so you read "how much" and "how real" together.
+  const moneyCol = h('div', { class: 'money-col' }, [
+    amtEl,
+    action.amountKind && kindLabels && kindLabels[action.amountKind]
+      ? h('div', { class: 'kind', text: kindLabels[action.amountKind] }) : null,
+    h('span', { class: 'status is-' + action.status }, [
+      h('span', { class: 'status-dot', style: 'background:currentColor' }),
+      (statusLabels && statusLabels[action.status]) || action.status,
+    ]),
+  ]);
+
   const btn = h('button', {
     class: 'action', type: 'button',
     'aria-pressed': selected ? 'true' : 'false',
   }, [
-    h('div', { class: 'status is-' + action.status }, [
-      h('span', { class: 'status-dot', style: 'background:currentColor' }),
-      (statusLabels && statusLabels[action.status]) || action.status,
-    ]),
     h('div', { class: 'action-top' }, [
       h('div', { class: 'action-check' }, [icon(ICONS.check, 14)]),
       h('div', { class: 'action-body' }, [
         h('div', { class: 'action-name', text: action.name }),
         h('div', { class: 'action-desc', text: action.desc }),
       ]),
-      amtEl,
+      moneyCol,
     ]),
     h('div', { class: 'tags' }, tags),
     (action.amountKnown && action.amountBasis)

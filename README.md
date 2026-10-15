@@ -84,36 +84,45 @@ Randomised play rarely lands — about **6.7%** of 20,000 random plans win over 
 of five, 44% score an F, and none reach an A. A thoughtful plan reaches a B-; the
 practical ceiling found by a hill-climbing search is an **A-** with all five on side.
 
-### Every option is one the City actually discussed
+### Every card cites a City document
 
-There are **18** options, and no dollar figure among them was invented for this game.
-Each card carries:
+There are **22** options. Every source link on every card points at a
+`hollister.ca.gov` document — BenitoLink and other reporting were used as research
+and are credited in [SOURCES.md](SOURCES.md), but are not cited in the game.
 
-- a **status** — adopted/implemented, discussed, or exploratory;
-- its **sources**, with publisher and date, printed at the bottom of the card;
-- either a **verified amount with its basis**, or the words
-  **"Savings/revenue not published"**.
+Each card shows three things beside its dollar figure:
 
-**14 of the 18 have no published figure.** They are selectable, because they are
-real proposals with real service consequences — but they cannot move the deficit,
-and the engine stores `null` rather than substituting `0` as though that were the
-real-world estimate. The scorecard says how many you picked that moved nothing.
+| | |
+|---|---|
+| **Status** | **Adopted** (the City has done it), **Discussed** (the City says it is on the table), or **Common elsewhere** (a revenue tool other California cities use that Hollister has *not* proposed) |
+| **Amount kind** | **City figure**, **Derived from City figure** (the card shows the arithmetic), or **Benchmark estimate** (sized from a published City line) |
+| **Sources** | title, publisher and date, printed at the bottom of the card |
+
+**12 of the 22 carry a dollar figure; 7 carry none.** Where the City has published
+nothing, the card reads *"Savings/revenue not published"* and the engine stores
+`null` rather than substituting `0` — it cannot move the deficit, and the scorecard
+says how many you picked that moved nothing.
+
+Derived and benchmark figures are arithmetic on published City lines — 5% of the
+$34,954,900 personnel total, 10% of the $9,700,350 supplies total, the $975,000
+hotel tax divided by its 12% rate. **The percentages are this game's choice, not the
+City's**, and every card says so. The arithmetic is tabulated in SOURCES.md and
+checked by the test suite.
 
 Two cards are special:
 
 - **The additional 1% sales tax.** The October 2, 2026 Council action only
   authorised staff to pursue special state legislation. It imposed no tax, set no
   rate and placed nothing on a ballot, so enacted revenue is **$0**. A conditional
-  scenario shows **$9,682,000/yr** for a full additional 1% — inferred by matching
-  the existing 1% Measure W tax, not an official forecast — and the rate moving
-  from **9.25% to 10.25%**. It is computed separately and never touches the gap.
+  scenario shows **$9,682,000/yr** — inferred by matching the existing 1% Measure W
+  tax, not an official forecast — and the rate moving **9.25% → 10.25%**. It is
+  computed separately and never touches the gap.
 - **The hotel tax.** Measure V already raised it **8% → 12%**, effective April 1,
-  2025, with a City estimate of about $300,000/yr. It is marked already enacted and
-  offers **$0** further.
+  2025, with a City estimate of about $300,000/yr. Marked already enacted, **$0**
+  further.
 
-Because the documented proposals do not add up to the gap, the department sliders —
-real adopted appropriations — are what actually closes it. That is the situation,
-not a gap in the research. See [SOURCES.md](SOURCES.md).
+The $11M interfund loan is modelled as a **cash bridge** and is barred in code from
+touching recurring savings or the structural gap.
 
 ### The community
 

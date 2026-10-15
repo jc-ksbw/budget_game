@@ -1,17 +1,19 @@
 # Sources and data provenance
 
-Three kinds of fact live in this game, and they are kept apart:
+**The live game cites City of Hollister documents only.** Every source link on
+every card points at `hollister.ca.gov`. BenitoLink and other reporting were used
+as research — to find documents, confirm dates and catch errors — and are listed at
+the bottom of this file, but they are not cited in the game.
 
-1. **Official budget figures** — from the City of Hollister's own published budget documents.
-2. **Documented options** — things City officials or the City Council have actually
-   discussed. Each carries a status, a source link and a date on its card.
-3. **Game-design values** — the five service meters and the three-year growth rates.
-   These exist so trade-offs are legible. They are not forecasts.
+Four kinds of fact live here, kept apart:
 
-**No dollar amount in this project is an estimate invented for it.** Where the City
-or its reporting has published a figure, the card shows it and states its basis.
-Where no figure exists, the card reads **"Savings/revenue not published"** and the
-option cannot move the deficit. Zero is never substituted for an unknown.
+1. **Official budget figures** — from the City's published budget documents.
+2. **Documented options** — things the City has adopted or discussed, each with a
+   status, a City source and a date printed on the card.
+3. **Benchmark options** — revenue tools other California cities use that Hollister
+   has **not** proposed, sized from Hollister's own published lines and labelled
+   "Common elsewhere" so they can never be mistaken for City proposals.
+4. **Game-design values** — the five service meters and the three-year growth rates.
 
 ---
 
@@ -20,155 +22,158 @@ option cannot move the deficit. Zero is never substituted for an unknown.
 | Figure | Amount | Where it comes from |
 |---|---|---|
 | **Adopted FY 2026-27 budget deficit** | **$6,363,284** | [FY 2026-27 Approved Budget Document](https://hollister.ca.gov/City%20Managers/Documents/Hollister_FY2026-27_Approved_Budget_July4_Cover.pdf), Account Summary, Fund 101 — $56,588,184 expense against $50,224,900 revenue |
-| **Later revised figure** | **$6,924,550** | [General Fund budget-to-actual](https://hollister.ca.gov/Administrative%20Services/1.A-GENERAL%20FUND-%20JUL-26%20BUDGET%20TO%20ACTUAL.pdf), report dated **Sept 14, 2026**, period ending **July 31, 2026** — expense revised up to $57,149,450 against the same revenue |
+| **Later revised figure** | **$6,924,550** | [General Fund budget-to-actual](https://hollister.ca.gov/Administrative%20Services/1.A-GENERAL%20FUND-%20JUL-26%20BUDGET%20TO%20ACTUAL.pdf), report dated **Sept 14, 2026**, period ending **July 31, 2026** — expense revised up to $57,149,450 |
 
-The game is played on the **adopted** budget. The revised figure is shown beside it
-on the Impact tab, never instead of it.
+The game is played on the **adopted** budget; the revised figure is shown beside it
+on the Impact tab, never instead of it. The City's own
+[A Clear Look At Our Financial Situation](https://hollister.ca.gov/news_detail_T3_R111.php)
+(Oct 12, 2026) headlines the $6.9M figure.
 
-The City's own [A Clear Look At Our Financial Situation](https://hollister.ca.gov/news_detail_T3_R111.php)
-(Oct 12, 2026) carries the $6.9M figure as its headline gap, alongside $50.2M
-revenue and $57.1M expenses.
-
-> **Discrepancy worth noting.** That infographic captions these figures "Adopted
-> Budget FY 2025-26" and "July – September 2025", but the amounts match the
-> FY 2026-27 budget-to-actual exactly. Reproduced here as published.
+> **Discrepancy, reproduced as published.** That infographic captions these amounts
+> "Adopted Budget FY 2025-26" and "July – September 2025", but they match the
+> FY 2026-27 budget-to-actual exactly.
 
 ## General Fund composition
 
-Every revenue line and every department total comes from the FY 2026-27 Approved
-Budget and reconciles to it exactly ($50,224,900 revenue; $56,588,184 expense).
-The budget reports by fund and expense category, carrying the department in the
-middle segment of each account code (`101-‹dept›-‹object›`); those cost centres are
-grouped into the City's named departments as listed in the
+Every revenue line and department total comes from the FY 2026-27 Approved Budget
+and reconciles to it exactly. The budget reports by fund and expense category,
+carrying the department in the middle segment of each account code
+(`101-‹dept›-‹object›`); those cost centres are grouped into the City's named
+departments as listed in the
 [FY 2024-25 Budget Book](https://hollister.ca.gov/Administrative%20Services/FY%202024-2025%20COH%20Budget%20Book_FINAL.pdf).
-
 Cost centres 2205 and 2500 are identified as Fire and Police from their own line
-items: 2205 carries $1.3M of overtime on $7.09M of regular salary (constant
-staffing; ~$142K per funded position across Fire's 50), while 2500 carries $0.5M of
-overtime, the $1.11M 911 dispatch contract and records-management software
-(~$100K across Police's 67). **The amounts are official; the names attached to them
-are a reading of the account structure.**
+items (2205 carries $1.3M of overtime on $7.09M of salary, ~$142K per funded
+position across Fire's 50; 2500 carries $0.5M of overtime, the $1.11M dispatch
+contract and records-management software, ~$100K across Police's 67). **The amounts
+are official; the names attached to them are a reading of the account structure.**
 
 ---
 
-## Every option on the board
+## Every card on the board
 
-### Adopted / implemented
+| Option | Status | Amount | Kind | City sources |
+|---|---|---|---|---|
+| Interfund loan from impact fee funds | Adopted | $11,000,000 | City figure | A Clear Look At Our Financial Situation, Financial Emergency Information Guide |
+| Hotel tax increase (Measure V) | Adopted | $0 | City figure | FY 2026-27 Approved Budget Document, Hotel Tax (Measure V) |
+| Updated building permit and user fees | Adopted | $0 | City figure | FY 2026-27 Approved Budget Document, Updated Building Permit and User Fees |
+| Layoff notices | Adopted | not published | — | Press release #2: workforce reductions and financial emergency, Press release: workforce reductions and financial emergency |
+| Voluntary separation and retirement incentives | Adopted | not published | — | Press release #2: workforce reductions and financial emergency |
+| Cancelled contracts with non-profits | Adopted | not published | — | Financial Emergency Information Guide |
+| Release the budgeted contingency | Discussed | $1,200,000 | City figure | FY 2026-27 Approved Budget Document, Financial Emergency Information Guide |
+| Work reductions: 5% of payroll | Discussed | $1,747,745 | Derived | FY 2026-27 Approved Budget Document, Press release #2: workforce reductions and financial emergency, Your Questions. Our Answers. |
+| Cancel the events budget | Discussed | $500,000 | City figure | FY 2026-27 Approved Budget Document, Your Questions. Our Answers. |
+| Cut services and supplies by 10% | Discussed | $970,035 | Derived | General Fund Budget-to-Actual, period ending 07/31/2026, Your Questions. Our Answers. |
+| Cut contracted services by 5% | Discussed | $594,815 | Derived | Financial Emergency Information Guide, General Fund Budget-to-Actual, period ending 07/31/2026 |
+| Defer capital outlay | Discussed | $297,900 | City figure | Financial Emergency Information Guide, General Fund Budget-to-Actual, period ending 07/31/2026 |
+| Reduce hours and service levels | Discussed | not published | — | Financial Emergency Information Guide, Press release: workforce reductions and financial emergency, Your Questions. Our Answers. |
+| Shift customer service to AI | Discussed | not published | — | Financial Emergency Information Guide |
+| Sell assets | Discussed | not published | — | Financial Emergency Information Guide |
+| Collect outstanding debt | Discussed | not published | — | Financial Emergency Information Guide |
+| Additional 1% sales tax | Discussed | $0 | City figure | FY 2026-27 Approved Budget Document, Financial Emergency Information Guide |
+| Full cost-recovery fee study | Common elsewhere | $537,685 | Benchmark | FY 2026-27 Approved Budget Document |
+| Modernise the business licence tax | Common elsewhere | $240,000 | Benchmark | FY 2026-27 Approved Budget Document |
+| Raise the hotel tax two more points | Common elsewhere | $162,500 | Benchmark | FY 2026-27 Approved Budget Document |
+| Increase the property transfer tax | Common elsewhere | $225,000 | Benchmark | FY 2026-27 Approved Budget Document |
+| Review franchise fee agreements | Common elsewhere | $117,700 | Benchmark | FY 2026-27 Approved Budget Document |
 
-| Option | Amount | Source |
+### What each amount kind means
+
+- **City figure** — the City published this exact number.
+- **Derived** — arithmetic on a published City line. The card states the base and
+  the percentage, and says the depth is this game's illustration rather than a City
+  decision.
+- **Benchmark** — a tool other California cities use, sized from a published
+  Hollister line. Each basis ends with *"not a Hollister proposal or estimate."*
+
+### The derivations, in full
+
+Every figure below is arithmetic on a line published in the adopted budget or the
+budget-to-actual report. All were checked against the source documents.
+
+| Card | Arithmetic | Result |
 |---|---|---|
-| Interfund loan from impact fee funds | **$11,000,000** to the General Fund (of $18M total; $7M to Water) | [BenitoLink, Oct 6, 2026](https://benitolink.com/hollister-council-agrees-to-declare-fiscal-emergency/); [City Financial Emergency Guide, Oct 12, 2026](https://hollister.ca.gov/news_detail_T3_R112.php) |
-| Hotel tax increase (Measure V) | **$0 further** — already enacted | [City Clerk, Measure V](https://hollister.ca.gov/government/city_clerk/hotel_tax_(measure_v).php) |
-| Voluntary separation and retirement incentives | Not published | [City press release #2, Oct 14, 2026](https://hollister.ca.gov/news_detail_T3_R120.php) |
-| Layoff notices | Not published | [City press releases, Oct 14, 2026](https://hollister.ca.gov/news_detail_T3_R120.php) |
-| Cancelled contracts with non-profits | Not published | [City Financial Emergency Guide](https://hollister.ca.gov/news_detail_T3_R112.php) |
-| Updated building permit and user fees | Not published | [City news, July 23, 2026](https://hollister.ca.gov/news_detail_T3_R107.php) |
-| Forgo the 20% reserve policy | Not published | [BenitoLink, June 11, 2026](https://benitolink.com/hollister-council-delays-fiscal-reserve-policy-to-bridge-6-million-projected-budget-deficit/) |
+| Work reductions: 5% of payroll | 5% × $34,954,900 personnel | $1,747,745 |
+| Cut services and supplies by 10% | 10% × $9,700,350 | $970,035 |
+| Cut contracted services by 5% | 5% × $11,896,300 | $594,815 |
+| Defer capital outlay | the published capital total | $297,900 |
+| Release the budgeted contingency | account 101-1100-999999 | $1,200,000 |
+| Cancel the events budget | EVENT EXPENDITURES, centre 1140 | $500,000 |
+| Full cost-recovery fee study | 5% × $10,753,700 charges for services | $537,685 |
+| Modernise the business licence tax | 2 × $240,000 business licences | $240,000 |
+| Raise the hotel tax two more points | $975,000 ÷ 12 × 2 | $162,500 |
+| Increase the property transfer tax | 2 × $225,000 | $225,000 |
+| Review franchise fee agreements | 10% × $1,177,000 | $117,700 |
+| 1% sales tax scenario | the published Measure W projection | $9,682,000 |
 
-**The loan.** Approved October 2, 2026: $18M from traffic impact and park dedication
-impact funds, $11M to the General Fund and $7M to Water, repayable by **June 30,
-2027**. It is modelled as a **cash bridge** — it supplies near-term operating cash
-for payroll and bills and is barred in code from touching recurring savings or the
-structural gap.
+**The percentages are this game's choice, not the City's.** The City has not
+published a depth for any of these. The bases are all published City figures.
 
-> **Rate discrepancy, preserved.** Reporting quotes city staff putting the rate at
-> **4%**; one outlet reports "up to" 4%. The adopted resolution has been described
-> as stating **3–4%**. The October 2 agenda packet is served through a
-> JavaScript-rendered portal and the resolution text could not be retrieved to
-> confirm that range, so both are recorded rather than one being chosen.
+---
 
-**Measure V.** Passed Nov 5, 2024; effective April 1, 2025. The City's ballot
-question read: *"a four percentage point (4%) increase to transient occupancy tax,
+## The specific corrections
+
+**The loan** — approved October 2, 2026: $18M from impact fee funds, $11M to the
+General Fund, repayable by **June 30, 2027**. Modelled as a **cash bridge**: it
+supplies near-term operating cash and is barred in code from touching recurring
+savings or the structural gap.
+
+> **Rate discrepancy, preserved.** City staff have been quoted putting the rate at
+> **4%**; the adopted resolution has been described as stating **3–4%**. The
+> resolution is not published on the City website and the agenda portal is
+> JavaScript-rendered, so both are recorded rather than one being chosen.
+
+**Measure V** — passed Nov 5, 2024, effective April 1, 2025. The City's ballot
+question: *"a four percentage point (4%) increase to transient occupancy tax,
 increasing the total tax levied on hotel occupants from 8 to 12 percent … generating
 approximately $300,000.00 annually."* It is **8% → 12%**, not 10% → 12%, it is
-already inside the $975,000 of hotel tax in the adopted budget, and it offers no
-further revenue to claim.
+already inside the $975,000 of hotel tax in the adopted budget, and it offers
+**$0** further.
 
-**The Oct 14 layoffs.** The City states that voluntary separations "did not generate
+**The 1% sales tax** — the October 2, 2026 action **only authorised staff to pursue
+special state legislation**. It imposed no tax, set no rate and placed nothing on a
+ballot; legislation, a later Council action and voter approval would all be
+required. Enacted revenue is **$0** and the card cannot add revenue to the live
+budget. A conditional scenario shows **$9,682,000/yr**, inferred by matching the
+existing 1% Measure W tax — **not an official forecast** — with the rate moving
+**9.25% → 10.25%**.
+
+**The Oct 14 layoffs** — the City states voluntary separations "did not generate
 sufficient savings" and that it began issuing layoff notices on October 14, 2026.
-**The City published neither a headcount nor a savings amount**, so neither is shown.
-The same release states Animal Control staff are unaffected and that the City is not
-eliminating all civilian positions.
-
-### Discussed
-
-| Option | Amount | Source |
-|---|---|---|
-| Additional 1% sales tax | **$0 enacted** (scenario below) | [BenitoLink, Oct 6, 2026](https://benitolink.com/hollister-council-agrees-to-declare-fiscal-emergency/) |
-| Position cuts (up to 25) | Not published | [BenitoLink, June 11, 2026](https://benitolink.com/hollister-council-delays-fiscal-reserve-policy-to-bridge-6-million-projected-budget-deficit/) |
-| Employee furloughs | Not published | same June 2026 staff report |
-| Reductions in benefits and COLA | Not published | same |
-| Defer equipment replacement | Not published | same |
-| Pause economic development and beautification | Not published | same |
-| Reduce hours and service levels | Not published | [Your Questions. Our Answers.](https://hollister.ca.gov/news_detail_T3_R115.php); [press release, Oct 14, 2026](https://hollister.ca.gov/news_detail_T3_R119.php) |
-| Shift customer service to AI | Not published | [City Financial Emergency Guide](https://hollister.ca.gov/news_detail_T3_R112.php) |
-| Sell assets | Not published | same (named in the emergency proclamation) |
-| Collect outstanding debt | Not published | same |
-
-**The 1% sales tax.** The October 2, 2026 action **only authorised staff to pursue
-special state legislation** that would let the City raise its sales tax cap by up to
-1%. It did not impose a tax, set a rate, or place a measure on the ballot.
-Legislation, a later Council action and voter approval would all be required, and
-the City Manager estimated roughly six months just for legislation and a fiscal
-analysis. **Current enacted revenue is therefore $0**, and the card is barred in
-code from adding revenue to the live budget.
-
-A conditional scenario is shown separately: **$9,682,000 a year** for a full
-additional 1%, **inferred by matching the existing 1% Measure W transactions-and-use
-tax**, which the FY 2026-27 adopted budget projects at exactly $9,682,000. This is an
-inference from the existing tax, **not an official forecast for a new tax**. A full
-additional 1% would move the rate from **9.25% to 10.25%**.
-
-**The 25 positions.** A June 2026 staff report identified as many as 25 position cuts
-and also listed potential furloughs, voluntary resignation incentives, reductions in
-benefits and cost-of-living adjustments, a deferral of equipment replacements, and
-forgoing economic development and beautification efforts. This is an **earlier
-potential scenario**, not the final number: the budget adopted June 22, 2026 avoided
-staffing cuts by borrowing from the sewer fund instead
-([BenitoLink, June 26, 2026](https://benitolink.com/hollister-borrows-from-sewer-fund-to-balance-adopted-budget/)).
-
-### Exploratory
-
-**Outsource animal services to a non-profit.** City emails show City Manager Ana
-Cortez approached a Stockton-based non-profit about taking over animal services. An
-April 6, 2026 email states the current operation **costs $2 million per year** for
-eight full-time employees, the shelter and medical services; in an email released
-April 15 she wrote she **hoped to save $1 million** by having a non-profit take over
-([BenitoLink, May 6, 2026](https://benitolink.com/hollister-group-raises-concerns-over-potential-animal-service-changes/)).
-These are **preliminary estimates from internal email**, not a costed proposal. The
-Police Chief said he had not been invited to any meeting about it, the County pays
-55% of the animal control budget, and the City said in October that Animal Control
-staff are unaffected by the current layoffs.
+**No headcount and no savings amount were published**, so neither is shown.
 
 ---
 
-## Removed in this pass
+## Dropped from the live game
 
-These cards carried dollar figures this project had invented, with no City source,
-and have been deleted: a hotel tax rise from 10% to 12% ($195,000 — the wrong
-baseline and the wrong direction, see Measure V above); "lay off 12 non-safety
-positions" ($1.6M); "$1.4M voluntary separation savings"; a utility users tax; a
-cannabis business tax; a half-cent sales tax; cell tower leases; a fee cost-recovery
-study; business licence modernisation; an ambulance fee; citation revenue; a
-four-day week; overtime reform; contracting out park maintenance; deferring street
-maintenance; travel and training cuts; library hours; an administrative hiring
-freeze; a regional fire JPA; an energy retrofit; debt restructuring; a City
-Manager's office cut; a surplus property sale; spending down the contingency; and
-cancelling city events.
+These were on the board before this pass but rest only on BenitoLink reporting, and
+the game now cites City documents only. They remain real and are recorded here:
 
-A figure that **was** verified but does **not** apply to this budget year: a
-[June 13, **2025** BenitoLink report](https://benitolink.com/up-to-39-open-jobs-at-stake-as-hollister-aims-to-balance-budget/)
-said the City might cut up to 39 vacant positions, saving about $6 million. That
-belongs to the **FY 2025-26** budget process, not FY 2026-27, so it is not offered as
-a current option.
+- **Up to 25 position cuts**, plus potential **furloughs**, **reductions in benefits
+  and cost-of-living adjustments**, a **deferral of equipment replacements** and
+  **forgoing economic development and beautification** — all from a June 2026 City
+  staff report, reported by BenitoLink. The City has not published that staff report
+  on its website. The budget adopted June 22, 2026 avoided staffing cuts by borrowing
+  instead.
+- **Forgoing the 20% reserve policy** — June 2026 Council action, BenitoLink only.
+- **Outsourcing animal services** — City emails released under a public records
+  request show the City Manager put the current operation at **$2 million a year**
+  and said she hoped to save **$1 million** via a non-profit. Those are City records,
+  but they are not published on the City website and the figures are preliminary
+  estimates from internal email. The City's Oct 14 release states Animal Control
+  staff are unaffected by the current layoffs.
 
-## What this means for the game
+Also verified but **not applicable to this budget year**: a June 13, **2025**
+BenitoLink report said the City might cut up to 39 vacant positions, saving about
+$6 million. That belongs to the FY 2025-26 process.
 
-Only one documented option carries a published recurring savings figure — the
-exploratory $1M animal services estimate. The $11M loan is cash, not structural.
-**The documented proposals do not add up to the $6,363,284 gap.** That is not a gap
-in the research; it is the situation. Closing the budget requires the department
-sliders, which move real adopted appropriations.
+And still removed, as invented by this project in an earlier version: a hotel tax
+rise from 10% to 12%; "lay off 12 non-safety positions" ($1.6M); "$1.4M voluntary
+separation savings"; a utility users tax; a cannabis business tax; a half-cent sales
+tax; cell tower leases; an ambulance fee; citation revenue; a four-day week;
+overtime reform; contracting out park maintenance; deferring street maintenance;
+travel and training cuts; library hours; an administrative hiring freeze; a regional
+fire JPA; an energy retrofit; debt restructuring; a City Manager's office cut; and a
+surplus property sale.
 
 ## Still estimated
 
@@ -178,35 +183,38 @@ sliders, which move real adopted appropriations.
   and salary steps, but not a City projection.
 - **The five community voices**, deliberately fictional archetypes. Not portrayals
   of any real resident or officeholder.
-- **Department funding floors and ceilings**, which are playable bounds, not City policy.
+- **Department funding floors and ceilings**, playable bounds rather than City policy.
 
-## Source documents
+## City documents used
 
-Downloaded and parsed directly:
-
-- [FY 2026-27 Approved Budget Document](https://hollister.ca.gov/City%20Managers/Documents/Hollister_FY2026-27_Approved_Budget_July4_Cover.pdf) — 120pp; every budget figure in the game
+- [FY 2026-27 Approved Budget Document](https://hollister.ca.gov/City%20Managers/Documents/Hollister_FY2026-27_Approved_Budget_July4_Cover.pdf) — every budget figure in the game
 - [FY 2024-25 Budget Book](https://hollister.ca.gov/Administrative%20Services/FY%202024-2025%20COH%20Budget%20Book_FINAL.pdf) — department names, divisions, staffing
-- [General Fund budget-to-actual, period ending 07/31/2026](https://hollister.ca.gov/Administrative%20Services/1.A-GENERAL%20FUND-%20JUL-26%20BUDGET%20TO%20ACTUAL.pdf) — the revised figure
-- [City press release, Oct 14, 2026](https://hollister.ca.gov/news_detail_T3_R119.php) and [#2](https://hollister.ca.gov/news_detail_T3_R120.php) — workforce reductions
-- [Financial Emergency Information Guide](https://hollister.ca.gov/news_detail_T3_R112.php) · [Your Questions. Our Answers.](https://hollister.ca.gov/news_detail_T3_R115.php) · [A Clear Look At Our Financial Situation](https://hollister.ca.gov/news_detail_T3_R111.php) — Oct 12, 2026
-- [Hotel Tax (Measure V)](https://hollister.ca.gov/government/city_clerk/hotel_tax_(measure_v).php) · [Updated Building Permit and User Fees](https://hollister.ca.gov/news_detail_T3_R107.php)
+- [General Fund budget-to-actual, period ending 07/31/2026](https://hollister.ca.gov/Administrative%20Services/1.A-GENERAL%20FUND-%20JUL-26%20BUDGET%20TO%20ACTUAL.pdf) — revised figure; supplies, contractual and capital totals
+- [Press release, Oct 14, 2026](https://hollister.ca.gov/news_detail_T3_R119.php) and [#2](https://hollister.ca.gov/news_detail_T3_R120.php) — layoffs, voluntary separations, reduced hours
+- [Financial Emergency Information Guide](https://hollister.ca.gov/news_detail_T3_R112.php) — proclamation steps: reduce costs, borrow, sell assets, collect debt; AI customer service; cancelled non-profit contracts
+- [Your Questions. Our Answers.](https://hollister.ca.gov/news_detail_T3_R115.php) — services that could be reduced; payroll as the largest cost
+- [A Clear Look At Our Financial Situation](https://hollister.ca.gov/news_detail_T3_R111.php) — $50.2M / $57.1M / $6.9M / $11M borrowing
+- [Hotel Tax (Measure V)](https://hollister.ca.gov/government/city_clerk/hotel_tax_(measure_v).php) — ballot language and the $300,000 estimate
+- [Updated Building Permit and User Fees](https://hollister.ca.gov/news_detail_T3_R107.php) — July 23, 2026 fee schedule
 
-BenitoLink, with publication dates:
+The three October 12 guides are published as images; their content was read
+visually and is quoted above. Every URL returned HTTP 200 when this was written.
 
-- [Hollister council agrees to declare fiscal emergency](https://benitolink.com/hollister-council-agrees-to-declare-fiscal-emergency/) — Oct 6, 2026
+## Research sources (not cited in the game)
+
+- [Hollister council agrees to declare fiscal emergency](https://benitolink.com/hollister-council-agrees-to-declare-fiscal-emergency/) — BenitoLink, Oct 6, 2026
 - [Hollister borrows from sewer fund to balance adopted budget](https://benitolink.com/hollister-borrows-from-sewer-fund-to-balance-adopted-budget/) — June 26, 2026
 - [Hollister council offers no guidance on budget woes](https://benitolink.com/hollister-council-offers-no-guidance-on-budget-woes/) — June 18, 2026
 - [Hollister council delays fiscal reserve policy](https://benitolink.com/hollister-council-delays-fiscal-reserve-policy-to-bridge-6-million-projected-budget-deficit/) — June 11, 2026
 - [Hollister group raises concerns over potential animal service changes](https://benitolink.com/hollister-group-raises-concerns-over-potential-animal-service-changes/) — May 6, 2026
-- [Dozens of open jobs at stake as Hollister considers budget](https://benitolink.com/up-to-39-open-jobs-at-stake-as-hollister-aims-to-balance-budget/) — June 13, **2025** (prior budget year; not used as a current option)
-
-Every URL above was checked and returned HTTP 200 when this was written.
+- [Dozens of open jobs at stake as Hollister considers budget](https://benitolink.com/up-to-39-open-jobs-at-stake-as-hollister-aims-to-balance-budget/) — June 13, **2025**
 
 ## Schema
 
 `data/actions.json` carries per card: `status` (`adopted` / `discussed` /
-`exploratory`), `amountKnown`, `amount` (**null** when unpublished — never 0),
-`amountBasis` or `unpublishedNote`, optional `cashBridge`, `conditional` +
-`scenario`, `enacted`, `preliminary`, and `sources[]` with title, publisher, url and
-date. `data/hollister-fy2027.json` carries `deficitLabel`, `deficitSource` and a
-separate `revisedDeficit` block.
+`exploratory` / `benchmark`), `amountKnown`, `amount` (**null** when unpublished —
+never 0), `amountKind` (`published` / `derived` / `benchmark`), `amountBasis` or
+`unpublishedNote`, optional `cashBridge`, `conditional` + `scenario`, `enacted`,
+and `sources[]` with title, publisher, url and date.
+`data/hollister-fy2027.json` carries `deficitLabel`, `deficitSource` and a separate
+`revisedDeficit` block.

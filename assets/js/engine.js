@@ -5,8 +5,11 @@
 
 export const METER_IDS = ['safety', 'infrastructure', 'community', 'workforce', 'trust'];
 
-/** Points a full 100% cut of one department would move a meter weighted 1.0. */
-const DEPT_METER_SCALE = 60;
+/** Points a full 100% cut of one department would move a meter weighted 1.0.
+ *  Department budgets are now the only lever with published dollars behind it,
+ *  so the sliders carry the whole gap; at the old weight that guaranteed a
+ *  collapsed scorecard for any balanced budget. */
+const DEPT_METER_SCALE = 40;
 
 export function createState(budget, actions) {
   const dept = {};
@@ -32,25 +35,35 @@ export function totals(state, budget, actions) {
 
   const baseRev = budget.generalFund.revenues.reduce((s, r) => s + r.amount, 0);
 
-  let ongoingCuts = 0, ongoingRevenue = 0, oneTime = 0, atRisk = 0;
+  let ongoingCuts = 0, ongoingRevenue = 0, oneTime = 0;
   let taxBurden = 0, bizBurden = 0;
+  let unquantified = 0, cashBridge = 0, scenarioRevenue = 0;
   const picked = [];
 
   actions.actions.forEach((a) => {
     if (!state.chosen.has(a.id)) return;
     picked.push(a);
 
-    // A ballot measure that already failed contributes nothing.
-    const failed = state.ballotResults && state.ballotResults[a.id] === false;
-    const value = failed ? 0 : a.amount;
+    // A conditional proposal — one that still needs legislation, a council
+    // action or a vote — feeds the scenario view only, never the real budget.
+    if (a.conditional && a.scenario) scenarioRevenue += a.scenario.amount;
+
+    // No published figure means no effect on the gap. Zero is NOT substituted
+    // as though it were the real-world estimate; the option simply cannot move
+    // a dollar total until someone publishes one.
+    if (!a.amountKnown) { unquantified += 1; return; }
+
+    const value = a.amount;
+
+    // A cash bridge supplies operating cash. It is one-time by construction and
+    // must never reach the recurring side of the ledger.
+    if (a.cashBridge) { cashBridge += value; oneTime += value; return; }
 
     if (a.type === 'onetime') oneTime += value;
     else if (a.category === 'revenue') {
       ongoingRevenue += value;
-      // A cost-recovery fee and a utility users tax are not the same ask.
       taxBurden += value * (a.taxBurden ?? 0.6);
       bizBurden += value * (a.bizBurden ?? 0.3);
-      if (a.needsBallot && !state.ballotResults) atRisk += a.amount;
     } else ongoingCuts += value;
   });
 
@@ -65,9 +78,14 @@ export function totals(state, budget, actions) {
   const startGap = baseExp - baseRev;
   const closed = startGap - cashGap;
 
+  // What the gap would be if every conditional proposal actually landed.
+  const scenarioStructuralGap = ongoingExp - (ongoingRev + scenarioRevenue);
+
   return {
     baseExp, curExp, deptSavings, baseRev,
-    ongoingCuts, ongoingRevenue, oneTime, atRisk, taxBurden, bizBurden,
+    ongoingCuts, ongoingRevenue, oneTime, taxBurden, bizBurden,
+    unquantified, cashBridge, scenarioRevenue, scenarioStructuralGap,
+    atRisk: 0,
     ongoingExp, ongoingRev,
     structuralGap, cashGap, startGap, closed,
     picked,
@@ -248,7 +266,15 @@ export function verdicts(s, budget, actions) {
   if (t.oneTime > 0) {
     const share = Math.round(t.oneTime / Math.max(1, t.closed) * 100);
     push(share > 55 ? 'critical' : share > 25 ? 'warning' : 'good',
-      `<b>${share}%</b> of the gap you closed came from one-time sources. Interfund loans and property sales work exactly once.`);
+      `<b>${share}%</b> of the gap you closed came from one-time sources. Interfund loans and asset sales work exactly once.`);
+  }
+
+  if (t.cashBridge > 0) {
+    push('warning', `<b>${money(t.cashBridge)}</b> of that is the interfund loan, which is operating cash and is repayable by June 30, 2027. It does not shrink the structural gap by a dollar.`);
+  }
+
+  if (t.unquantified > 0) {
+    push('warning', `<b>${t.unquantified}</b> of the measures you picked have no published savings or revenue figure, so none of them moved the deficit. They are real proposals; the numbers behind them are not public.`);
   }
 
   if (s.wellReceived) {

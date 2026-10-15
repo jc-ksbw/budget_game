@@ -52,8 +52,8 @@ Five tabs, built to be driven with a thumb:
 | Tab | What you do |
 |---|---|
 | **Budget** | Drag each department's funding between a service floor and a ceiling |
-| **Cuts** | Pick savings measures, deferrals and borrowing |
-| **Revenue** | Set fees the council controls; put taxes to the voters |
+| **Cuts** | Pick from the reductions, deferrals and borrowing the City has actually discussed |
+| **Revenue** | The revenue proposals on the record, including one that is not enacted |
 | **Impact** | See what your budget does to services and whether it survives past June |
 | **Community** | Share it and see how five residents rank it |
 
@@ -68,9 +68,11 @@ scorecard separates:
   a California council cannot adopt an unbalanced general fund budget.)
 - **Structural balance** — does recurring revenue cover recurring cost?
 
-You can close the whole $6.36M with the $11M interfund loan the city actually
-took, share it, and watch it go down well — and still be told, correctly,
-that the hole reopens in July. The three-year outlook chart makes that visible.
+You can cover the whole $6,363,284 with the $11M interfund loan the City actually
+took, share it, and watch it go down well — and still be told, correctly, that the
+structural hole is exactly as deep as before. The loan is modelled as a **cash
+bridge** and is barred in code from touching recurring savings or the structural
+gap, because that is what it is: operating cash, repayable by June 30, 2027.
 
 ### Scoring
 
@@ -78,19 +80,40 @@ that the hole reopens in July. The three-year outlook chart makes that visible.
 service levels (20), reserve against the city's 20% policy (5), minus 6 for every
 service meter that collapses below 25.
 
-Randomised play almost never lands — roughly **5%** of 40,000 random plans win
-over three of five, and none reach an A. A well-constructed plan reaches a B; the
-practical ceiling found by a hill-climbing search over ~54,000 plans is an
-**A-** with all five on side.
+Randomised play rarely lands — about **6.7%** of 20,000 random plans win over three
+of five, 44% score an F, and none reach an A. A thoughtful plan reaches a B-; the
+practical ceiling found by a hill-climbing search is an **A-** with all five on side.
 
-### Ballot measures
+### Every option is one the City actually discussed
 
-Four revenue options need voter approval, with the odds printed on the card
-(hotel tax 74%, cannabis tax 58%, half-cent sales tax 41%, utility users tax 33%).
-Their values are derived from the real tax bases: two points on a $975,000 hotel
-tax is $195K; half of Measure W's $9,682,000 is $4.8M.
-They are resolved when you submit. Build your whole plan on a 33% measure and you
-may watch it evaporate at the vote.
+There are **18** options, and no dollar figure among them was invented for this game.
+Each card carries:
+
+- a **status** — adopted/implemented, discussed, or exploratory;
+- its **sources**, with publisher and date, printed at the bottom of the card;
+- either a **verified amount with its basis**, or the words
+  **"Savings/revenue not published"**.
+
+**14 of the 18 have no published figure.** They are selectable, because they are
+real proposals with real service consequences — but they cannot move the deficit,
+and the engine stores `null` rather than substituting `0` as though that were the
+real-world estimate. The scorecard says how many you picked that moved nothing.
+
+Two cards are special:
+
+- **The additional 1% sales tax.** The October 2, 2026 Council action only
+  authorised staff to pursue special state legislation. It imposed no tax, set no
+  rate and placed nothing on a ballot, so enacted revenue is **$0**. A conditional
+  scenario shows **$9,682,000/yr** for a full additional 1% — inferred by matching
+  the existing 1% Measure W tax, not an official forecast — and the rate moving
+  from **9.25% to 10.25%**. It is computed separately and never touches the gap.
+- **The hotel tax.** Measure V already raised it **8% → 12%**, effective April 1,
+  2025, with a City estimate of about $300,000/yr. It is marked already enacted and
+  offers **$0** further.
+
+Because the documented proposals do not add up to the gap, the department sliders —
+real adopted appropriations — are what actually closes it. That is the situation,
+not a gap in the research. See [SOURCES.md](SOURCES.md).
 
 ### The community
 

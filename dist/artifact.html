@@ -413,6 +413,57 @@ p:last-child { margin-bottom: 0; }
 .action-more b { color: var(--text-1); font-weight: 650; }
 .action-more.is-real { border-left-color: var(--series-3); }
 
+/* ---------- card provenance ---------- */
+.status {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 6px; margin-bottom: 8px;
+}
+.status-dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+.status.is-adopted     { background: color-mix(in srgb, var(--good) 16%, var(--surface-2));    color: var(--good-ink); }
+.status.is-discussed   { background: color-mix(in srgb, var(--warning) 26%, var(--surface-2)); color: var(--text-1); }
+.status.is-exploratory { background: color-mix(in srgb, var(--series-7) 16%, var(--surface-2)); color: var(--text-1); }
+
+.action-amt.is-unpublished {
+  font-size: 12px; font-weight: 650; color: var(--muted);
+  white-space: normal; text-align: right; max-width: 108px; line-height: 1.3;
+}
+.action-amt.is-zero { color: var(--muted); }
+
+.basis {
+  font-size: 12px; color: var(--muted); line-height: 1.45;
+  margin: 8px 0 0 35px; padding-left: 9px; border-left: 2px solid var(--hairline);
+}
+
+.scenario {
+  margin: 10px 0 0 35px; padding: 11px 12px; border-radius: var(--radius-s);
+  background: color-mix(in srgb, var(--series-7) 8%, var(--surface-2));
+  border-left: 3px solid var(--series-7);
+}
+.scenario-head {
+  font-size: 10.5px; font-weight: 700; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--text-2);
+}
+.scenario-v {
+  font-size: 19px; font-weight: 700; letter-spacing: -0.02em; margin: 3px 0 1px;
+  font-variant-numeric: tabular-nums;
+}
+.scenario-note { font-size: 12px; color: var(--text-2); line-height: 1.45; margin-top: 5px; }
+.scenario-rate {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 7px;
+  font-size: 12.5px; font-weight: 650; color: var(--text-1);
+}
+.scenario-rate b { font-variant-numeric: tabular-nums; }
+
+.srcs { margin: 11px 0 0 35px; padding-top: 9px; border-top: 1px solid var(--hairline-2); }
+.srcs-label {
+  font-size: 10px; font-weight: 700; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 5px;
+}
+.src { font-size: 11.5px; color: var(--text-2); line-height: 1.5; display: block; margin-bottom: 3px; }
+.src a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 2px; }
+.src .src-meta { color: var(--muted); }
+
 /* ---------- meters ---------- */
 .meter { padding: 11px 0; border-bottom: 1px solid var(--hairline-2); }
 .meter:last-child { border-bottom: 0; padding-bottom: 0; }
@@ -661,14 +712,15 @@ table.dt .neg { color: var(--critical); }
         <strong>$178</strong>.
       </p>
       <p class="intro-lede">
-        You are the City Manager. The approved budget carries a <strong>$6.36 million</strong>
-        general fund deficit. Close it &mdash; and win over three of five community voices.
+        You are the City Manager. The adopted FY 2026&#8209;27 budget carries a
+        <strong>$6,363,284</strong> general fund deficit. Close it &mdash; and win over three
+        of five community voices.
       </p>
 
       <div class="fact-grid">
         <div class="fact">
           <div class="fact-v is-critical">$6.36M</div>
-          <div class="fact-l">General fund deficit you inherit</div>
+          <div class="fact-l">Adopted FY 2026&#8209;27 budget deficit</div>
         </div>
         <div class="fact">
           <div class="fact-v">$56.6M</div>
@@ -679,8 +731,8 @@ table.dt .neg { color: var(--critical); }
           <div class="fact-l">Recurring revenue</div>
         </div>
         <div class="fact">
-          <div class="fact-v is-critical">$178</div>
-          <div class="fact-l">In the bank, week of Sept 21</div>
+          <div class="fact-v is-critical">$6.92M</div>
+          <div class="fact-l">Later revised figure, July 2026 budget&#8209;to&#8209;actual</div>
         </div>
       </div>
 
@@ -688,6 +740,13 @@ table.dt .neg { color: var(--critical); }
         <b>One rule worth knowing before you start.</b> Borrowing and selling things
         balance a budget for exactly one year. Only recurring savings and recurring
         revenue close a structural gap &mdash; and that is what you are graded on.
+      </div>
+
+      <div class="callout">
+        <b>Every option here is one the City has actually discussed.</b> Most of them
+        have no published savings figure, so they cannot move the deficit &mdash; the
+        card says so, and the sources are on the card. Nothing in this game is a
+        dollar estimate invented for it.
       </div>
 
       <button class="btn" id="btn-start">Take office</button>
@@ -763,7 +822,8 @@ table.dt .neg { color: var(--critical); }
       <ul>
         <li>General Fund revenue <b>$50,224,900</b></li>
         <li>General Fund expense <b>$56,588,184</b></li>
-        <li>General Fund deficit <b>$6,363,284</b></li>
+        <li>Adopted FY 2026&#8209;27 budget deficit <b>$6,363,284</b></li>
+        <li>Later revised figure, from the budget&#8209;to&#8209;actual report dated Sept 14, 2026 for the period ending July 31, 2026: <b>$6,924,550</b> &mdash; shown alongside the adopted figure, not instead of it</li>
         <li>Personnel <b>$34,954,900</b> of that General Fund</li>
         <li>Every revenue line on the Impact tab</li>
         <li>Every department total on the Budget tab &mdash; the city's own cost centres grouped into its named departments, summing exactly to the published total</li>
@@ -779,9 +839,15 @@ table.dt .neg { color: var(--critical); }
         <li><b>20%</b> General Fund reserve policy target</li>
       </ul>
 
+      <h3>Options on the board <span class="sheet-tag is-official">Documented</span></h3>
+      <ul>
+        <li>Every option is one documented as discussed by City officials or at a Council meeting, with its status, sources and dates printed on the card</li>
+        <li>Where the City or its reporting has published a figure, the card shows it and says what it is based on</li>
+        <li>Where no figure has been published, the card says <b>&ldquo;Savings/revenue not published&rdquo;</b> and the option cannot move the deficit</li>
+      </ul>
+
       <h3>Game-design estimates <span class="sheet-tag is-est">Not city figures</span></h3>
       <ul>
-        <li>What each policy option saves or raises &mdash; except the $11M loan, the $1.2M contingency and the $500K events line, which are real budget lines</li>
         <li>All five service meters and every movement in them</li>
         <li>The growth rates behind the three-year outlook</li>
         <li>The five community voices, who are fictional archetypes and not portrayals of any real resident or officeholder</li>
@@ -813,30 +879,106 @@ const BUDGET = {
       "modeled": "Game-design estimate. Not a city figure."
     }
   },
-
   "verifiedAnchors": [
-    { "label": "General Fund revenue, FY 2026-27 approved", "value": 50224900, "confidence": "official" },
-    { "label": "General Fund expense, FY 2026-27 approved", "value": 56588184, "confidence": "official" },
-    { "label": "General Fund deficit, FY 2026-27 approved", "value": 6363284, "confidence": "official" },
-    { "label": "Water Enterprise Fund deficit, FY 2026-27", "value": 10660644, "confidence": "official" },
-    { "label": "Sewer Enterprise Fund deficit, FY 2026-27", "value": 5453187, "confidence": "official" },
-    { "label": "Sewer Expansion Fund deficit, FY 2026-27", "value": 5997059, "confidence": "official" },
-    { "label": "Combined General + Water deficit", "value": 17023928, "confidence": "derived" },
-    { "label": "General Fund personnel costs, FY 2026-27", "value": 34954900, "confidence": "official" },
-    { "label": "General Fund contractual costs, FY 2026-27", "value": 11896300, "confidence": "official" },
-    { "label": "Contingency line, Non-Departmental", "value": 1200000, "confidence": "official" },
-    { "label": "General Fund deficit as revised in the July 2026 budget-to-actual", "value": 6924550, "confidence": "official" },
-    { "label": "Interfund loan from impact fee funds, approved Oct 2 2026", "value": 18000000, "confidence": "official" },
-    { "label": "  - portion loaned to the General Fund", "value": 11000000, "confidence": "official" },
-    { "label": "  - portion loaned to the Water Fund", "value": 7000000, "confidence": "official" },
-    { "label": "Interfund loan interest rate", "value": 4.0, "unit": "percent", "confidence": "official" },
-    { "label": "General Fund bank balance, week of Sept 21 2026", "value": 178, "confidence": "official" },
-    { "label": "General Fund, FY 2025-26 adopted", "value": 46474571, "confidence": "official" },
-    { "label": "Total appropriations, all funds, FY 2025-26", "value": 130985106, "confidence": "official" },
-    { "label": "General Fund reserve policy target", "value": 20, "unit": "percent", "confidence": "official" },
-    { "label": "Funded positions, all funds, FY 2024-25", "value": 222, "unit": "positions", "confidence": "official" }
+    {
+      "label": "General Fund revenue, FY 2026-27 approved",
+      "value": 50224900,
+      "confidence": "official"
+    },
+    {
+      "label": "General Fund expense, FY 2026-27 approved",
+      "value": 56588184,
+      "confidence": "official"
+    },
+    {
+      "label": "General Fund deficit, FY 2026-27 approved",
+      "value": 6363284,
+      "confidence": "official"
+    },
+    {
+      "label": "Water Enterprise Fund deficit, FY 2026-27",
+      "value": 10660644,
+      "confidence": "official"
+    },
+    {
+      "label": "Sewer Enterprise Fund deficit, FY 2026-27",
+      "value": 5453187,
+      "confidence": "official"
+    },
+    {
+      "label": "Sewer Expansion Fund deficit, FY 2026-27",
+      "value": 5997059,
+      "confidence": "official"
+    },
+    {
+      "label": "Combined General + Water deficit",
+      "value": 17023928,
+      "confidence": "derived"
+    },
+    {
+      "label": "General Fund personnel costs, FY 2026-27",
+      "value": 34954900,
+      "confidence": "official"
+    },
+    {
+      "label": "General Fund contractual costs, FY 2026-27",
+      "value": 11896300,
+      "confidence": "official"
+    },
+    {
+      "label": "Contingency line, Non-Departmental",
+      "value": 1200000,
+      "confidence": "official"
+    },
+    {
+      "label": "Interfund loan from impact fee funds, approved Oct 2 2026",
+      "value": 18000000,
+      "confidence": "official"
+    },
+    {
+      "label": "  - portion loaned to the General Fund",
+      "value": 11000000,
+      "confidence": "official"
+    },
+    {
+      "label": "  - portion loaned to the Water Fund",
+      "value": 7000000,
+      "confidence": "official"
+    },
+    {
+      "label": "Interfund loan interest rate",
+      "value": 4.0,
+      "unit": "percent",
+      "confidence": "official"
+    },
+    {
+      "label": "General Fund bank balance, week of Sept 21 2026",
+      "value": 178,
+      "confidence": "official"
+    },
+    {
+      "label": "General Fund, FY 2025-26 adopted",
+      "value": 46474571,
+      "confidence": "official"
+    },
+    {
+      "label": "Total appropriations, all funds, FY 2025-26",
+      "value": 130985106,
+      "confidence": "official"
+    },
+    {
+      "label": "General Fund reserve policy target",
+      "value": 20,
+      "unit": "percent",
+      "confidence": "official"
+    },
+    {
+      "label": "Funded positions, all funds, FY 2024-25",
+      "value": 222,
+      "unit": "positions",
+      "confidence": "official"
+    }
   ],
-
   "generalFund": {
     "expenditureTotal": 56588184,
     "revenueTotal": 50224900,
@@ -844,126 +986,347 @@ const BUDGET = {
     "reservePolicyPercent": 20,
     "currentReserve": 0,
     "confidence": "official",
-
     "departments": [
       {
-        "id": "police", "name": "Police & Animal Control", "short": "Police",
-        "baseline": 17006026, "minPct": 72, "maxPct": 112,
+        "id": "police",
+        "name": "Police & Animal Control",
+        "short": "Police",
+        "baseline": 17006026,
+        "minPct": 72,
+        "maxPct": 112,
         "positions": 67,
-        "costCentres": ["2500 Police", "2025 Animal Control"],
+        "costCentres": [
+          "2500 Police",
+          "2025 Animal Control"
+        ],
         "blurb": "Patrol, investigations, the 911 dispatch contract, records and animal control.",
-        "cutEffects": { "safety": 1.00, "infrastructure": 0.00, "community": 0.15, "workforce": 0.45, "trust": 0.70 },
+        "cutEffects": {
+          "safety": 1.0,
+          "infrastructure": 0.0,
+          "community": 0.15,
+          "workforce": 0.45,
+          "trust": 0.7
+        },
         "cutNarrative": "Slower response times, thinner patrol coverage overnight, longer case backlogs. The $1.1M dispatch contract is fixed, so cuts land on sworn staffing.",
         "raiseNarrative": "Fills sworn vacancies and restores overnight patrol strength.",
         "confidence": "derived"
       },
       {
-        "id": "fire", "name": "Fire & Emergency Services", "short": "Fire",
-        "baseline": 16769892, "minPct": 72, "maxPct": 112,
+        "id": "fire",
+        "name": "Fire & Emergency Services",
+        "short": "Fire",
+        "baseline": 16769892,
+        "minPct": 72,
+        "maxPct": 112,
         "positions": 50,
-        "costCentres": ["2205 Fire"],
+        "costCentres": [
+          "2205 Fire"
+        ],
         "blurb": "Fire suppression, medical first response, prevention and inspection.",
-        "cutEffects": { "safety": 1.00, "infrastructure": 0.00, "community": 0.10, "workforce": 0.45, "trust": 0.75 },
+        "cutEffects": {
+          "safety": 1.0,
+          "infrastructure": 0.0,
+          "community": 0.1,
+          "workforce": 0.45,
+          "trust": 0.75
+        },
         "cutNarrative": "Constant staffing is what fire costs. Cut it and you brown out an engine company or pay the difference back in overtime.",
         "raiseNarrative": "Adds firefighter positions and shortens response intervals.",
         "confidence": "derived"
       },
       {
-        "id": "admin", "name": "Administrative Services", "short": "Admin",
-        "baseline": 6566874, "minPct": 60, "maxPct": 112,
+        "id": "admin",
+        "name": "Administrative Services",
+        "short": "Admin",
+        "baseline": 6566874,
+        "minPct": 60,
+        "maxPct": 112,
         "positions": 20,
-        "costCentres": ["1155 Finance", "1160 Human Resources", "1157 Information Systems"],
+        "costCentres": [
+          "1155 Finance",
+          "1160 Human Resources",
+          "1157 Information Systems"
+        ],
         "blurb": "Finance, HR, IT and risk. Also where the overdue audits live.",
-        "cutEffects": { "safety": 0.05, "infrastructure": 0.10, "community": 0.10, "workforce": 0.55, "trust": 0.30 },
+        "cutEffects": {
+          "safety": 0.05,
+          "infrastructure": 0.1,
+          "community": 0.1,
+          "workforce": 0.55,
+          "trust": 0.3
+        },
         "cutNarrative": "Thinner finance staff. The overdue audits slip further, which lenders notice.",
         "raiseNarrative": "Staffs up finance to clear the audit backlog and rebuild bank reconciliations.",
         "confidence": "derived"
       },
       {
-        "id": "commdev", "name": "Community Development & Engineering", "short": "Dev Svcs",
-        "baseline": 5951081, "minPct": 55, "maxPct": 115,
+        "id": "commdev",
+        "name": "Community Development & Engineering",
+        "short": "Dev Svcs",
+        "baseline": 5951081,
+        "minPct": 55,
+        "maxPct": 115,
         "positions": 22,
-        "costCentres": ["4000 Engineering", "4005 Building", "4010 Planning", "4300"],
+        "costCentres": [
+          "4000 Engineering",
+          "4005 Building",
+          "4010 Planning",
+          "4300"
+        ],
         "blurb": "Planning, building inspection, permits and engineering. Carries $3.7M of permit revenue with it.",
-        "cutEffects": { "safety": 0.10, "infrastructure": 0.35, "community": 0.35, "workforce": 0.30, "trust": 0.40 },
+        "cutEffects": {
+          "safety": 0.1,
+          "infrastructure": 0.35,
+          "community": 0.35,
+          "workforce": 0.3,
+          "trust": 0.4
+        },
         "cutNarrative": "Permit turnaround slows, which quietly drags on the $3.7M of building permit revenue this department collects.",
         "raiseNarrative": "Faster permits and inspections; development revenue picks up.",
         "confidence": "derived"
       },
       {
-        "id": "nondept", "name": "Non-Departmental & Contingency", "short": "Non-Dept",
-        "baseline": 3577200, "minPct": 60, "maxPct": 110,
+        "id": "nondept",
+        "name": "Non-Departmental & Contingency",
+        "short": "Non-Dept",
+        "baseline": 3577200,
+        "minPct": 60,
+        "maxPct": 110,
         "positions": 0,
-        "costCentres": ["1100 Non-Departmental", "9000"],
+        "costCentres": [
+          "1100 Non-Departmental",
+          "9000"
+        ],
         "blurb": "Citywide legal, audit, insurance, memberships — and a $1.2M contingency.",
-        "cutEffects": { "safety": 0.10, "infrastructure": 0.10, "community": 0.10, "workforce": 0.10, "trust": 0.55 },
+        "cutEffects": {
+          "safety": 0.1,
+          "infrastructure": 0.1,
+          "community": 0.1,
+          "workforce": 0.1,
+          "trust": 0.55
+        },
         "cutNarrative": "The contingency is the first thing to go and the thing you miss when a pump station fails in March.",
         "raiseNarrative": "Rebuilds the contingency and funds the audit catch-up.",
         "confidence": "derived"
       },
       {
-        "id": "citymgr", "name": "City Manager, Clerk & Council", "short": "Exec",
-        "baseline": 2439765, "minPct": 60, "maxPct": 112,
+        "id": "citymgr",
+        "name": "City Manager, Clerk & Council",
+        "short": "Exec",
+        "baseline": 2439765,
+        "minPct": 60,
+        "maxPct": 112,
         "positions": 8,
-        "costCentres": ["1105 City Council", "1110 City Clerk", "1120 City Manager", "1140 Events"],
+        "costCentres": [
+          "1105 City Council",
+          "1110 City Clerk",
+          "1120 City Manager",
+          "1140 Events"
+        ],
         "blurb": "Executive office, the clerk, elections and the city's events budget.",
-        "cutEffects": { "safety": 0.05, "infrastructure": 0.05, "community": 0.30, "workforce": 0.25, "trust": -0.25 },
+        "cutEffects": {
+          "safety": 0.05,
+          "infrastructure": 0.05,
+          "community": 0.3,
+          "workforce": 0.25,
+          "trust": -0.25
+        },
         "cutNarrative": "Small money. Residents read cuts here as the city taking its own medicine first.",
         "raiseNarrative": "More executive capacity for the loan agreements and labour negotiations ahead.",
         "confidence": "derived"
       },
       {
-        "id": "publicworks", "name": "Public Works & Streets", "short": "Streets",
-        "baseline": 2288733, "minPct": 55, "maxPct": 120,
+        "id": "publicworks",
+        "name": "Public Works & Streets",
+        "short": "Streets",
+        "baseline": 2288733,
+        "minPct": 55,
+        "maxPct": 120,
         "positions": 42,
-        "costCentres": ["2207 Solid Waste", "7000", "7020", "8000"],
+        "costCentres": [
+          "2207 Solid Waste",
+          "7000",
+          "7020",
+          "8000"
+        ],
         "blurb": "The General Fund's share of streets, facilities and solid waste. Most of Public Works sits in the water, sewer and gas tax funds.",
-        "cutEffects": { "safety": 0.20, "infrastructure": 1.00, "community": 0.30, "workforce": 0.35, "trust": 0.45 },
+        "cutEffects": {
+          "safety": 0.2,
+          "infrastructure": 1.0,
+          "community": 0.3,
+          "workforce": 0.35,
+          "trust": 0.45
+        },
         "cutNarrative": "Pothole backlog grows and the pavement condition index keeps sliding.",
         "raiseNarrative": "Clears the pothole backlog and resumes the slurry seal program.",
         "confidence": "derived"
       },
       {
-        "id": "parks", "name": "Parks & Recreation", "short": "Parks",
-        "baseline": 1988613, "minPct": 40, "maxPct": 120,
+        "id": "parks",
+        "name": "Parks & Recreation",
+        "short": "Parks",
+        "baseline": 1988613,
+        "minPct": 40,
+        "maxPct": 120,
         "positions": 8,
-        "costCentres": ["8050 Parks", "5005", "5010"],
+        "costCentres": [
+          "8050 Parks",
+          "5005",
+          "5010"
+        ],
         "blurb": "Parks maintenance, youth and senior programs, pool, community events.",
-        "cutEffects": { "safety": 0.05, "infrastructure": 0.25, "community": 1.00, "workforce": 0.30, "trust": 0.50 },
+        "cutEffects": {
+          "safety": 0.05,
+          "infrastructure": 0.25,
+          "community": 1.0,
+          "workforce": 0.3,
+          "trust": 0.5
+        },
         "cutNarrative": "Reduced program hours, browner turf, shorter pool season. The most visible cut on this list.",
         "raiseNarrative": "Restores youth programming and park maintenance cycles.",
         "confidence": "derived"
       }
     ],
-
     "revenues": [
-      { "id": "charges",   "name": "Charges for services",        "amount": 10753700, "growth": 0.020, "confidence": "official" },
-      { "id": "measurew",  "name": "Measure W local sales tax",   "amount": 9682000,  "growth": 0.015, "confidence": "official" },
-      { "id": "salestax",  "name": "Sales & use tax",             "amount": 7264000,  "growth": 0.015, "confidence": "official" },
-      { "id": "intergov",  "name": "Intergovernmental",           "amount": 6798200,  "growth": 0.010, "confidence": "official" },
-      { "id": "vlf",       "name": "Property tax in lieu of VLF", "amount": 5600000,  "growth": 0.035, "confidence": "official" },
-      { "id": "permits",   "name": "Licenses & permits",          "amount": 4211000,  "growth": 0.010, "confidence": "official" },
-      { "id": "proptax",   "name": "Property tax",                "amount": 2295600,  "growth": 0.035, "confidence": "official" },
-      { "id": "franchise", "name": "Franchise fees",              "amount": 1177000,  "growth": 0.015, "confidence": "official" },
-      { "id": "tot",       "name": "Transient occupancy tax",     "amount": 975000,   "growth": 0.025, "confidence": "official" },
-      { "id": "other",     "name": "Other revenue",               "amount": 963400,   "growth": 0.005, "confidence": "official" },
-      { "id": "prop172",   "name": "Public safety sales tax",     "amount": 280000,   "growth": 0.010, "confidence": "official" },
-      { "id": "transfer",  "name": "Property transfer tax",       "amount": 225000,   "growth": 0.020, "confidence": "official" }
-    ]
+      {
+        "id": "charges",
+        "name": "Charges for services",
+        "amount": 10753700,
+        "growth": 0.02,
+        "confidence": "official"
+      },
+      {
+        "id": "measurew",
+        "name": "Measure W local sales tax",
+        "amount": 9682000,
+        "growth": 0.015,
+        "confidence": "official"
+      },
+      {
+        "id": "salestax",
+        "name": "Sales & use tax",
+        "amount": 7264000,
+        "growth": 0.015,
+        "confidence": "official"
+      },
+      {
+        "id": "intergov",
+        "name": "Intergovernmental",
+        "amount": 6798200,
+        "growth": 0.01,
+        "confidence": "official"
+      },
+      {
+        "id": "vlf",
+        "name": "Property tax in lieu of VLF",
+        "amount": 5600000,
+        "growth": 0.035,
+        "confidence": "official"
+      },
+      {
+        "id": "permits",
+        "name": "Licenses & permits",
+        "amount": 4211000,
+        "growth": 0.01,
+        "confidence": "official"
+      },
+      {
+        "id": "proptax",
+        "name": "Property tax",
+        "amount": 2295600,
+        "growth": 0.035,
+        "confidence": "official"
+      },
+      {
+        "id": "franchise",
+        "name": "Franchise fees",
+        "amount": 1177000,
+        "growth": 0.015,
+        "confidence": "official"
+      },
+      {
+        "id": "tot",
+        "name": "Transient occupancy tax",
+        "amount": 975000,
+        "growth": 0.025,
+        "confidence": "official"
+      },
+      {
+        "id": "other",
+        "name": "Other revenue",
+        "amount": 963400,
+        "growth": 0.005,
+        "confidence": "official"
+      },
+      {
+        "id": "prop172",
+        "name": "Public safety sales tax",
+        "amount": 280000,
+        "growth": 0.01,
+        "confidence": "official"
+      },
+      {
+        "id": "transfer",
+        "name": "Property transfer tax",
+        "amount": 225000,
+        "growth": 0.02,
+        "confidence": "official"
+      }
+    ],
+    "deficitLabel": "Adopted FY 2026-27 budget deficit",
+    "deficitSource": {
+      "title": "FY 2026-27 Approved Budget Document",
+      "publisher": "City of Hollister",
+      "url": "https://hollister.ca.gov/City%20Managers/Documents/Hollister_FY2026-27_Approved_Budget_July4_Cover.pdf",
+      "date": "2026-07-04"
+    }
   },
-
   "projection": {
     "note": "Baseline growth assumptions for the three-year outlook. Modeled, not a city forecast.",
     "revenueGrowth": 0.022,
     "expenditureGrowth": 0.042,
     "expenditureGrowthNote": "Personnel is $34.95M of a $56.59M General Fund. Salary steps, CalPERS rate increases and insurance renewals outrun revenue growth. This is the structural problem.",
-    "years": ["FY 2026-27", "FY 2027-28", "FY 2028-29"],
+    "years": [
+      "FY 2026-27",
+      "FY 2027-28",
+      "FY 2028-29"
+    ],
     "confidence": "modeled"
+  },
+  "revisedDeficit": {
+    "label": "Later revised figure",
+    "amount": 6924550,
+    "revenue": 50224900,
+    "expense": 57149450,
+    "asOfPeriod": "Period ending 07/31/2026",
+    "reportDate": "2026-09-14",
+    "note": "The General Fund budget-to-actual report published after adoption shows expenses revised up to $57,149,450 against the same $50,224,900 of revenue, widening the gap from $6,363,284 to $6,924,550. The City's own October 2026 infographic carries this $6.9M figure. The game is played on the adopted budget; this is shown alongside it, not instead of it.",
+    "sources": [
+      {
+        "title": "General Fund Budget-to-Actual, period ending 07/31/2026",
+        "publisher": "City of Hollister",
+        "url": "https://hollister.ca.gov/Administrative%20Services/1.A-GENERAL%20FUND-%20JUL-26%20BUDGET%20TO%20ACTUAL.pdf",
+        "date": "2026-09-14"
+      },
+      {
+        "title": "A Clear Look At Our Financial Situation",
+        "publisher": "City of Hollister",
+        "url": "https://hollister.ca.gov/news_detail_T3_R111.php",
+        "date": "2026-10-12"
+      }
+    ],
+    "labelDiscrepancy": "The City infographic captions these figures \"Adopted Budget FY 2025-26\" and \"July - September 2025\", but the amounts ($50.2M revenue, $57.1M expenses, $6.9M gap) match the FY 2026-27 budget-to-actual exactly. Reproduced here as published."
   }
 };
 const ACTIONS = {
   "meta": {
-    "note": "Policy options. Dollar amounts are MODELED estimates sized to be realistic for a city of Hollister's size, except where confidence is 'verified'. Meter effects are game-design values, not forecasts.",
+    "note": "Every card is an option documented as discussed by City officials or at a City Council meeting. Cards without a published dollar figure carry amountKnown:false and must not move the deficit. No dollar amount here is estimated by this project.",
+    "statuses": {
+      "adopted": "Adopted / implemented",
+      "discussed": "Discussed",
+      "exploratory": "Exploratory"
+    },
+    "unpublishedLabel": "Savings/revenue not published",
     "meters": [
       {
         "id": "safety",
@@ -1097,403 +1460,511 @@ const ACTIONS = {
   ],
   "actions": [
     {
-      "id": "voluntary-separation",
-      "name": "Voluntary separation incentives",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 1400000,
-      "desc": "Pay retirement and resignation incentives instead of ordering layoffs.",
-      "consequence": "Institutional knowledge walks out the door. You backfill the critical posts later at a premium.",
-      "effects": {
-        "workforce": -8,
-        "trust": -2
-      },
-      "realWorld": true,
-      "realNote": "This is the approach Hollister actually took for FY 2026-27."
-    },
-    {
-      "id": "freeze-vacancies",
-      "name": "Freeze all vacant positions",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 2200000,
-      "desc": "Hold every unfilled position citywide, including sworn vacancies.",
-      "consequence": "Cheapest real money on the board. It also quietly shrinks the city by attrition.",
-      "effects": {
-        "safety": -7,
-        "community": -4,
-        "workforce": -6,
-        "trust": -2
-      },
-      "realWorld": true,
-      "realNote": "Hollister eliminated 31 budgeted vacant positions in FY 2025-26 for about $6M."
-    },
-    {
-      "id": "layoffs-nonsafety",
-      "name": "Lay off 12 non-safety positions",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 1600000,
-      "desc": "Reduction in force across administration, parks and public works.",
-      "consequence": "Fast, certain savings. It costs you the room and most of your workforce goodwill.",
-      "effects": {
-        "workforce": -20,
-        "trust": -10,
-        "community": -8,
-        "infrastructure": -6
-      }
-    },
-    {
-      "id": "four-day-week",
-      "name": "Four-day City Hall week",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 450000,
-      "desc": "Close City Hall on Fridays and move staff to a 36-hour schedule.",
-      "consequence": "Utilities and overtime drop. Residents find the counter closed when they need it.",
-      "effects": {
-        "trust": -4,
-        "community": -4,
-        "workforce": 4
-      }
-    },
-    {
-      "id": "overtime-reform",
-      "name": "Overtime and scheduling reform",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 640000,
-      "desc": "Rebuild shift schedules to cut callback and mandatory overtime.",
-      "consequence": "Real savings without a layoff, but it needs union agreement and a year to land.",
-      "effects": {
-        "safety": -4,
-        "workforce": -5
-      }
-    },
-    {
-      "id": "contract-parks",
-      "name": "Contract out park maintenance",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 520000,
-      "desc": "Move turf, landscape and restroom maintenance to a private contractor.",
-      "consequence": "Cheaper per acre. Response to problems gets slower and less accountable.",
-      "effects": {
-        "community": -8,
-        "workforce": -7
-      }
-    },
-    {
-      "id": "defer-streets",
-      "name": "Defer street maintenance one year",
-      "category": "cuts",
-      "type": "onetime",
-      "amount": 1100000,
-      "desc": "Skip this year's slurry seal and overlay program.",
-      "consequence": "Pavement that fails costs roughly four times as much to rebuild as to maintain. This is a loan from your own streets.",
-      "effects": {
-        "infrastructure": -20,
-        "trust": -4
-      }
-    },
-    {
-      "id": "defer-fleet",
-      "name": "Defer fleet and equipment replacement",
-      "category": "cuts",
-      "type": "onetime",
-      "amount": 700000,
-      "desc": "Keep patrol cars, engines and street sweepers one more year.",
-      "consequence": "Maintenance costs climb and an engine out of service is a response time problem.",
-      "effects": {
-        "safety": -6,
-        "infrastructure": -10,
-        "workforce": -2
-      }
-    },
-    {
-      "id": "travel-training",
-      "name": "Suspend non-essential travel and training",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 160000,
-      "desc": "Cancel conferences and discretionary professional development.",
-      "consequence": "Small money. Certifications lapse and recruitment gets harder.",
-      "effects": {
-        "workforce": -3
-      }
-    },
-    {
-      "id": "library-hours",
-      "name": "Cut library and community center hours",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 280000,
-      "desc": "Drop to four open days a week and end evening hours.",
-      "consequence": "Highly visible. It is the cut residents notice first and remember longest.",
-      "effects": {
-        "community": -12,
-        "trust": -4
-      }
-    },
-    {
-      "id": "admin-hiring-freeze",
-      "name": "Freeze administrative hiring",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 780000,
-      "desc": "No backfills in finance, HR, IT or the clerk's office.",
-      "consequence": "It also slows the overdue audit catch-up, and lenders are watching that.",
-      "effects": {
-        "workforce": -5,
-        "trust": -3
-      }
-    },
-    {
-      "id": "fire-jpa",
-      "name": "Move to a regional fire services JPA",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 900000,
-      "desc": "Shift fire operations into a joint powers authority with neighboring agencies.",
-      "consequence": "Shares overhead across agencies. You also give up direct control of your own fire service.",
-      "effects": {
-        "safety": -7,
-        "workforce": -6,
-        "trust": -6
-      }
-    },
-    {
-      "id": "energy-retrofit",
-      "name": "Energy retrofit and solar agreement",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 210000,
-      "desc": "LED conversion and a solar power purchase agreement on city facilities.",
-      "consequence": "Low risk, no service loss. It takes about a year to show up in the numbers.",
-      "effects": {
-        "infrastructure": 3
-      }
-    },
-    {
-      "id": "debt-restructure",
-      "name": "Restructure outstanding debt",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 380000,
-      "desc": "Refinance and re-amortize existing obligations to lower annual payments.",
-      "consequence": "Lower payments now, more interest paid in total. A fiscal emergency does not get you good terms.",
-      "effects": {
-        "trust": -2
-      }
-    },
-    {
-      "id": "cm-office-cut",
-      "name": "Cut the City Manager's office budget",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 190000,
-      "desc": "Reduce executive staffing, car allowances and discretionary accounts.",
-      "consequence": "Small money, large signal. Residents read this one as good faith.",
-      "effects": {
-        "workforce": -2,
-        "trust": 7
-      }
-    },
-    {
-      "id": "fee-cost-recovery",
-      "name": "Full cost-recovery fee study",
-      "category": "revenue",
-      "type": "ongoing",
-      "amount": 900000,
-      "desc": "Reset building, planning and engineering fees to the true cost of service.",
-      "consequence": "Building permits alone bring in $3.7M. Resetting fees to the true cost of service is defensible and council-approvable, and the development community will fight it.",
-      "effects": {
-        "community": -4,
-        "trust": -3
-      },
-      "taxBurden": 0.2,
-      "bizBurden": 1
-    },
-    {
-      "id": "biz-license-modernize",
-      "name": "Modernize the business license tax",
-      "category": "revenue",
-      "type": "ongoing",
-      "amount": 360000,
-      "desc": "Update a flat-rate schedule that has not changed in decades.",
-      "consequence": "The business license tax raises $240,000 on a flat-rate schedule that has not changed in decades. Moving to gross receipts could half again that. Small businesses feel it as a rate increase.",
-      "effects": {
-        "trust": -2
-      },
-      "taxBurden": 0.4,
-      "bizBurden": 1,
-      "confidence": "derived"
-    },
-    {
-      "id": "ambulance-fee",
-      "name": "First responder fee for medical calls",
-      "category": "revenue",
-      "type": "ongoing",
-      "amount": 400000,
-      "desc": "Bill insurers when fire units respond to medical emergencies.",
-      "consequence": "Common practice statewide. Residents still experience it as a bill for calling 911.",
-      "effects": {
-        "trust": -5,
-        "community": -3
-      },
-      "taxBurden": 0.6,
-      "bizBurden": 0.1
-    },
-    {
-      "id": "citations",
-      "name": "Step up code enforcement and citations",
-      "category": "revenue",
-      "type": "ongoing",
-      "amount": 180000,
-      "desc": "Fund an additional code officer and enforce existing citation authority.",
-      "consequence": "Revenue from enforcement reads as a shakedown whether or not it is one.",
-      "effects": {
-        "trust": -4
-      },
-      "taxBurden": 0.4,
-      "bizBurden": 0.5
-    },
-    {
-      "id": "cell-tower",
-      "name": "Lease rooftop and cell tower rights",
-      "category": "revenue",
-      "type": "ongoing",
-      "amount": 120000,
-      "desc": "Lease space on city water tanks and rooftops to carriers.",
-      "consequence": "Free money, small money. There is no reason not to do this.",
-      "effects": {},
-      "taxBurden": 0,
-      "bizBurden": 0
-    },
-    {
-      "id": "tot-increase",
-      "name": "Raise the hotel tax to 12%",
-      "category": "revenue",
-      "type": "ongoing",
-      "amount": 195000,
-      "desc": "Increase transient occupancy tax from 10% to 12%.",
-      "needsBallot": true,
-      "passChance": 0.74,
-      "consequence": "The hotel tax raises $975,000 today, so two points adds about $195K. Visitors pay it, not residents — the easiest ballot measure on this board.",
-      "effects": {},
-      "taxBurden": 0.2,
-      "bizBurden": 0.4,
-      "confidence": "derived"
-    },
-    {
-      "id": "cannabis-tax",
-      "name": "Cannabis business tax",
-      "category": "revenue",
-      "type": "ongoing",
-      "amount": 350000,
-      "desc": "Tax gross receipts of licensed cannabis businesses.",
-      "needsBallot": true,
-      "passChance": 0.58,
-      "consequence": "Depends entirely on how many operators actually open here.",
-      "effects": {
-        "trust": -2
-      },
-      "taxBurden": 0.5,
-      "bizBurden": 0.6
-    },
-    {
-      "id": "uut",
-      "name": "Utility users tax at 3%",
-      "category": "revenue",
-      "type": "ongoing",
-      "amount": 2800000,
-      "desc": "A 3% tax on electric, gas and telecom bills.",
-      "needsBallot": true,
-      "passChance": 0.33,
-      "consequence": "The largest ongoing revenue available to you. Residents pay it on every bill, every month.",
-      "effects": {
-        "trust": -8
-      },
-      "taxBurden": 1,
-      "bizBurden": 0.7
-    },
-    {
-      "id": "sales-tax-half",
-      "name": "Add a half-cent sales tax",
-      "category": "revenue",
-      "type": "ongoing",
-      "amount": 4800000,
-      "desc": "A half-cent add-on to the local transactions and use tax.",
-      "needsBallot": true,
-      "passChance": 0.41,
-      "consequence": "Measure W's one cent brings in $9.68M, so a half cent is worth roughly $4.8M. Hollister is already at 9.25%, and this is a hard ask in a fiscal emergency.",
-      "effects": {
-        "trust": -6
-      },
-      "taxBurden": 1,
-      "bizBurden": 0.8,
-      "confidence": "derived"
-    },
-    {
-      "id": "sell-surplus",
-      "name": "Sell surplus city property",
-      "category": "onetime",
-      "type": "onetime",
-      "amount": 2100000,
-      "desc": "Dispose of city-owned parcels no longer used for operations.",
-      "consequence": "You can only sell it once, and you will never buy it back at this price.",
-      "effects": {
-        "infrastructure": -5,
-        "trust": -4
-      }
-    },
-    {
       "id": "impact-fee-loan",
-      "name": "Borrow $11M from impact fee funds",
+      "name": "Interfund loan from impact fee funds",
       "category": "onetime",
       "type": "onetime",
+      "status": "adopted",
+      "amountKnown": true,
       "amount": 11000000,
-      "desc": "An interfund loan from restricted impact fee funds to the General Fund.",
-      "consequence": "This is cash, not a fix. It is repayable by June 30, 2027 at 4%, and the capital projects those fees were collected for wait.",
+      "amountBasis": "General Fund portion of the $18M interfund loan approved October 2, 2026.",
+      "desc": "The Council approved an $18M interfund loan from traffic impact and park dedication impact funds — $11M to the General Fund, $7M to Water.",
+      "consequence": "This is near-term operating cash to cover payroll and bills, not a reduction in ongoing spending. It is repayable by June 30, 2027, and the structural gap is exactly as large after it as before.",
       "effects": {
         "trust": -9,
         "infrastructure": -8
       },
+      "cashBridge": true,
+      "rateNote": "Reporting quotes city staff putting the rate at 4% (one outlet reports \"up to\" 4%). The adopted resolution has been described as stating 3–4%; the resolution text could not be retrieved to confirm that range.",
       "realWorld": true,
-      "confidence": "official",
-      "realNote": "On October 2, 2026 the Hollister City Council declared a fiscal emergency and approved exactly this: $18M from impact fee funds, $11M of it to the General Fund."
+      "realNote": "Approved by the City Council on October 2, 2026, the same night it declared a financial emergency.",
+      "sources": [
+        {
+          "title": "Hollister council agrees to declare fiscal emergency",
+          "publisher": "BenitoLink",
+          "url": "https://benitolink.com/hollister-council-agrees-to-declare-fiscal-emergency/",
+          "date": "2026-10-06"
+        },
+        {
+          "title": "Financial Emergency Information Guide",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R112.php",
+          "date": "2026-10-12"
+        },
+        {
+          "title": "A Clear Look At Our Financial Situation",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R111.php",
+          "date": "2026-10-12"
+        }
+      ]
     },
     {
-      "id": "spend-contingency",
-      "name": "Spend down the contingency",
-      "category": "onetime",
-      "type": "onetime",
-      "amount": 1200000,
-      "confidence": "official",
-      "desc": "Release the $1.2M contingency held in the Non-Departmental budget.",
-      "consequence": "It is right there in the adopted budget and it is the easiest million you will ever find. It is also the only thing standing between you and the next unbudgeted pump station failure.",
-      "effects": {
-        "trust": -4,
-        "infrastructure": -3
-      },
+      "id": "measure-v-tot",
+      "name": "Hotel tax increase (Measure V)",
+      "category": "revenue",
+      "type": "ongoing",
+      "status": "adopted",
+      "amountKnown": true,
+      "amount": 0,
+      "amountBasis": "Already enacted, so it adds nothing further. The City's ballot language estimated approximately $300,000 annually when Measure V was presented in 2024.",
+      "desc": "Voters approved a four percentage point increase to the transient occupancy tax, from 8% to 12%, effective April 1, 2025.",
+      "consequence": "Already enacted and already inside the $975,000 of hotel tax in the adopted budget. There is no further revenue to claim here.",
+      "effects": {},
+      "enacted": true,
       "realWorld": true,
-      "realNote": "The FY 2026-27 Approved Budget carries a $1,200,000 contingency line."
+      "realNote": "Passed November 5, 2024. The ballot question read: a four percentage point (4%) increase \"increasing the total tax levied on hotel occupants from 8 to 12 percent … generating approximately $300,000.00 annually.\"",
+      "sources": [
+        {
+          "title": "Hotel Tax (Measure V)",
+          "publisher": "City of Hollister, City Clerk",
+          "url": "https://hollister.ca.gov/government/city_clerk/hotel_tax_(measure_v).php",
+          "date": "2024-11-05"
+        }
+      ]
     },
     {
-      "id": "cancel-events",
-      "name": "Cancel city event funding",
+      "id": "voluntary-separations",
+      "name": "Voluntary separation and retirement incentives",
       "category": "cuts",
       "type": "ongoing",
-      "amount": 500000,
-      "confidence": "official",
-      "desc": "Zero out the $500,000 events budget.",
-      "consequence": "Hollister without its events calendar saves real money and costs the downtown businesses that depend on those weekends.",
+      "status": "adopted",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "The City offered voluntary separation and retirement incentives in July 2026. Several employees accepted and left City service.",
+      "consequence": "The City states these did not generate sufficient savings. No savings figure has been published.",
       "effects": {
-        "community": -11,
-        "trust": -5
+        "workforce": -4,
+        "trust": -2
       },
       "realWorld": true,
-      "realNote": "The FY 2026-27 Approved Budget carries a $500,000 event expenditures line."
+      "realNote": "October 14, 2026 City press release: \"voluntary workforce reductions did not generate sufficient savings.\"",
+      "sources": [
+        {
+          "title": "Press release #2: Workforce reductions and financial emergency",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R120.php",
+          "date": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "id": "layoff-notices",
+      "name": "Layoff notices",
+      "category": "cuts",
+      "type": "ongoing",
+      "status": "adopted",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "On October 14, 2026 the City began issuing layoff notices to represented and unrepresented employees across multiple departments.",
+      "consequence": "The City has published neither a headcount nor a savings amount. Animal Control staff are not affected, and the City says it is not eliminating all civilian positions.",
+      "effects": {
+        "workforce": -11,
+        "trust": -6,
+        "community": -3,
+        "safety": -2
+      },
+      "realWorld": true,
+      "realNote": "Announced October 14, 2026. The City gave no number of positions and no dollar figure.",
+      "sources": [
+        {
+          "title": "Press release: City clarifies misinformation regarding workforce reductions",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R119.php",
+          "date": "2026-10-14"
+        },
+        {
+          "title": "Press release #2: Workforce reductions and financial emergency",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R120.php",
+          "date": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "id": "cancel-nonprofit-contracts",
+      "name": "Cancelled contracts with non-profits",
+      "category": "cuts",
+      "type": "ongoing",
+      "status": "adopted",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "The City reports it has cancelled historical contracts with non-profit organisations.",
+      "consequence": "Named by the City as one of the conditions that led to the emergency declaration. No dollar value published.",
+      "effects": {
+        "community": -5,
+        "trust": -3
+      },
+      "sources": [
+        {
+          "title": "Financial Emergency Information Guide",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R112.php",
+          "date": "2026-10-12"
+        }
+      ]
+    },
+    {
+      "id": "building-fee-update",
+      "name": "Updated building permit and user fees",
+      "category": "revenue",
+      "type": "ongoing",
+      "status": "adopted",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "The City published an updated building permit and user fee schedule on July 23, 2026.",
+      "consequence": "A revised fee schedule is in effect. The City has not published the revenue change it expects from it.",
+      "effects": {
+        "community": -2,
+        "trust": -2
+      },
+      "sources": [
+        {
+          "title": "Updated Building Permit and User Fees",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R107.php",
+          "date": "2026-07-23"
+        }
+      ]
+    },
+    {
+      "id": "forgo-reserve-policy",
+      "name": "Forgo the 20% reserve policy",
+      "category": "cuts",
+      "type": "ongoing",
+      "status": "adopted",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "The Council opted to set aside its policy of maintaining a 20% financial reserve.",
+      "consequence": "This frees the budget from a constraint rather than producing savings. It leaves nothing set aside for the next unbudgeted failure.",
+      "effects": {
+        "trust": -3
+      },
+      "sources": [
+        {
+          "title": "Hollister council delays fiscal reserve policy to bridge projected $6 million deficit",
+          "publisher": "BenitoLink",
+          "url": "https://benitolink.com/hollister-council-delays-fiscal-reserve-policy-to-bridge-6-million-projected-budget-deficit/",
+          "date": "2026-06-11"
+        }
+      ]
+    },
+    {
+      "id": "position-cuts-25",
+      "name": "Position cuts (up to 25)",
+      "category": "cuts",
+      "type": "ongoing",
+      "status": "discussed",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "A June 2026 staff report identified as many as 25 position cuts while the FY 2026-27 budget was being prepared.",
+      "consequence": "An earlier potential scenario from the budget process, not a final number and not what was adopted. The June 22 budget avoided staffing cuts by borrowing instead.",
+      "effects": {
+        "workforce": -8,
+        "trust": -3,
+        "community": -3
+      },
+      "scenarioNote": "Earlier potential scenario, superseded by the adopted budget.",
+      "sources": [
+        {
+          "title": "Hollister council delays fiscal reserve policy to bridge projected $6 million deficit",
+          "publisher": "BenitoLink",
+          "url": "https://benitolink.com/hollister-council-delays-fiscal-reserve-policy-to-bridge-6-million-projected-budget-deficit/",
+          "date": "2026-06-11"
+        },
+        {
+          "title": "Hollister borrows from sewer fund to balance adopted budget",
+          "publisher": "BenitoLink",
+          "url": "https://benitolink.com/hollister-borrows-from-sewer-fund-to-balance-adopted-budget/",
+          "date": "2026-06-26"
+        }
+      ]
+    },
+    {
+      "id": "furloughs",
+      "name": "Employee furloughs",
+      "category": "cuts",
+      "type": "ongoing",
+      "status": "discussed",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "Listed in the June 2026 staff report among potential measures to close the gap.",
+      "consequence": "Reduces payroll without eliminating jobs, and reduces the hours the City is open. No figure published.",
+      "effects": {
+        "workforce": -6,
+        "community": -3,
+        "trust": -2
+      },
+      "sources": [
+        {
+          "title": "Hollister council delays fiscal reserve policy to bridge projected $6 million deficit",
+          "publisher": "BenitoLink",
+          "url": "https://benitolink.com/hollister-council-delays-fiscal-reserve-policy-to-bridge-6-million-projected-budget-deficit/",
+          "date": "2026-06-11"
+        }
+      ]
+    },
+    {
+      "id": "benefit-cola-reductions",
+      "name": "Reductions in benefits and COLA",
+      "category": "cuts",
+      "type": "ongoing",
+      "status": "discussed",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "Listed in the June 2026 staff report among potential measures.",
+      "consequence": "Would require agreement with the City's labour groups. No figure published.",
+      "effects": {
+        "workforce": -7,
+        "trust": -2
+      },
+      "sources": [
+        {
+          "title": "Hollister council delays fiscal reserve policy to bridge projected $6 million deficit",
+          "publisher": "BenitoLink",
+          "url": "https://benitolink.com/hollister-council-delays-fiscal-reserve-policy-to-bridge-6-million-projected-budget-deficit/",
+          "date": "2026-06-11"
+        }
+      ]
+    },
+    {
+      "id": "defer-equipment-replacement",
+      "name": "Defer equipment replacement",
+      "category": "cuts",
+      "type": "onetime",
+      "status": "discussed",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "Listed in the June 2026 staff report among potential measures.",
+      "consequence": "Pushes cost into later years rather than removing it. No figure published.",
+      "effects": {
+        "infrastructure": -5,
+        "safety": -2,
+        "workforce": -2
+      },
+      "sources": [
+        {
+          "title": "Hollister council delays fiscal reserve policy to bridge projected $6 million deficit",
+          "publisher": "BenitoLink",
+          "url": "https://benitolink.com/hollister-council-delays-fiscal-reserve-policy-to-bridge-6-million-projected-budget-deficit/",
+          "date": "2026-06-11"
+        }
+      ]
+    },
+    {
+      "id": "pause-econdev-beautification",
+      "name": "Pause economic development and beautification",
+      "category": "cuts",
+      "type": "ongoing",
+      "status": "discussed",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "Listed in the June 2026 staff report as forgoing economic development and beautification efforts.",
+      "consequence": "The Council had approved funding for these initiatives earlier in 2026. No figure published for forgoing them.",
+      "effects": {
+        "community": -4,
+        "infrastructure": -2,
+        "trust": -2
+      },
+      "sources": [
+        {
+          "title": "Hollister council delays fiscal reserve policy to bridge projected $6 million deficit",
+          "publisher": "BenitoLink",
+          "url": "https://benitolink.com/hollister-council-delays-fiscal-reserve-policy-to-bridge-6-million-projected-budget-deficit/",
+          "date": "2026-06-11"
+        }
+      ]
+    },
+    {
+      "id": "reduce-hours-services",
+      "name": "Reduce hours and service levels",
+      "category": "cuts",
+      "type": "ongoing",
+      "status": "discussed",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "The City says residents can expect shorter hours, fewer days of operation, longer wait times, and reduced maintenance, recreation, permitting and community programs.",
+      "consequence": "Already beginning: on October 14, 2026 the police lobby was open 8–10 a.m. and records and general customer service were limited. No figure published.",
+      "effects": {
+        "community": -6,
+        "trust": -4,
+        "infrastructure": -2
+      },
+      "sources": [
+        {
+          "title": "Your Questions. Our Answers.",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R115.php",
+          "date": "2026-10-12"
+        },
+        {
+          "title": "Financial Emergency Information Guide",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R112.php",
+          "date": "2026-10-12"
+        },
+        {
+          "title": "Press release: City clarifies misinformation regarding workforce reductions",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R119.php",
+          "date": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "id": "ai-customer-service",
+      "name": "Shift customer service to AI",
+      "category": "cuts",
+      "type": "ongoing",
+      "status": "discussed",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "The City lists more AI customer service among the changes residents can expect.",
+      "consequence": "Named by the City as an expected change. No figure published.",
+      "effects": {
+        "community": -2,
+        "workforce": -2,
+        "trust": -2
+      },
+      "sources": [
+        {
+          "title": "Financial Emergency Information Guide",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R112.php",
+          "date": "2026-10-12"
+        }
+      ]
+    },
+    {
+      "id": "sell-assets",
+      "name": "Sell assets",
+      "category": "onetime",
+      "type": "onetime",
+      "status": "discussed",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "Selling assets is one of the steps named in the City's financial emergency proclamation.",
+      "consequence": "One-time money by definition. No specific asset or amount has been published.",
+      "effects": {
+        "infrastructure": -3,
+        "trust": -2
+      },
+      "sources": [
+        {
+          "title": "Financial Emergency Information Guide",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R112.php",
+          "date": "2026-10-12"
+        }
+      ]
+    },
+    {
+      "id": "collect-debt",
+      "name": "Collect outstanding debt",
+      "category": "revenue",
+      "type": "ongoing",
+      "status": "discussed",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "Collecting debt owed to the City is one of the steps named in the financial emergency proclamation.",
+      "consequence": "Money the City is already owed rather than new revenue. No total published.",
+      "effects": {
+        "trust": -2
+      },
+      "sources": [
+        {
+          "title": "Financial Emergency Information Guide",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R112.php",
+          "date": "2026-10-12"
+        }
+      ]
+    },
+    {
+      "id": "sales-tax-1pct",
+      "name": "Additional 1% sales tax",
+      "category": "revenue",
+      "type": "ongoing",
+      "status": "discussed",
+      "amountKnown": true,
+      "amount": 0,
+      "amountBasis": "No tax is enacted, so current revenue from this proposal is $0.",
+      "desc": "On October 2, 2026 the Council authorised staff to ask Hollister's state representatives for legislation that would let the City raise its sales tax cap by up to 1%.",
+      "consequence": "This did not impose a tax, set a rate, or place a measure on the ballot. Legislation, a later Council action and voter approval would all be required first. Staff estimated roughly six months just to get legislation and a fiscal analysis.",
+      "effects": {
+        "trust": -5
+      },
+      "conditional": true,
+      "scenario": {
+        "amount": 9682000,
+        "label": "If a full additional 1% were enacted",
+        "basis": "Inferred by matching the existing 1% Measure W transactions-and-use tax, which the FY 2026-27 adopted budget projects at $9,682,000. This is an inference from the existing tax, not an official forecast for a new one.",
+        "rateFrom": 9.25,
+        "rateTo": 10.25
+      },
+      "realWorld": true,
+      "realNote": "The October 2, 2026 action only authorised pursuing special state legislation.",
+      "sources": [
+        {
+          "title": "Hollister council agrees to declare fiscal emergency",
+          "publisher": "BenitoLink",
+          "url": "https://benitolink.com/hollister-council-agrees-to-declare-fiscal-emergency/",
+          "date": "2026-10-06"
+        },
+        {
+          "title": "Financial Emergency Information Guide",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R112.php",
+          "date": "2026-10-12"
+        }
+      ]
+    },
+    {
+      "id": "animal-services-outsourcing",
+      "name": "Outsource animal services to a non-profit",
+      "category": "cuts",
+      "type": "ongoing",
+      "status": "exploratory",
+      "amountKnown": true,
+      "amount": 1000000,
+      "amountBasis": "Preliminary estimate in an April 2026 email from the City Manager, who wrote she hoped to save $1 million; the same emails put the current operation at $2 million a year for eight full-time employees, the shelter and medical services.",
+      "desc": "City emails show the City Manager approached a Stockton-based non-profit about taking over animal services.",
+      "consequence": "A preliminary estimate from an internal email, not a costed proposal. The Police Chief said he had not been invited to any meeting about it, the County pays 55% of the animal control budget, and the City said in October that Animal Control staff are not affected by the current layoffs.",
+      "effects": {
+        "community": -7,
+        "workforce": -6,
+        "trust": -6,
+        "safety": -2
+      },
+      "preliminary": true,
+      "sources": [
+        {
+          "title": "Hollister group raises concerns over potential animal service changes",
+          "publisher": "BenitoLink",
+          "url": "https://benitolink.com/hollister-group-raises-concerns-over-potential-animal-service-changes/",
+          "date": "2026-05-06"
+        },
+        {
+          "title": "Press release: City clarifies misinformation regarding workforce reductions",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R119.php",
+          "date": "2026-10-14"
+        }
+      ]
     }
   ]
 };
@@ -2131,8 +2602,11 @@ function stackPair(host, pair, opts = {}) {
    ============================================================ */
 const METER_IDS = ['safety', 'infrastructure', 'community', 'workforce', 'trust'];
 
-/** Points a full 100% cut of one department would move a meter weighted 1.0. */
-const DEPT_METER_SCALE = 60;
+/** Points a full 100% cut of one department would move a meter weighted 1.0.
+ *  Department budgets are now the only lever with published dollars behind it,
+ *  so the sliders carry the whole gap; at the old weight that guaranteed a
+ *  collapsed scorecard for any balanced budget. */
+const DEPT_METER_SCALE = 40;
 function createState(budget, actions) {
   const dept = {};
   budget.generalFund.departments.forEach((d) => { dept[d.id] = 100; });
@@ -2156,25 +2630,35 @@ function totals(state, budget, actions) {
 
   const baseRev = budget.generalFund.revenues.reduce((s, r) => s + r.amount, 0);
 
-  let ongoingCuts = 0, ongoingRevenue = 0, oneTime = 0, atRisk = 0;
+  let ongoingCuts = 0, ongoingRevenue = 0, oneTime = 0;
   let taxBurden = 0, bizBurden = 0;
+  let unquantified = 0, cashBridge = 0, scenarioRevenue = 0;
   const picked = [];
 
   actions.actions.forEach((a) => {
     if (!state.chosen.has(a.id)) return;
     picked.push(a);
 
-    // A ballot measure that already failed contributes nothing.
-    const failed = state.ballotResults && state.ballotResults[a.id] === false;
-    const value = failed ? 0 : a.amount;
+    // A conditional proposal — one that still needs legislation, a council
+    // action or a vote — feeds the scenario view only, never the real budget.
+    if (a.conditional && a.scenario) scenarioRevenue += a.scenario.amount;
+
+    // No published figure means no effect on the gap. Zero is NOT substituted
+    // as though it were the real-world estimate; the option simply cannot move
+    // a dollar total until someone publishes one.
+    if (!a.amountKnown) { unquantified += 1; return; }
+
+    const value = a.amount;
+
+    // A cash bridge supplies operating cash. It is one-time by construction and
+    // must never reach the recurring side of the ledger.
+    if (a.cashBridge) { cashBridge += value; oneTime += value; return; }
 
     if (a.type === 'onetime') oneTime += value;
     else if (a.category === 'revenue') {
       ongoingRevenue += value;
-      // A cost-recovery fee and a utility users tax are not the same ask.
       taxBurden += value * (a.taxBurden ?? 0.6);
       bizBurden += value * (a.bizBurden ?? 0.3);
-      if (a.needsBallot && !state.ballotResults) atRisk += a.amount;
     } else ongoingCuts += value;
   });
 
@@ -2189,9 +2673,14 @@ function totals(state, budget, actions) {
   const startGap = baseExp - baseRev;
   const closed = startGap - cashGap;
 
+  // What the gap would be if every conditional proposal actually landed.
+  const scenarioStructuralGap = ongoingExp - (ongoingRev + scenarioRevenue);
+
   return {
     baseExp, curExp, deptSavings, baseRev,
-    ongoingCuts, ongoingRevenue, oneTime, atRisk, taxBurden, bizBurden,
+    ongoingCuts, ongoingRevenue, oneTime, taxBurden, bizBurden,
+    unquantified, cashBridge, scenarioRevenue, scenarioStructuralGap,
+    atRisk: 0,
     ongoingExp, ongoingRev,
     structuralGap, cashGap, startGap, closed,
     picked,
@@ -2365,7 +2854,15 @@ function verdicts(s, budget, actions) {
   if (t.oneTime > 0) {
     const share = Math.round(t.oneTime / Math.max(1, t.closed) * 100);
     push(share > 55 ? 'critical' : share > 25 ? 'warning' : 'good',
-      `<b>${share}%</b> of the gap you closed came from one-time sources. Interfund loans and property sales work exactly once.`);
+      `<b>${share}%</b> of the gap you closed came from one-time sources. Interfund loans and asset sales work exactly once.`);
+  }
+
+  if (t.cashBridge > 0) {
+    push('warning', `<b>${money(t.cashBridge)}</b> of that is the interfund loan, which is operating cash and is repayable by June 30, 2027. It does not shrink the structural gap by a dollar.`);
+  }
+
+  if (t.unquantified > 0) {
+    push('warning', `<b>${t.unquantified}</b> of the measures you picked have no published savings or revenue figure, so none of them moved the deficit. They are real proposals; the numbers behind them are not public.`);
   }
 
   if (s.wellReceived) {
@@ -2604,57 +3101,104 @@ function deptSlider(dept, pct, color, onChange) {
 }
 
 /* ============================================================
-   Policy action card
+   Policy action card. Every card carries a status, its sources
+   with dates, and either a verified amount with its basis or an
+   explicit "not published" — never a substituted zero.
    ============================================================ */
-function actionCard(action, selected, meterNames, onToggle) {
+
+function fmtDate(iso) {
+  const [y, m, d] = String(iso).split('-').map(Number);
+  if (!y || !m) return iso;
+  const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+               'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return d ? `${MON[m - 1]} ${d}, ${y}` : `${MON[m - 1]} ${y}`;
+}
+
+function sourceList(sources) {
+  if (!sources || !sources.length) return null;
+  return h('div', { class: 'srcs' }, [
+    h('div', { class: 'srcs-label', text: sources.length > 1 ? 'Sources' : 'Source' }),
+    ...sources.map((s) => h('span', { class: 'src' }, [
+      h('a', { href: s.url, target: '_blank', rel: 'noopener', text: s.title }),
+      h('span', { class: 'src-meta', text: ` — ${s.publisher}, ${fmtDate(s.date)}` }),
+    ])),
+  ]);
+}
+function actionCard(action, selected, meterNames, onToggle, statusLabels) {
   const tags = [];
 
-  tags.push(h('span', {
-    class: 'tag' + (action.type === 'onetime' ? ' is-onetime' : ''),
-    text: action.type === 'onetime' ? 'One-time money' : 'Recurring',
-  }));
+  if (action.cashBridge) {
+    tags.push(h('span', { class: 'tag is-onetime' }, ['Cash bridge — not structural']));
+  } else if (action.type === 'onetime') {
+    tags.push(h('span', { class: 'tag is-onetime' }, ['One-time money']));
+  } else if (action.amountKnown && action.amount > 0) {
+    tags.push(h('span', { class: 'tag' }, ['Recurring']));
+  }
 
-  if (action.needsBallot) {
-    tags.push(h('span', { class: 'tag is-ballot' },
-      [`Needs voters · ${Math.round((action.passChance ?? .5) * 100)}% odds`]));
-  }
-  if (action.realWorld) {
-    tags.push(h('span', { class: 'tag is-real' }, ['Actually happened']));
-  }
+  if (action.conditional) tags.push(h('span', { class: 'tag is-ballot' }, ['Needs legislation, council and voters']));
+  if (action.preliminary) tags.push(h('span', { class: 'tag is-ballot' }, ['Preliminary estimate']));
+  if (action.enacted) tags.push(h('span', { class: 'tag is-real' }, ['Already enacted']));
 
   Object.entries(action.effects || {}).forEach(([k, v]) => {
     if (!v) return;
     tags.push(h('span', { class: 'tag is-harm' }, [
-      h('span', {
-        class: 'tag-dot',
-        style: `background:${v < 0 ? 'var(--critical)' : 'var(--good)'}`,
-      }),
+      h('span', { class: 'tag-dot', style: `background:${v < 0 ? 'var(--critical)' : 'var(--good)'}` }),
       `${meterNames[k]} ${v > 0 ? '+' : ''}${v}`,
     ]));
   });
 
-  const check = h('div', { class: 'action-check' }, [icon(ICONS.check, 14)]);
+  // The money line: a figure only where one has been published.
+  let amtEl;
+  if (!action.amountKnown) {
+    amtEl = h('div', { class: 'action-amt is-unpublished', text: action.unpublishedNote || 'Savings/revenue not published' });
+  } else if (action.amount === 0) {
+    amtEl = h('div', { class: 'action-amt num is-zero', text: '$0' });
+  } else {
+    amtEl = h('div', { class: 'action-amt num', text: '+' + fmt.money(action.amount) });
+  }
+
+  const sc = action.scenario;
 
   const btn = h('button', {
     class: 'action', type: 'button',
     'aria-pressed': selected ? 'true' : 'false',
   }, [
+    h('div', { class: 'status is-' + action.status }, [
+      h('span', { class: 'status-dot', style: 'background:currentColor' }),
+      (statusLabels && statusLabels[action.status]) || action.status,
+    ]),
     h('div', { class: 'action-top' }, [
-      check,
+      h('div', { class: 'action-check' }, [icon(ICONS.check, 14)]),
       h('div', { class: 'action-body' }, [
         h('div', { class: 'action-name', text: action.name }),
         h('div', { class: 'action-desc', text: action.desc }),
       ]),
-      h('div', { class: 'action-amt num', text: '+' + fmt.money(action.amount) }),
+      amtEl,
     ]),
     h('div', { class: 'tags' }, tags),
-    action.consequence && h('div', {
+    (action.amountKnown && action.amountBasis)
+      ? h('div', { class: 'basis', text: action.amountBasis }) : null,
+    sc ? h('div', { class: 'scenario' }, [
+      h('div', { class: 'scenario-head', text: sc.label }),
+      h('div', { class: 'scenario-v', text: '+' + fmt.money(sc.amount) + ' a year' }),
+      (sc.rateFrom && sc.rateTo) ? h('div', { class: 'scenario-rate' }, [
+        h('span', { html: `Sales tax <b>${sc.rateFrom}%</b> &rarr; <b>${sc.rateTo}%</b>` }),
+      ]) : null,
+      h('div', { class: 'scenario-note', text: sc.basis }),
+    ]) : null,
+    action.consequence ? h('div', {
       class: 'action-more' + (action.realWorld ? ' is-real' : ''),
       html: (action.realNote ? `<b>${action.realNote}</b> ` : '') + action.consequence,
-    }),
+    }) : null,
+    action.rateNote ? h('div', { class: 'basis', text: action.rateNote }) : null,
+    sourceList(action.sources),
   ]);
 
-  btn.addEventListener('click', () => onToggle(action.id));
+  btn.addEventListener('click', (e) => {
+    // Let people follow a citation without it toggling the card.
+    if (e.target.closest('a')) { e.stopPropagation(); return; }
+    onToggle(action.id);
+  });
   return btn;
 }
 
@@ -2741,7 +3285,7 @@ ACTIONS.meta.meters.forEach((m) => { METER_NAMES[m.id] = m.name; });
 
 let state = E.createState(BUDGET, ACTIONS);
 let activePanel = 'budget';
-let cutFilter = 'all';
+let statusFilter = 'all';
 
 /* ---------- toast ---------- */
 let toastTimer;
@@ -2824,7 +3368,15 @@ function toggleAction(id) {
   document.querySelectorAll(`[data-action="${id}"]`).forEach((n) => {
     n.setAttribute('aria-pressed', state.chosen.has(id) ? 'true' : 'false');
   });
-  if (state.chosen.has(id)) toast(`${a.name} · +${fmt.money(a.amount)}`);
+  if (state.chosen.has(id)) {
+    let note;
+    if (!a.amountKnown) note = 'no published figure';
+    else if (a.amount > 0) note = '+' + fmt.money(a.amount);
+    else if (a.enacted) note = 'already enacted';
+    else if (a.conditional) note = '$0 until it is enacted';
+    else note = '$0';
+    toast(`${a.name} · ${note}`);
+  }
   changed();
 }
 
@@ -2914,10 +3466,15 @@ function renderActionPanel(which) {
   let list = ACTIONS.actions.filter((a) =>
     isCuts ? a.category !== 'revenue' : a.category === 'revenue');
 
-  if (isCuts && cutFilter !== 'all') {
-    list = list.filter((a) => cutFilter === 'onetime' ? a.type === 'onetime' : a.type === 'ongoing');
-  }
-  list = list.slice().sort((a, b) => b.amount - a.amount);
+  if (statusFilter !== 'all') list = list.filter((a) => a.status === statusFilter);
+
+  // Adopted first, then discussed, then exploratory; published figures ahead
+  // of unpublished ones inside each group.
+  const rank = { adopted: 0, discussed: 1, exploratory: 2 };
+  list = list.slice().sort((a, b) =>
+    (rank[a.status] - rank[b.status]) ||
+    (Number(b.amountKnown) - Number(a.amountKnown)) ||
+    ((b.amount || 0) - (a.amount || 0)));
 
   const head = h('div', { class: 'panel-head' }, [
     h('h2', { text: isCuts ? 'Savings and one-time money' : 'Revenue options' }),
@@ -2928,20 +3485,21 @@ function renderActionPanel(which) {
 
   const kids = [head];
 
-  if (isCuts) {
-    kids.push(h('div', { class: 'filter-row' }, [
-      ['all', 'All'], ['ongoing', 'Recurring only'], ['onetime', 'One-time only'],
-    ].map(([k, label]) => h('button', {
-      class: 'chip', 'aria-pressed': cutFilter === k ? 'true' : 'false', text: label,
-      onclick: () => { cutFilter = k; renderActionPanel('cuts'); },
-    }))));
-  } else {
-    kids.push(h('div', { class: 'callout', html:
-      'A <b>cost-recovery fee</b> the council can set by itself is slower money than a tax, but it is money you actually control. A <b>ballot measure</b> can be worth millions &mdash; if it passes.' }));
+  kids.push(h('div', { class: 'filter-row' }, [
+    ['all', 'All'], ['adopted', 'Adopted'], ['discussed', 'Discussed'], ['exploratory', 'Exploratory'],
+  ].map(([k, label]) => h('button', {
+    class: 'chip', 'aria-pressed': statusFilter === k ? 'true' : 'false', text: label,
+    onclick: () => { statusFilter = k; renderActionPanel(which); },
+  }))));
+
+  const unpub = list.filter((a) => !a.amountKnown).length;
+  if (unpub) {
+    kids.push(h('div', { class: 'callout is-warning', html:
+      `<b>${unpub} of these ${list.length}</b> have no published savings or revenue figure. You can still pick them &mdash; they are real proposals &mdash; but they cannot move the deficit, because nobody has put a number on them.` }));
   }
 
   list.forEach((a) => {
-    const card = actionCard(a, state.chosen.has(a.id), METER_NAMES, toggleAction);
+    const card = actionCard(a, state.chosen.has(a.id), METER_NAMES, toggleAction, ACTIONS.meta.statuses);
     card.setAttribute('data-action', a.id);
     kids.push(card);
   });
@@ -3022,6 +3580,61 @@ function renderImpact() {
   /* --- how the gap was closed --- */
   const wfCard = buildWaterfall(t);
 
+  /* --- the two deficit figures, kept apart --- */
+  const rv = BUDGET.revisedDeficit;
+  const srcLine = (x) => h('span', { class: 'src' }, [
+    h('a', { href: x.url, target: '_blank', rel: 'noopener', text: x.title }),
+    h('span', { class: 'src-meta', text: ` — ${x.publisher}, ${x.date}` }),
+  ]);
+  const figuresCard = h('div', { class: 'card' }, [
+    h('div', { class: 'card-title' }, ['Which deficit figure is which']),
+    h('table', { class: 'dt', style: 'margin-top:8px' }, [
+      h('tbody', {}, [
+        h('tr', {}, [
+          h('td', { text: BUDGET.generalFund.deficitLabel }),
+          h('td', { class: 'neg', text: fmt.full(BUDGET.generalFund.structuralDeficit) }),
+        ]),
+        h('tr', {}, [
+          h('td', { text: rv.label + ' (' + rv.asOfPeriod + ')' }),
+          h('td', { class: 'neg', text: fmt.full(rv.amount) }),
+        ]),
+      ]),
+    ]),
+    h('div', { class: 'basis', style: 'margin-left:0', text: rv.note }),
+    h('div', { class: 'basis', style: 'margin-left:0', text: rv.labelDiscrepancy }),
+    h('div', { class: 'srcs', style: 'margin-left:0' }, [
+      h('div', { class: 'srcs-label', text: 'Sources' }),
+      srcLine(BUDGET.generalFund.deficitSource),
+      ...rv.sources.map(srcLine),
+    ]),
+  ]);
+
+  /* --- conditional scenario, only when one is picked --- */
+  let scenarioCard = null;
+  if (t.scenarioRevenue > 0) {
+    const conds = t.picked.filter((a) => a.conditional && a.scenario);
+    scenarioCard = h('div', { class: 'card' }, [
+      h('div', { class: 'card-title' }, ['Conditional scenario']),
+      h('div', { class: 'chart-sub', text: 'What the gap would be if these landed. None of this is counted anywhere else in the game.' }),
+      ...conds.map((a) => h('div', { class: 'scenario', style: 'margin-left:0' }, [
+        h('div', { class: 'scenario-head', text: a.name }),
+        h('div', { class: 'scenario-v', text: '+' + fmt.money(a.scenario.amount) + ' a year' }),
+        (a.scenario.rateFrom && a.scenario.rateTo) ? h('div', { class: 'scenario-rate' }, [
+          h('span', { html: `Sales tax <b>${a.scenario.rateFrom}%</b> &rarr; <b>${a.scenario.rateTo}%</b>` }),
+        ]) : null,
+        h('div', { class: 'scenario-note', text: a.scenario.basis }),
+      ])),
+      h('table', { class: 'dt', style: 'margin-top:10px' }, [
+        h('tbody', {}, [
+          h('tr', {}, [h('td', { text: 'Structural gap now' }),
+                       h('td', { class: t.structuralGap > 0 ? 'neg' : 'pos', text: fmt.full(t.structuralGap) })]),
+          h('tr', {}, [h('td', { text: 'If the conditional measures landed' }),
+                       h('td', { class: t.scenarioStructuralGap > 0 ? 'neg' : 'pos', text: fmt.full(t.scenarioStructuralGap) })]),
+        ]),
+      ]),
+    ]);
+  }
+
   /* --- data table --- */
   const tableCard = h('div', { class: 'card' }, [
     h('div', { class: 'card-title' }, ['The numbers']),
@@ -3033,7 +3646,7 @@ function renderImpact() {
       h('h2', { text: 'Impact' }),
       h('p', { text: 'What your budget does to the city, and whether it holds up past June.' }),
     ]),
-    metersCard, wfCard, projCard, changeCard, revCard, tableCard,
+    metersCard, figuresCard, scenarioCard, wfCard, projCard, changeCard, revCard, tableCard,
   );
 
   /* draw */
@@ -3177,7 +3790,8 @@ function renderCommunity() {
   kids.push(h('div', { class: 'card' }, [
     h('div', { class: 'card-title' }, ['Your plan']),
     h('div', { class: 'card-note', text:
-      `${t.picked.length} measure${t.picked.length === 1 ? '' : 's'} \u00b7 ` +
+      `${t.picked.length} measure${t.picked.length === 1 ? '' : 's'}` +
+      (t.unquantified ? ` (${t.unquantified} with no published figure)` : '') + ' \u00b7 ' +
       `${fmt.money(t.deptSavings)} from department budgets \u00b7 ` +
       `${fmt.money(t.ongoingCuts + t.ongoingRevenue)} recurring \u00b7 ` +
       `${fmt.money(t.oneTime)} one-time` }),
@@ -3317,7 +3931,7 @@ function showResult() {
 
 function reset() {
   state = E.createState(BUDGET, ACTIONS);
-  cutFilter = 'all';
+  statusFilter = 'all';
   go('intro');
   window.scrollTo(0, 0);
 }

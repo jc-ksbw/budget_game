@@ -190,58 +190,105 @@ export function deptSlider(dept, pct, color, onChange) {
 }
 
 /* ============================================================
-   Policy action card
+   Policy action card. Every card carries a status, its sources
+   with dates, and either a verified amount with its basis or an
+   explicit "not published" — never a substituted zero.
    ============================================================ */
 
-export function actionCard(action, selected, meterNames, onToggle) {
+function fmtDate(iso) {
+  const [y, m, d] = String(iso).split('-').map(Number);
+  if (!y || !m) return iso;
+  const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+               'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return d ? `${MON[m - 1]} ${d}, ${y}` : `${MON[m - 1]} ${y}`;
+}
+
+function sourceList(sources) {
+  if (!sources || !sources.length) return null;
+  return h('div', { class: 'srcs' }, [
+    h('div', { class: 'srcs-label', text: sources.length > 1 ? 'Sources' : 'Source' }),
+    ...sources.map((s) => h('span', { class: 'src' }, [
+      h('a', { href: s.url, target: '_blank', rel: 'noopener', text: s.title }),
+      h('span', { class: 'src-meta', text: ` — ${s.publisher}, ${fmtDate(s.date)}` }),
+    ])),
+  ]);
+}
+
+export function actionCard(action, selected, meterNames, onToggle, statusLabels) {
   const tags = [];
 
-  tags.push(h('span', {
-    class: 'tag' + (action.type === 'onetime' ? ' is-onetime' : ''),
-    text: action.type === 'onetime' ? 'One-time money' : 'Recurring',
-  }));
+  if (action.cashBridge) {
+    tags.push(h('span', { class: 'tag is-onetime' }, ['Cash bridge — not structural']));
+  } else if (action.type === 'onetime') {
+    tags.push(h('span', { class: 'tag is-onetime' }, ['One-time money']));
+  } else if (action.amountKnown && action.amount > 0) {
+    tags.push(h('span', { class: 'tag' }, ['Recurring']));
+  }
 
-  if (action.needsBallot) {
-    tags.push(h('span', { class: 'tag is-ballot' },
-      [`Needs voters · ${Math.round((action.passChance ?? .5) * 100)}% odds`]));
-  }
-  if (action.realWorld) {
-    tags.push(h('span', { class: 'tag is-real' }, ['Actually happened']));
-  }
+  if (action.conditional) tags.push(h('span', { class: 'tag is-ballot' }, ['Needs legislation, council and voters']));
+  if (action.preliminary) tags.push(h('span', { class: 'tag is-ballot' }, ['Preliminary estimate']));
+  if (action.enacted) tags.push(h('span', { class: 'tag is-real' }, ['Already enacted']));
 
   Object.entries(action.effects || {}).forEach(([k, v]) => {
     if (!v) return;
     tags.push(h('span', { class: 'tag is-harm' }, [
-      h('span', {
-        class: 'tag-dot',
-        style: `background:${v < 0 ? 'var(--critical)' : 'var(--good)'}`,
-      }),
+      h('span', { class: 'tag-dot', style: `background:${v < 0 ? 'var(--critical)' : 'var(--good)'}` }),
       `${meterNames[k]} ${v > 0 ? '+' : ''}${v}`,
     ]));
   });
 
-  const check = h('div', { class: 'action-check' }, [icon(ICONS.check, 14)]);
+  // The money line: a figure only where one has been published.
+  let amtEl;
+  if (!action.amountKnown) {
+    amtEl = h('div', { class: 'action-amt is-unpublished', text: action.unpublishedNote || 'Savings/revenue not published' });
+  } else if (action.amount === 0) {
+    amtEl = h('div', { class: 'action-amt num is-zero', text: '$0' });
+  } else {
+    amtEl = h('div', { class: 'action-amt num', text: '+' + fmt.money(action.amount) });
+  }
+
+  const sc = action.scenario;
 
   const btn = h('button', {
     class: 'action', type: 'button',
     'aria-pressed': selected ? 'true' : 'false',
   }, [
+    h('div', { class: 'status is-' + action.status }, [
+      h('span', { class: 'status-dot', style: 'background:currentColor' }),
+      (statusLabels && statusLabels[action.status]) || action.status,
+    ]),
     h('div', { class: 'action-top' }, [
-      check,
+      h('div', { class: 'action-check' }, [icon(ICONS.check, 14)]),
       h('div', { class: 'action-body' }, [
         h('div', { class: 'action-name', text: action.name }),
         h('div', { class: 'action-desc', text: action.desc }),
       ]),
-      h('div', { class: 'action-amt num', text: '+' + fmt.money(action.amount) }),
+      amtEl,
     ]),
     h('div', { class: 'tags' }, tags),
-    action.consequence && h('div', {
+    (action.amountKnown && action.amountBasis)
+      ? h('div', { class: 'basis', text: action.amountBasis }) : null,
+    sc ? h('div', { class: 'scenario' }, [
+      h('div', { class: 'scenario-head', text: sc.label }),
+      h('div', { class: 'scenario-v', text: '+' + fmt.money(sc.amount) + ' a year' }),
+      (sc.rateFrom && sc.rateTo) ? h('div', { class: 'scenario-rate' }, [
+        h('span', { html: `Sales tax <b>${sc.rateFrom}%</b> &rarr; <b>${sc.rateTo}%</b>` }),
+      ]) : null,
+      h('div', { class: 'scenario-note', text: sc.basis }),
+    ]) : null,
+    action.consequence ? h('div', {
       class: 'action-more' + (action.realWorld ? ' is-real' : ''),
       html: (action.realNote ? `<b>${action.realNote}</b> ` : '') + action.consequence,
-    }),
+    }) : null,
+    action.rateNote ? h('div', { class: 'basis', text: action.rateNote }) : null,
+    sourceList(action.sources),
   ]);
 
-  btn.addEventListener('click', () => onToggle(action.id));
+  btn.addEventListener('click', (e) => {
+    // Let people follow a citation without it toggling the card.
+    if (e.target.closest('a')) { e.stopPropagation(); return; }
+    onToggle(action.id);
+  });
   return btn;
 }
 

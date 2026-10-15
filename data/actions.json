@@ -1,6 +1,12 @@
 {
   "meta": {
-    "note": "Policy options. Dollar amounts are MODELED estimates sized to be realistic for a city of Hollister's size, except where confidence is 'verified'. Meter effects are game-design values, not forecasts.",
+    "note": "Every card is an option documented as discussed by City officials or at a City Council meeting. Cards without a published dollar figure carry amountKnown:false and must not move the deficit. No dollar amount here is estimated by this project.",
+    "statuses": {
+      "adopted": "Adopted / implemented",
+      "discussed": "Discussed",
+      "exploratory": "Exploratory"
+    },
+    "unpublishedLabel": "Savings/revenue not published",
     "meters": [
       {
         "id": "safety",
@@ -134,403 +140,511 @@
   ],
   "actions": [
     {
-      "id": "voluntary-separation",
-      "name": "Voluntary separation incentives",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 1400000,
-      "desc": "Pay retirement and resignation incentives instead of ordering layoffs.",
-      "consequence": "Institutional knowledge walks out the door. You backfill the critical posts later at a premium.",
-      "effects": {
-        "workforce": -8,
-        "trust": -2
-      },
-      "realWorld": true,
-      "realNote": "This is the approach Hollister actually took for FY 2026-27."
-    },
-    {
-      "id": "freeze-vacancies",
-      "name": "Freeze all vacant positions",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 2200000,
-      "desc": "Hold every unfilled position citywide, including sworn vacancies.",
-      "consequence": "Cheapest real money on the board. It also quietly shrinks the city by attrition.",
-      "effects": {
-        "safety": -7,
-        "community": -4,
-        "workforce": -6,
-        "trust": -2
-      },
-      "realWorld": true,
-      "realNote": "Hollister eliminated 31 budgeted vacant positions in FY 2025-26 for about $6M."
-    },
-    {
-      "id": "layoffs-nonsafety",
-      "name": "Lay off 12 non-safety positions",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 1600000,
-      "desc": "Reduction in force across administration, parks and public works.",
-      "consequence": "Fast, certain savings. It costs you the room and most of your workforce goodwill.",
-      "effects": {
-        "workforce": -20,
-        "trust": -10,
-        "community": -8,
-        "infrastructure": -6
-      }
-    },
-    {
-      "id": "four-day-week",
-      "name": "Four-day City Hall week",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 450000,
-      "desc": "Close City Hall on Fridays and move staff to a 36-hour schedule.",
-      "consequence": "Utilities and overtime drop. Residents find the counter closed when they need it.",
-      "effects": {
-        "trust": -4,
-        "community": -4,
-        "workforce": 4
-      }
-    },
-    {
-      "id": "overtime-reform",
-      "name": "Overtime and scheduling reform",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 640000,
-      "desc": "Rebuild shift schedules to cut callback and mandatory overtime.",
-      "consequence": "Real savings without a layoff, but it needs union agreement and a year to land.",
-      "effects": {
-        "safety": -4,
-        "workforce": -5
-      }
-    },
-    {
-      "id": "contract-parks",
-      "name": "Contract out park maintenance",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 520000,
-      "desc": "Move turf, landscape and restroom maintenance to a private contractor.",
-      "consequence": "Cheaper per acre. Response to problems gets slower and less accountable.",
-      "effects": {
-        "community": -8,
-        "workforce": -7
-      }
-    },
-    {
-      "id": "defer-streets",
-      "name": "Defer street maintenance one year",
-      "category": "cuts",
-      "type": "onetime",
-      "amount": 1100000,
-      "desc": "Skip this year's slurry seal and overlay program.",
-      "consequence": "Pavement that fails costs roughly four times as much to rebuild as to maintain. This is a loan from your own streets.",
-      "effects": {
-        "infrastructure": -20,
-        "trust": -4
-      }
-    },
-    {
-      "id": "defer-fleet",
-      "name": "Defer fleet and equipment replacement",
-      "category": "cuts",
-      "type": "onetime",
-      "amount": 700000,
-      "desc": "Keep patrol cars, engines and street sweepers one more year.",
-      "consequence": "Maintenance costs climb and an engine out of service is a response time problem.",
-      "effects": {
-        "safety": -6,
-        "infrastructure": -10,
-        "workforce": -2
-      }
-    },
-    {
-      "id": "travel-training",
-      "name": "Suspend non-essential travel and training",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 160000,
-      "desc": "Cancel conferences and discretionary professional development.",
-      "consequence": "Small money. Certifications lapse and recruitment gets harder.",
-      "effects": {
-        "workforce": -3
-      }
-    },
-    {
-      "id": "library-hours",
-      "name": "Cut library and community center hours",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 280000,
-      "desc": "Drop to four open days a week and end evening hours.",
-      "consequence": "Highly visible. It is the cut residents notice first and remember longest.",
-      "effects": {
-        "community": -12,
-        "trust": -4
-      }
-    },
-    {
-      "id": "admin-hiring-freeze",
-      "name": "Freeze administrative hiring",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 780000,
-      "desc": "No backfills in finance, HR, IT or the clerk's office.",
-      "consequence": "It also slows the overdue audit catch-up, and lenders are watching that.",
-      "effects": {
-        "workforce": -5,
-        "trust": -3
-      }
-    },
-    {
-      "id": "fire-jpa",
-      "name": "Move to a regional fire services JPA",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 900000,
-      "desc": "Shift fire operations into a joint powers authority with neighboring agencies.",
-      "consequence": "Shares overhead across agencies. You also give up direct control of your own fire service.",
-      "effects": {
-        "safety": -7,
-        "workforce": -6,
-        "trust": -6
-      }
-    },
-    {
-      "id": "energy-retrofit",
-      "name": "Energy retrofit and solar agreement",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 210000,
-      "desc": "LED conversion and a solar power purchase agreement on city facilities.",
-      "consequence": "Low risk, no service loss. It takes about a year to show up in the numbers.",
-      "effects": {
-        "infrastructure": 3
-      }
-    },
-    {
-      "id": "debt-restructure",
-      "name": "Restructure outstanding debt",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 380000,
-      "desc": "Refinance and re-amortize existing obligations to lower annual payments.",
-      "consequence": "Lower payments now, more interest paid in total. A fiscal emergency does not get you good terms.",
-      "effects": {
-        "trust": -2
-      }
-    },
-    {
-      "id": "cm-office-cut",
-      "name": "Cut the City Manager's office budget",
-      "category": "cuts",
-      "type": "ongoing",
-      "amount": 190000,
-      "desc": "Reduce executive staffing, car allowances and discretionary accounts.",
-      "consequence": "Small money, large signal. Residents read this one as good faith.",
-      "effects": {
-        "workforce": -2,
-        "trust": 7
-      }
-    },
-    {
-      "id": "fee-cost-recovery",
-      "name": "Full cost-recovery fee study",
-      "category": "revenue",
-      "type": "ongoing",
-      "amount": 900000,
-      "desc": "Reset building, planning and engineering fees to the true cost of service.",
-      "consequence": "Building permits alone bring in $3.7M. Resetting fees to the true cost of service is defensible and council-approvable, and the development community will fight it.",
-      "effects": {
-        "community": -4,
-        "trust": -3
-      },
-      "taxBurden": 0.2,
-      "bizBurden": 1
-    },
-    {
-      "id": "biz-license-modernize",
-      "name": "Modernize the business license tax",
-      "category": "revenue",
-      "type": "ongoing",
-      "amount": 360000,
-      "desc": "Update a flat-rate schedule that has not changed in decades.",
-      "consequence": "The business license tax raises $240,000 on a flat-rate schedule that has not changed in decades. Moving to gross receipts could half again that. Small businesses feel it as a rate increase.",
-      "effects": {
-        "trust": -2
-      },
-      "taxBurden": 0.4,
-      "bizBurden": 1,
-      "confidence": "derived"
-    },
-    {
-      "id": "ambulance-fee",
-      "name": "First responder fee for medical calls",
-      "category": "revenue",
-      "type": "ongoing",
-      "amount": 400000,
-      "desc": "Bill insurers when fire units respond to medical emergencies.",
-      "consequence": "Common practice statewide. Residents still experience it as a bill for calling 911.",
-      "effects": {
-        "trust": -5,
-        "community": -3
-      },
-      "taxBurden": 0.6,
-      "bizBurden": 0.1
-    },
-    {
-      "id": "citations",
-      "name": "Step up code enforcement and citations",
-      "category": "revenue",
-      "type": "ongoing",
-      "amount": 180000,
-      "desc": "Fund an additional code officer and enforce existing citation authority.",
-      "consequence": "Revenue from enforcement reads as a shakedown whether or not it is one.",
-      "effects": {
-        "trust": -4
-      },
-      "taxBurden": 0.4,
-      "bizBurden": 0.5
-    },
-    {
-      "id": "cell-tower",
-      "name": "Lease rooftop and cell tower rights",
-      "category": "revenue",
-      "type": "ongoing",
-      "amount": 120000,
-      "desc": "Lease space on city water tanks and rooftops to carriers.",
-      "consequence": "Free money, small money. There is no reason not to do this.",
-      "effects": {},
-      "taxBurden": 0,
-      "bizBurden": 0
-    },
-    {
-      "id": "tot-increase",
-      "name": "Raise the hotel tax to 12%",
-      "category": "revenue",
-      "type": "ongoing",
-      "amount": 195000,
-      "desc": "Increase transient occupancy tax from 10% to 12%.",
-      "needsBallot": true,
-      "passChance": 0.74,
-      "consequence": "The hotel tax raises $975,000 today, so two points adds about $195K. Visitors pay it, not residents — the easiest ballot measure on this board.",
-      "effects": {},
-      "taxBurden": 0.2,
-      "bizBurden": 0.4,
-      "confidence": "derived"
-    },
-    {
-      "id": "cannabis-tax",
-      "name": "Cannabis business tax",
-      "category": "revenue",
-      "type": "ongoing",
-      "amount": 350000,
-      "desc": "Tax gross receipts of licensed cannabis businesses.",
-      "needsBallot": true,
-      "passChance": 0.58,
-      "consequence": "Depends entirely on how many operators actually open here.",
-      "effects": {
-        "trust": -2
-      },
-      "taxBurden": 0.5,
-      "bizBurden": 0.6
-    },
-    {
-      "id": "uut",
-      "name": "Utility users tax at 3%",
-      "category": "revenue",
-      "type": "ongoing",
-      "amount": 2800000,
-      "desc": "A 3% tax on electric, gas and telecom bills.",
-      "needsBallot": true,
-      "passChance": 0.33,
-      "consequence": "The largest ongoing revenue available to you. Residents pay it on every bill, every month.",
-      "effects": {
-        "trust": -8
-      },
-      "taxBurden": 1,
-      "bizBurden": 0.7
-    },
-    {
-      "id": "sales-tax-half",
-      "name": "Add a half-cent sales tax",
-      "category": "revenue",
-      "type": "ongoing",
-      "amount": 4800000,
-      "desc": "A half-cent add-on to the local transactions and use tax.",
-      "needsBallot": true,
-      "passChance": 0.41,
-      "consequence": "Measure W's one cent brings in $9.68M, so a half cent is worth roughly $4.8M. Hollister is already at 9.25%, and this is a hard ask in a fiscal emergency.",
-      "effects": {
-        "trust": -6
-      },
-      "taxBurden": 1,
-      "bizBurden": 0.8,
-      "confidence": "derived"
-    },
-    {
-      "id": "sell-surplus",
-      "name": "Sell surplus city property",
-      "category": "onetime",
-      "type": "onetime",
-      "amount": 2100000,
-      "desc": "Dispose of city-owned parcels no longer used for operations.",
-      "consequence": "You can only sell it once, and you will never buy it back at this price.",
-      "effects": {
-        "infrastructure": -5,
-        "trust": -4
-      }
-    },
-    {
       "id": "impact-fee-loan",
-      "name": "Borrow $11M from impact fee funds",
+      "name": "Interfund loan from impact fee funds",
       "category": "onetime",
       "type": "onetime",
+      "status": "adopted",
+      "amountKnown": true,
       "amount": 11000000,
-      "desc": "An interfund loan from restricted impact fee funds to the General Fund.",
-      "consequence": "This is cash, not a fix. It is repayable by June 30, 2027 at 4%, and the capital projects those fees were collected for wait.",
+      "amountBasis": "General Fund portion of the $18M interfund loan approved October 2, 2026.",
+      "desc": "The Council approved an $18M interfund loan from traffic impact and park dedication impact funds — $11M to the General Fund, $7M to Water.",
+      "consequence": "This is near-term operating cash to cover payroll and bills, not a reduction in ongoing spending. It is repayable by June 30, 2027, and the structural gap is exactly as large after it as before.",
       "effects": {
         "trust": -9,
         "infrastructure": -8
       },
+      "cashBridge": true,
+      "rateNote": "Reporting quotes city staff putting the rate at 4% (one outlet reports \"up to\" 4%). The adopted resolution has been described as stating 3–4%; the resolution text could not be retrieved to confirm that range.",
       "realWorld": true,
-      "confidence": "official",
-      "realNote": "On October 2, 2026 the Hollister City Council declared a fiscal emergency and approved exactly this: $18M from impact fee funds, $11M of it to the General Fund."
+      "realNote": "Approved by the City Council on October 2, 2026, the same night it declared a financial emergency.",
+      "sources": [
+        {
+          "title": "Hollister council agrees to declare fiscal emergency",
+          "publisher": "BenitoLink",
+          "url": "https://benitolink.com/hollister-council-agrees-to-declare-fiscal-emergency/",
+          "date": "2026-10-06"
+        },
+        {
+          "title": "Financial Emergency Information Guide",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R112.php",
+          "date": "2026-10-12"
+        },
+        {
+          "title": "A Clear Look At Our Financial Situation",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R111.php",
+          "date": "2026-10-12"
+        }
+      ]
     },
     {
-      "id": "spend-contingency",
-      "name": "Spend down the contingency",
-      "category": "onetime",
-      "type": "onetime",
-      "amount": 1200000,
-      "confidence": "official",
-      "desc": "Release the $1.2M contingency held in the Non-Departmental budget.",
-      "consequence": "It is right there in the adopted budget and it is the easiest million you will ever find. It is also the only thing standing between you and the next unbudgeted pump station failure.",
-      "effects": {
-        "trust": -4,
-        "infrastructure": -3
-      },
+      "id": "measure-v-tot",
+      "name": "Hotel tax increase (Measure V)",
+      "category": "revenue",
+      "type": "ongoing",
+      "status": "adopted",
+      "amountKnown": true,
+      "amount": 0,
+      "amountBasis": "Already enacted, so it adds nothing further. The City's ballot language estimated approximately $300,000 annually when Measure V was presented in 2024.",
+      "desc": "Voters approved a four percentage point increase to the transient occupancy tax, from 8% to 12%, effective April 1, 2025.",
+      "consequence": "Already enacted and already inside the $975,000 of hotel tax in the adopted budget. There is no further revenue to claim here.",
+      "effects": {},
+      "enacted": true,
       "realWorld": true,
-      "realNote": "The FY 2026-27 Approved Budget carries a $1,200,000 contingency line."
+      "realNote": "Passed November 5, 2024. The ballot question read: a four percentage point (4%) increase \"increasing the total tax levied on hotel occupants from 8 to 12 percent … generating approximately $300,000.00 annually.\"",
+      "sources": [
+        {
+          "title": "Hotel Tax (Measure V)",
+          "publisher": "City of Hollister, City Clerk",
+          "url": "https://hollister.ca.gov/government/city_clerk/hotel_tax_(measure_v).php",
+          "date": "2024-11-05"
+        }
+      ]
     },
     {
-      "id": "cancel-events",
-      "name": "Cancel city event funding",
+      "id": "voluntary-separations",
+      "name": "Voluntary separation and retirement incentives",
       "category": "cuts",
       "type": "ongoing",
-      "amount": 500000,
-      "confidence": "official",
-      "desc": "Zero out the $500,000 events budget.",
-      "consequence": "Hollister without its events calendar saves real money and costs the downtown businesses that depend on those weekends.",
+      "status": "adopted",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "The City offered voluntary separation and retirement incentives in July 2026. Several employees accepted and left City service.",
+      "consequence": "The City states these did not generate sufficient savings. No savings figure has been published.",
       "effects": {
-        "community": -11,
-        "trust": -5
+        "workforce": -4,
+        "trust": -2
       },
       "realWorld": true,
-      "realNote": "The FY 2026-27 Approved Budget carries a $500,000 event expenditures line."
+      "realNote": "October 14, 2026 City press release: \"voluntary workforce reductions did not generate sufficient savings.\"",
+      "sources": [
+        {
+          "title": "Press release #2: Workforce reductions and financial emergency",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R120.php",
+          "date": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "id": "layoff-notices",
+      "name": "Layoff notices",
+      "category": "cuts",
+      "type": "ongoing",
+      "status": "adopted",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "On October 14, 2026 the City began issuing layoff notices to represented and unrepresented employees across multiple departments.",
+      "consequence": "The City has published neither a headcount nor a savings amount. Animal Control staff are not affected, and the City says it is not eliminating all civilian positions.",
+      "effects": {
+        "workforce": -11,
+        "trust": -6,
+        "community": -3,
+        "safety": -2
+      },
+      "realWorld": true,
+      "realNote": "Announced October 14, 2026. The City gave no number of positions and no dollar figure.",
+      "sources": [
+        {
+          "title": "Press release: City clarifies misinformation regarding workforce reductions",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R119.php",
+          "date": "2026-10-14"
+        },
+        {
+          "title": "Press release #2: Workforce reductions and financial emergency",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R120.php",
+          "date": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "id": "cancel-nonprofit-contracts",
+      "name": "Cancelled contracts with non-profits",
+      "category": "cuts",
+      "type": "ongoing",
+      "status": "adopted",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "The City reports it has cancelled historical contracts with non-profit organisations.",
+      "consequence": "Named by the City as one of the conditions that led to the emergency declaration. No dollar value published.",
+      "effects": {
+        "community": -5,
+        "trust": -3
+      },
+      "sources": [
+        {
+          "title": "Financial Emergency Information Guide",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R112.php",
+          "date": "2026-10-12"
+        }
+      ]
+    },
+    {
+      "id": "building-fee-update",
+      "name": "Updated building permit and user fees",
+      "category": "revenue",
+      "type": "ongoing",
+      "status": "adopted",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "The City published an updated building permit and user fee schedule on July 23, 2026.",
+      "consequence": "A revised fee schedule is in effect. The City has not published the revenue change it expects from it.",
+      "effects": {
+        "community": -2,
+        "trust": -2
+      },
+      "sources": [
+        {
+          "title": "Updated Building Permit and User Fees",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R107.php",
+          "date": "2026-07-23"
+        }
+      ]
+    },
+    {
+      "id": "forgo-reserve-policy",
+      "name": "Forgo the 20% reserve policy",
+      "category": "cuts",
+      "type": "ongoing",
+      "status": "adopted",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "The Council opted to set aside its policy of maintaining a 20% financial reserve.",
+      "consequence": "This frees the budget from a constraint rather than producing savings. It leaves nothing set aside for the next unbudgeted failure.",
+      "effects": {
+        "trust": -3
+      },
+      "sources": [
+        {
+          "title": "Hollister council delays fiscal reserve policy to bridge projected $6 million deficit",
+          "publisher": "BenitoLink",
+          "url": "https://benitolink.com/hollister-council-delays-fiscal-reserve-policy-to-bridge-6-million-projected-budget-deficit/",
+          "date": "2026-06-11"
+        }
+      ]
+    },
+    {
+      "id": "position-cuts-25",
+      "name": "Position cuts (up to 25)",
+      "category": "cuts",
+      "type": "ongoing",
+      "status": "discussed",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "A June 2026 staff report identified as many as 25 position cuts while the FY 2026-27 budget was being prepared.",
+      "consequence": "An earlier potential scenario from the budget process, not a final number and not what was adopted. The June 22 budget avoided staffing cuts by borrowing instead.",
+      "effects": {
+        "workforce": -8,
+        "trust": -3,
+        "community": -3
+      },
+      "scenarioNote": "Earlier potential scenario, superseded by the adopted budget.",
+      "sources": [
+        {
+          "title": "Hollister council delays fiscal reserve policy to bridge projected $6 million deficit",
+          "publisher": "BenitoLink",
+          "url": "https://benitolink.com/hollister-council-delays-fiscal-reserve-policy-to-bridge-6-million-projected-budget-deficit/",
+          "date": "2026-06-11"
+        },
+        {
+          "title": "Hollister borrows from sewer fund to balance adopted budget",
+          "publisher": "BenitoLink",
+          "url": "https://benitolink.com/hollister-borrows-from-sewer-fund-to-balance-adopted-budget/",
+          "date": "2026-06-26"
+        }
+      ]
+    },
+    {
+      "id": "furloughs",
+      "name": "Employee furloughs",
+      "category": "cuts",
+      "type": "ongoing",
+      "status": "discussed",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "Listed in the June 2026 staff report among potential measures to close the gap.",
+      "consequence": "Reduces payroll without eliminating jobs, and reduces the hours the City is open. No figure published.",
+      "effects": {
+        "workforce": -6,
+        "community": -3,
+        "trust": -2
+      },
+      "sources": [
+        {
+          "title": "Hollister council delays fiscal reserve policy to bridge projected $6 million deficit",
+          "publisher": "BenitoLink",
+          "url": "https://benitolink.com/hollister-council-delays-fiscal-reserve-policy-to-bridge-6-million-projected-budget-deficit/",
+          "date": "2026-06-11"
+        }
+      ]
+    },
+    {
+      "id": "benefit-cola-reductions",
+      "name": "Reductions in benefits and COLA",
+      "category": "cuts",
+      "type": "ongoing",
+      "status": "discussed",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "Listed in the June 2026 staff report among potential measures.",
+      "consequence": "Would require agreement with the City's labour groups. No figure published.",
+      "effects": {
+        "workforce": -7,
+        "trust": -2
+      },
+      "sources": [
+        {
+          "title": "Hollister council delays fiscal reserve policy to bridge projected $6 million deficit",
+          "publisher": "BenitoLink",
+          "url": "https://benitolink.com/hollister-council-delays-fiscal-reserve-policy-to-bridge-6-million-projected-budget-deficit/",
+          "date": "2026-06-11"
+        }
+      ]
+    },
+    {
+      "id": "defer-equipment-replacement",
+      "name": "Defer equipment replacement",
+      "category": "cuts",
+      "type": "onetime",
+      "status": "discussed",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "Listed in the June 2026 staff report among potential measures.",
+      "consequence": "Pushes cost into later years rather than removing it. No figure published.",
+      "effects": {
+        "infrastructure": -5,
+        "safety": -2,
+        "workforce": -2
+      },
+      "sources": [
+        {
+          "title": "Hollister council delays fiscal reserve policy to bridge projected $6 million deficit",
+          "publisher": "BenitoLink",
+          "url": "https://benitolink.com/hollister-council-delays-fiscal-reserve-policy-to-bridge-6-million-projected-budget-deficit/",
+          "date": "2026-06-11"
+        }
+      ]
+    },
+    {
+      "id": "pause-econdev-beautification",
+      "name": "Pause economic development and beautification",
+      "category": "cuts",
+      "type": "ongoing",
+      "status": "discussed",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "Listed in the June 2026 staff report as forgoing economic development and beautification efforts.",
+      "consequence": "The Council had approved funding for these initiatives earlier in 2026. No figure published for forgoing them.",
+      "effects": {
+        "community": -4,
+        "infrastructure": -2,
+        "trust": -2
+      },
+      "sources": [
+        {
+          "title": "Hollister council delays fiscal reserve policy to bridge projected $6 million deficit",
+          "publisher": "BenitoLink",
+          "url": "https://benitolink.com/hollister-council-delays-fiscal-reserve-policy-to-bridge-6-million-projected-budget-deficit/",
+          "date": "2026-06-11"
+        }
+      ]
+    },
+    {
+      "id": "reduce-hours-services",
+      "name": "Reduce hours and service levels",
+      "category": "cuts",
+      "type": "ongoing",
+      "status": "discussed",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "The City says residents can expect shorter hours, fewer days of operation, longer wait times, and reduced maintenance, recreation, permitting and community programs.",
+      "consequence": "Already beginning: on October 14, 2026 the police lobby was open 8–10 a.m. and records and general customer service were limited. No figure published.",
+      "effects": {
+        "community": -6,
+        "trust": -4,
+        "infrastructure": -2
+      },
+      "sources": [
+        {
+          "title": "Your Questions. Our Answers.",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R115.php",
+          "date": "2026-10-12"
+        },
+        {
+          "title": "Financial Emergency Information Guide",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R112.php",
+          "date": "2026-10-12"
+        },
+        {
+          "title": "Press release: City clarifies misinformation regarding workforce reductions",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R119.php",
+          "date": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "id": "ai-customer-service",
+      "name": "Shift customer service to AI",
+      "category": "cuts",
+      "type": "ongoing",
+      "status": "discussed",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "The City lists more AI customer service among the changes residents can expect.",
+      "consequence": "Named by the City as an expected change. No figure published.",
+      "effects": {
+        "community": -2,
+        "workforce": -2,
+        "trust": -2
+      },
+      "sources": [
+        {
+          "title": "Financial Emergency Information Guide",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R112.php",
+          "date": "2026-10-12"
+        }
+      ]
+    },
+    {
+      "id": "sell-assets",
+      "name": "Sell assets",
+      "category": "onetime",
+      "type": "onetime",
+      "status": "discussed",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "Selling assets is one of the steps named in the City's financial emergency proclamation.",
+      "consequence": "One-time money by definition. No specific asset or amount has been published.",
+      "effects": {
+        "infrastructure": -3,
+        "trust": -2
+      },
+      "sources": [
+        {
+          "title": "Financial Emergency Information Guide",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R112.php",
+          "date": "2026-10-12"
+        }
+      ]
+    },
+    {
+      "id": "collect-debt",
+      "name": "Collect outstanding debt",
+      "category": "revenue",
+      "type": "ongoing",
+      "status": "discussed",
+      "amountKnown": false,
+      "amount": null,
+      "unpublishedNote": "Savings/revenue not published",
+      "desc": "Collecting debt owed to the City is one of the steps named in the financial emergency proclamation.",
+      "consequence": "Money the City is already owed rather than new revenue. No total published.",
+      "effects": {
+        "trust": -2
+      },
+      "sources": [
+        {
+          "title": "Financial Emergency Information Guide",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R112.php",
+          "date": "2026-10-12"
+        }
+      ]
+    },
+    {
+      "id": "sales-tax-1pct",
+      "name": "Additional 1% sales tax",
+      "category": "revenue",
+      "type": "ongoing",
+      "status": "discussed",
+      "amountKnown": true,
+      "amount": 0,
+      "amountBasis": "No tax is enacted, so current revenue from this proposal is $0.",
+      "desc": "On October 2, 2026 the Council authorised staff to ask Hollister's state representatives for legislation that would let the City raise its sales tax cap by up to 1%.",
+      "consequence": "This did not impose a tax, set a rate, or place a measure on the ballot. Legislation, a later Council action and voter approval would all be required first. Staff estimated roughly six months just to get legislation and a fiscal analysis.",
+      "effects": {
+        "trust": -5
+      },
+      "conditional": true,
+      "scenario": {
+        "amount": 9682000,
+        "label": "If a full additional 1% were enacted",
+        "basis": "Inferred by matching the existing 1% Measure W transactions-and-use tax, which the FY 2026-27 adopted budget projects at $9,682,000. This is an inference from the existing tax, not an official forecast for a new one.",
+        "rateFrom": 9.25,
+        "rateTo": 10.25
+      },
+      "realWorld": true,
+      "realNote": "The October 2, 2026 action only authorised pursuing special state legislation.",
+      "sources": [
+        {
+          "title": "Hollister council agrees to declare fiscal emergency",
+          "publisher": "BenitoLink",
+          "url": "https://benitolink.com/hollister-council-agrees-to-declare-fiscal-emergency/",
+          "date": "2026-10-06"
+        },
+        {
+          "title": "Financial Emergency Information Guide",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R112.php",
+          "date": "2026-10-12"
+        }
+      ]
+    },
+    {
+      "id": "animal-services-outsourcing",
+      "name": "Outsource animal services to a non-profit",
+      "category": "cuts",
+      "type": "ongoing",
+      "status": "exploratory",
+      "amountKnown": true,
+      "amount": 1000000,
+      "amountBasis": "Preliminary estimate in an April 2026 email from the City Manager, who wrote she hoped to save $1 million; the same emails put the current operation at $2 million a year for eight full-time employees, the shelter and medical services.",
+      "desc": "City emails show the City Manager approached a Stockton-based non-profit about taking over animal services.",
+      "consequence": "A preliminary estimate from an internal email, not a costed proposal. The Police Chief said he had not been invited to any meeting about it, the County pays 55% of the animal control budget, and the City said in October that Animal Control staff are not affected by the current layoffs.",
+      "effects": {
+        "community": -7,
+        "workforce": -6,
+        "trust": -6,
+        "safety": -2
+      },
+      "preliminary": true,
+      "sources": [
+        {
+          "title": "Hollister group raises concerns over potential animal service changes",
+          "publisher": "BenitoLink",
+          "url": "https://benitolink.com/hollister-group-raises-concerns-over-potential-animal-service-changes/",
+          "date": "2026-05-06"
+        },
+        {
+          "title": "Press release: City clarifies misinformation regarding workforce reductions",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R119.php",
+          "date": "2026-10-14"
+        }
+      ]
     }
   ]
 }

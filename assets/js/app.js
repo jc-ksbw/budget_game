@@ -19,7 +19,7 @@ ACTIONS.meta.meters.forEach((m) => { METER_NAMES[m.id] = m.name; });
 
 let state = E.createState(BUDGET, ACTIONS);
 let activePanel = 'budget';
-let cutFilter = 'all';
+let statusFilter = 'all';
 
 /* ---------- toast ---------- */
 let toastTimer;
@@ -102,7 +102,15 @@ function toggleAction(id) {
   document.querySelectorAll(`[data-action="${id}"]`).forEach((n) => {
     n.setAttribute('aria-pressed', state.chosen.has(id) ? 'true' : 'false');
   });
-  if (state.chosen.has(id)) toast(`${a.name} · +${fmt.money(a.amount)}`);
+  if (state.chosen.has(id)) {
+    let note;
+    if (!a.amountKnown) note = 'no published figure';
+    else if (a.amount > 0) note = '+' + fmt.money(a.amount);
+    else if (a.enacted) note = 'already enacted';
+    else if (a.conditional) note = '$0 until it is enacted';
+    else note = '$0';
+    toast(`${a.name} · ${note}`);
+  }
   changed();
 }
 
@@ -192,10 +200,15 @@ function renderActionPanel(which) {
   let list = ACTIONS.actions.filter((a) =>
     isCuts ? a.category !== 'revenue' : a.category === 'revenue');
 
-  if (isCuts && cutFilter !== 'all') {
-    list = list.filter((a) => cutFilter === 'onetime' ? a.type === 'onetime' : a.type === 'ongoing');
-  }
-  list = list.slice().sort((a, b) => b.amount - a.amount);
+  if (statusFilter !== 'all') list = list.filter((a) => a.status === statusFilter);
+
+  // Adopted first, then discussed, then exploratory; published figures ahead
+  // of unpublished ones inside each group.
+  const rank = { adopted: 0, discussed: 1, exploratory: 2 };
+  list = list.slice().sort((a, b) =>
+    (rank[a.status] - rank[b.status]) ||
+    (Number(b.amountKnown) - Number(a.amountKnown)) ||
+    ((b.amount || 0) - (a.amount || 0)));
 
   const head = h('div', { class: 'panel-head' }, [
     h('h2', { text: isCuts ? 'Savings and one-time money' : 'Revenue options' }),
@@ -206,20 +219,21 @@ function renderActionPanel(which) {
 
   const kids = [head];
 
-  if (isCuts) {
-    kids.push(h('div', { class: 'filter-row' }, [
-      ['all', 'All'], ['ongoing', 'Recurring only'], ['onetime', 'One-time only'],
-    ].map(([k, label]) => h('button', {
-      class: 'chip', 'aria-pressed': cutFilter === k ? 'true' : 'false', text: label,
-      onclick: () => { cutFilter = k; renderActionPanel('cuts'); },
-    }))));
-  } else {
-    kids.push(h('div', { class: 'callout', html:
-      'A <b>cost-recovery fee</b> the council can set by itself is slower money than a tax, but it is money you actually control. A <b>ballot measure</b> can be worth millions &mdash; if it passes.' }));
+  kids.push(h('div', { class: 'filter-row' }, [
+    ['all', 'All'], ['adopted', 'Adopted'], ['discussed', 'Discussed'], ['exploratory', 'Exploratory'],
+  ].map(([k, label]) => h('button', {
+    class: 'chip', 'aria-pressed': statusFilter === k ? 'true' : 'false', text: label,
+    onclick: () => { statusFilter = k; renderActionPanel(which); },
+  }))));
+
+  const unpub = list.filter((a) => !a.amountKnown).length;
+  if (unpub) {
+    kids.push(h('div', { class: 'callout is-warning', html:
+      `<b>${unpub} of these ${list.length}</b> have no published savings or revenue figure. You can still pick them &mdash; they are real proposals &mdash; but they cannot move the deficit, because nobody has put a number on them.` }));
   }
 
   list.forEach((a) => {
-    const card = actionCard(a, state.chosen.has(a.id), METER_NAMES, toggleAction);
+    const card = actionCard(a, state.chosen.has(a.id), METER_NAMES, toggleAction, ACTIONS.meta.statuses);
     card.setAttribute('data-action', a.id);
     kids.push(card);
   });
@@ -300,6 +314,61 @@ function renderImpact() {
   /* --- how the gap was closed --- */
   const wfCard = buildWaterfall(t);
 
+  /* --- the two deficit figures, kept apart --- */
+  const rv = BUDGET.revisedDeficit;
+  const srcLine = (x) => h('span', { class: 'src' }, [
+    h('a', { href: x.url, target: '_blank', rel: 'noopener', text: x.title }),
+    h('span', { class: 'src-meta', text: ` — ${x.publisher}, ${x.date}` }),
+  ]);
+  const figuresCard = h('div', { class: 'card' }, [
+    h('div', { class: 'card-title' }, ['Which deficit figure is which']),
+    h('table', { class: 'dt', style: 'margin-top:8px' }, [
+      h('tbody', {}, [
+        h('tr', {}, [
+          h('td', { text: BUDGET.generalFund.deficitLabel }),
+          h('td', { class: 'neg', text: fmt.full(BUDGET.generalFund.structuralDeficit) }),
+        ]),
+        h('tr', {}, [
+          h('td', { text: rv.label + ' (' + rv.asOfPeriod + ')' }),
+          h('td', { class: 'neg', text: fmt.full(rv.amount) }),
+        ]),
+      ]),
+    ]),
+    h('div', { class: 'basis', style: 'margin-left:0', text: rv.note }),
+    h('div', { class: 'basis', style: 'margin-left:0', text: rv.labelDiscrepancy }),
+    h('div', { class: 'srcs', style: 'margin-left:0' }, [
+      h('div', { class: 'srcs-label', text: 'Sources' }),
+      srcLine(BUDGET.generalFund.deficitSource),
+      ...rv.sources.map(srcLine),
+    ]),
+  ]);
+
+  /* --- conditional scenario, only when one is picked --- */
+  let scenarioCard = null;
+  if (t.scenarioRevenue > 0) {
+    const conds = t.picked.filter((a) => a.conditional && a.scenario);
+    scenarioCard = h('div', { class: 'card' }, [
+      h('div', { class: 'card-title' }, ['Conditional scenario']),
+      h('div', { class: 'chart-sub', text: 'What the gap would be if these landed. None of this is counted anywhere else in the game.' }),
+      ...conds.map((a) => h('div', { class: 'scenario', style: 'margin-left:0' }, [
+        h('div', { class: 'scenario-head', text: a.name }),
+        h('div', { class: 'scenario-v', text: '+' + fmt.money(a.scenario.amount) + ' a year' }),
+        (a.scenario.rateFrom && a.scenario.rateTo) ? h('div', { class: 'scenario-rate' }, [
+          h('span', { html: `Sales tax <b>${a.scenario.rateFrom}%</b> &rarr; <b>${a.scenario.rateTo}%</b>` }),
+        ]) : null,
+        h('div', { class: 'scenario-note', text: a.scenario.basis }),
+      ])),
+      h('table', { class: 'dt', style: 'margin-top:10px' }, [
+        h('tbody', {}, [
+          h('tr', {}, [h('td', { text: 'Structural gap now' }),
+                       h('td', { class: t.structuralGap > 0 ? 'neg' : 'pos', text: fmt.full(t.structuralGap) })]),
+          h('tr', {}, [h('td', { text: 'If the conditional measures landed' }),
+                       h('td', { class: t.scenarioStructuralGap > 0 ? 'neg' : 'pos', text: fmt.full(t.scenarioStructuralGap) })]),
+        ]),
+      ]),
+    ]);
+  }
+
   /* --- data table --- */
   const tableCard = h('div', { class: 'card' }, [
     h('div', { class: 'card-title' }, ['The numbers']),
@@ -311,7 +380,7 @@ function renderImpact() {
       h('h2', { text: 'Impact' }),
       h('p', { text: 'What your budget does to the city, and whether it holds up past June.' }),
     ]),
-    metersCard, wfCard, projCard, changeCard, revCard, tableCard,
+    metersCard, figuresCard, scenarioCard, wfCard, projCard, changeCard, revCard, tableCard,
   );
 
   /* draw */
@@ -455,7 +524,8 @@ function renderCommunity() {
   kids.push(h('div', { class: 'card' }, [
     h('div', { class: 'card-title' }, ['Your plan']),
     h('div', { class: 'card-note', text:
-      `${t.picked.length} measure${t.picked.length === 1 ? '' : 's'} \u00b7 ` +
+      `${t.picked.length} measure${t.picked.length === 1 ? '' : 's'}` +
+      (t.unquantified ? ` (${t.unquantified} with no published figure)` : '') + ' \u00b7 ' +
       `${fmt.money(t.deptSavings)} from department budgets \u00b7 ` +
       `${fmt.money(t.ongoingCuts + t.ongoingRevenue)} recurring \u00b7 ` +
       `${fmt.money(t.oneTime)} one-time` }),
@@ -595,7 +665,7 @@ function showResult() {
 
 function reset() {
   state = E.createState(BUDGET, ACTIONS);
-  cutFilter = 'all';
+  statusFilter = 'all';
   go('intro');
   window.scrollTo(0, 0);
 }

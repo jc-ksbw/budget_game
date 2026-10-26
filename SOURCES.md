@@ -56,7 +56,7 @@ are official; the names attached to them are a reading of the account structure.
 | Option | Status | Amount | Kind | City sources |
 |---|---|---|---|---|
 | Interfund loan from impact fee funds | Adopted | $11,000,000 | City figure | A Clear Look At Our Financial Situation, Financial Emergency Information Guide |
-| Layoff notices (locked on) | Adopted | $3,617,997 | Derived | Notification of Staffing Reductions — letter to SEIU Local 521, Press release #2: workforce reductions and financial emergency, Press release: workforce reductions and financial emergency |
+| Layoff notices | Discussed | $3,617,997 | Derived | Notification of Staffing Reductions — letter to SEIU Local 521, Press release #2: workforce reductions and financial emergency, Press release: workforce reductions and financial emergency |
 | Voluntary separation and retirement incentives | Adopted | not published | — | Press release #2: workforce reductions and financial emergency |
 | Cancelled contracts with non-profits | Adopted | not published | — | Financial Emergency Information Guide |
 | Release the budgeted contingency | Discussed | $1,200,000 | City figure | FY 2026-27 Approved Budget Document, Financial Emergency Information Guide |
@@ -148,11 +148,31 @@ to close it on its own. None of the steps above could complete inside FY 2026-27
 the card is tagged **Needs legislation, council and voters** and its text says the
 collections could not begin until all of them cleared.
 
-**The Oct 14 layoffs and the voluntary separations** — both have already happened,
-so both are **locked on** from the first screen and cannot be switched off. The
-opening board is therefore $2,745,287, not the adopted $6,363,284; the adopted figure
-is still reported as the starting point, and the Budget tab says in as many words
-what the difference is.
+> **Why the State has to act first.** Hollister's **9.25%** is the statewide base plus
+> a full **2.00%** of local transactions-and-use taxes — the **City's own 1%**
+> (operative 04-01-2008) and **San Benito County's 1%** safety tax (operative
+> 04-01-2019), both listed in CDTFA's district-tax publication. **Revenue and Taxation
+> Code section 7251.1** reads: *"The combined rate of all taxes imposed in accordance
+> with this part in any county may not exceed 2 percent."* Hollister is therefore at
+> the statutory ceiling and **cannot put another transactions-and-use tax on the
+> ballot at all**. The Legislature would first have to pass a special statute lifting
+> the cap for Hollister; only then could the Council call an election. State approval
+> is **not an alternative** to voter approval — it comes before it. The card carries
+> this as a rate note. The statute is named in the text rather than added as a
+> citation, because the game's `sources[]` are City documents only.
+
+**The Oct 14 layoffs** — noticed, then reopened. On **October 21, 2026** the Council
+took up a resolution *ratifying the rescission of Resolution No. 2026-111* — the
+fiscal emergency the layoffs rested on — together with *direction regarding the
+employees placed on administrative leave*. The City is meeting and conferring with
+**SEIU Local 521** and the **Police Officers Association**, and its October 26 agenda
+is signed by an **acting city manager**. So the card is **not** locked on: the layoffs
+are a choice the player makes, carrying status **discussed**, not a saving already
+banked.
+
+**The voluntary separations** (July 2026) were not reversed, so that card stays
+**locked on**. It has no published savings figure, so nothing lands on the board
+before the player chooses anything: the game opens at the full adopted **$6,363,284**.
 
 The savings figure is **derived, not published**. The City's October 14, 2026
 *Notification of Staffing Reductions* to SEIU Local 521 — signed by the City Manager
@@ -166,6 +186,10 @@ applied to **25** positions gives **$3,617,997**.
 > year. Severance and leave payouts land against the first year. And **25 is not a
 > City count** — the letter covers SEIU-represented staff only, and the City has
 > published no citywide total. The card says all of this.
+
+> **Still worth showing.** The notices were really issued and the letter is real, so
+> the card keeps its figure. What changed is its standing: it is now an option with a
+> contested future rather than a settled fact, and the card says so.
 
 > **Where the letter came from.** The City has not posted it on hollister.ca.gov. The
 > public copy is an [Instagram
@@ -321,7 +345,11 @@ visually and is quoted above. Every URL returned HTTP 200 when this was written.
 `data/actions.json` carries per card: `status` (`adopted` / `discussed` /
 `exploratory` / `benchmark`), `amountKnown`, `amount` (**null** when unpublished —
 never 0), `amountKind` (`published` / `derived` / `benchmark`), `amountBasis` or
-`unpublishedNote`, optional `cashBridge`, `conditional` and `amountTiming`, and
-`sources[]` with title, publisher, url and date.
+`unpublishedNote`, optional `cashBridge`, `conditional`, `locked` (already carried
+out: selected from the first screen, cannot be toggled, survives Start over),
+`rateNote` and `amountTiming`, and `sources[]` with title, publisher, url and date.
+Sources must be on `hollister.ca.gov` or the City's own agenda portal
+`pub-hollister.escribemeetings.com`; the verification script allows exactly one
+other URL, the SEIU letter, by exact match.
 `data/hollister-fy2027.json` carries `deficitLabel`, `deficitSource` and a separate
 `revisedDeficit` block.

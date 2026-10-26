@@ -124,11 +124,16 @@ function renderBudget() {
       h('h2', { text: 'General fund spending' }),
       h('p', { text: 'Drag to change what each department gets. The floors are set where a department stops being able to do its job.' }),
     ]),
-    lockedCuts.length ? h('div', { class: 'callout' , html:
-      `The adopted budget opened <b>${fmt.full(t.startGap)}</b> short. The City has already acted on `
-      + `<b>${lockedCuts.length}</b> of the measures below, worth about <b>${fmt.money(lockedMoney)}</b>, `
-      + `so you start with <b>${fmt.full(Math.max(0, t.cashGap))}</b> left to close. Those measures are `
-      + `locked on &mdash; they have happened.` }) : null,
+    lockedCuts.length ? h('div', { class: 'callout', html: lockedMoney
+      ? `The adopted budget opened <b>${fmt.full(t.startGap)}</b> short. The City has already acted on `
+        + `<b>${lockedCuts.length}</b> of the measures below, worth about <b>${fmt.money(lockedMoney)}</b>, `
+        + `so you start with <b>${fmt.full(Math.max(0, t.cashGap))}</b> left to close. Those measures are `
+        + `locked on &mdash; they have happened.`
+      : `The adopted budget opened <b>${fmt.full(t.startGap)}</b> short, and that is where you start. `
+        + `${lockedCuts.length === 1 ? 'One measure below has' : `${lockedCuts.length} measures below have`} `
+        + `already been carried out and ${lockedCuts.length === 1 ? 'is' : 'are'} locked on, but the City has `
+        + `published no savings figure for ${lockedCuts.length === 1 ? 'it' : 'them'}, so the gap is still the `
+        + `full adopted one.` }) : null,
     h('div', { class: 'card' }, [
       h('div', { class: 'card-title' }, ['Where the money goes']),
       h('div', { class: 'chart-sub', text: lockedMoney

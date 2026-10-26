@@ -128,12 +128,17 @@ Two cards carry heavy caveats:
   recurring savings or the structural gap. It sits on the Revenue tab and carries no
   infrastructure penalty, because no City document shows a project delayed by it.
 
-Two cards are **locked on** from the first screen, because the City has already done
-them: the **October 14 layoffs** and the **voluntary separations**. The board
-therefore opens at **$2,745,287**, not the adopted **$6,363,284**, and the Budget tab
-says why. The layoff figure of **$3,617,997** is derived — the City's October 14
-letter to SEIU Local 521 names 16 employees at a combined $2,315,518, an average of
-$144,720, applied to 25 positions. See SOURCES.md for what that number is not.
+One card is **locked on** from the first screen, because the City has already done it
+and has not reversed it: the July 2026 **voluntary separations**. It has no published
+figure, so the board still opens at the full adopted **$6,363,284**.
+
+The **October 14 layoffs** are a choice, not a lock. The notices were issued, but on
+October 21 the Council took up a resolution ratifying the rescission of the fiscal
+emergency they rested on, and the City is now meeting and conferring with its unions
+under an acting city manager. The card carries a derived **$3,617,997** — the City's
+October 14 letter to SEIU Local 521 names 16 employees at a combined $2,315,518, an
+average of $144,720, applied to 25 positions — and says plainly what that number is
+not. See SOURCES.md.
 
 ### The community
 

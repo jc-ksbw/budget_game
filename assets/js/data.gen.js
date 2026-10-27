@@ -1297,9 +1297,9 @@ export const ACTIONS = {
       "name": "Interfund loan from impact-fee funds",
       "asOf": "2026-10-02",
       "asOfLabel": "as of October 2, 2026",
-      "statusLine": "Approved by the City Council on October 2, 2026, carried 3–0.",
+      "statusLine": "Approved by the City Council on October 2, 2026, carried 3–0. Drawn from the City’s traffic and park impact-fee funds.",
       "principal": 18000000,
-      "fromFunds": "Fund 304 (AB 1600 Traffic Impact Fee) and Fund 205 (Park Dedication Impact Fee)",
+      "fromFunds": "the City’s traffic and park impact-fee funds",
       "advances": [
         {
           "fund": "General Fund",
@@ -1313,51 +1313,24 @@ export const ACTIONS = {
       "rate": "3%–4%",
       "dueDate": "June 30, 2027",
       "purpose": "Short-term cash for payroll, utilities and other operating costs while the City waited on quarterly revenues.",
-      "repaymentLine": "$18,000,000 principal, plus interest at 3%–4%, due in full by June 30, 2027.",
-      "repaymentNote": "The adopted motion gives the rate as a range and no total interest amount. A one-year amortization schedule was attached to the October 2 agenda, but the City’s portal does not serve it, so no interest total, no installment schedule and no split of interest between the General Fund and the Water Fund is shown here — the adopted action does not allocate interest between the funds.",
-      "rateNote": "The resolution the Council actually adopted states “an interest rate of 3%-4%”. City staff have separately been quoted at a flat 4%. The range is what the adopted motion says, so the range is what is shown.",
-      "explain": "It moves cash between City funds, creates a repayment obligation, and does not solve a recurring operating deficit — so it is kept out of the game’s totals entirely. Nothing on this card moves the deficit, the meters or your grade. The gap you are asked to close is exactly as large with the loan as without it, and on July 1, 2027 the money has to be back.",
+      "repaymentLine": "$18,000,000 principal, plus interest at 3%–4% a year, due in full by June 30, 2027.",
+      "explain": "It moves cash between City funds and has to be paid back, so it does not fix a recurring deficit. Nothing here touches the deficit, the meters or your grade.",
       "sources": [
         {
-          "title": "City Council special meeting agenda, item 5.2 — resolution authorising an $18 million interfund loan from impact-fee funds to the General and Water Funds",
-          "publisher": "City of Hollister",
-          "url": "https://pub-hollister.escribemeetings.com/Meeting.aspx?Id=287e7244-ae08-4e9b-8b5a-4d088ac1151a&Agenda=Agenda&lang=English",
-          "date": "2026-10-02"
-        },
-        {
-          "title": "City Council special meeting minutes, item 5.2 — adopted motion and vote",
+          "title": "City Council minutes, October 2, 2026 — item 5.2, adopted motion and vote",
           "publisher": "City of Hollister",
           "url": "https://pub-hollister.escribemeetings.com/Meeting.aspx?Id=287e7244-ae08-4e9b-8b5a-4d088ac1151a&Agenda=PostMinutes&lang=English",
           "date": "2026-10-02"
-        },
-        {
-          "title": "Staff report: short-term interfund loan from impact fees to the General and Water Funds",
-          "publisher": "City of Hollister",
-          "url": "https://pub-hollister.escribemeetings.com/filestream.ashx?DocumentId=23522",
-          "date": "2026-10-02",
-          "note": "Attachment to the October 2 agenda. Linked for reference; the City’s portal did not serve the file, so nothing here is drawn from it."
         },
         {
           "title": "Interfund loan agreement (agenda attachment B)",
           "publisher": "City of Hollister",
           "url": "https://pub-hollister.escribemeetings.com/filestream.ashx?DocumentId=23524",
           "date": "2026-10-02",
-          "note": "Attachment to the October 2 agenda. Linked for reference; the City’s portal did not serve the file, so nothing here is drawn from it."
-        },
-        {
-          "title": "FY27 one-year short-term loan amortization schedule (agenda attachment C)",
-          "publisher": "City of Hollister",
-          "url": "https://pub-hollister.escribemeetings.com/filestream.ashx?DocumentId=23525",
-          "date": "2026-10-02",
-          "note": "Attachment to the October 2 agenda. Linked for reference; the City’s portal did not serve the file, so no schedule or interest total is shown."
-        },
-        {
-          "title": "A Clear Look At Our Financial Situation",
-          "publisher": "City of Hollister",
-          "url": "https://hollister.ca.gov/news_detail_T3_R111.php",
-          "date": "2026-10-12"
+          "note": "The City’s portal does not serve this file, so nothing on this card is drawn from it."
         }
-      ]
+      ],
+      "note": "The adopted motion gives the rate as a range — staff have separately been quoted at a flat 4%. It sets no total interest, no installment schedule and no split of interest between the two funds."
     }
   ]
 };

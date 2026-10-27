@@ -262,21 +262,9 @@ function sourceList(sources) {
 /**
  * A financing event, not a budget option. Borrowed cash is not revenue, so this
  * renders as a read-only card: there is no checkbox, nothing to select, and the
- * data behind it never reaches totals(). Sources carry their own notes where a
- * document is linked but was not readable.
+ * data behind it never reaches totals().
  */
 export function financingCard(f) {
-  const srcs = (f.sources || []).map((x) => h('div', { class: 'src' }, [
-    h('a', { href: x.url, target: '_blank', rel: 'noopener', text: x.title }),
-    h('span', { class: 'src-meta', text: ` \u2014 ${x.publisher}, ${fmtDate(x.date)}` }),
-    x.note ? h('div', { class: 'src-note', text: x.note }) : null,
-  ].filter(Boolean)));
-
-  const row = (label, value, cls) => h('tr', {}, [
-    h('td', { text: label }),
-    h('td', { class: 'num' + (cls ? ' ' + cls : ''), text: value }),
-  ]);
-
   return h('section', { class: 'financing', 'aria-label': f.label }, [
     h('div', { class: 'fin-head' }, [
       h('div', { class: 'fin-kicker', text: f.label }),
@@ -285,36 +273,35 @@ export function financingCard(f) {
     h('div', { class: 'fin-name', text: f.name }),
     h('div', { class: 'fin-status', text: f.statusLine }),
 
-    h('div', { class: 'fin-sub', text: 'Advances' }),
     h('table', { class: 'dt fin-table' }, [
       h('tbody', {}, [
-        ...f.advances.map((a) => row(a.fund, fmt.full(a.amount))),
+        ...f.advances.map((a) => h('tr', {}, [
+          h('td', { text: a.fund }),
+          h('td', { class: 'num', text: fmt.full(a.amount) }),
+        ])),
         h('tr', { class: 'is-total' }, [
           h('td', { text: 'Total borrowed' }),
           h('td', { class: 'num', text: fmt.full(f.principal) }),
         ]),
       ]),
     ]),
-    h('div', { class: 'basis', style: 'margin-left:0', text: 'Borrowed from ' + f.fromFunds + '.' }),
 
-    h('div', { class: 'fin-sub', text: 'Repayment due' }),
-    h('table', { class: 'dt fin-table' }, [
-      h('tbody', {}, [
-        row('Principal', fmt.full(f.principal)),
-        row('Interest', f.rate + ' a year'),
-        row('Due in full by', f.dueDate),
-      ]),
+    h('div', { class: 'fin-due' }, [
+      h('span', { class: 'fin-due-label', text: 'Repayment due' }),
+      h('span', { class: 'fin-due-text', text: f.repaymentLine }),
     ]),
-    h('div', { class: 'basis', style: 'margin-left:0', text: f.repaymentNote }),
-    h('div', { class: 'basis', style: 'margin-left:0', text: f.rateNote }),
+    h('div', { class: 'basis', style: 'margin-left:0', text: f.note }),
 
-    h('div', { class: 'fin-sub', text: 'Purpose' }),
-    h('div', { class: 'fin-text', text: f.purpose }),
+    h('div', { class: 'action-more is-real', html:
+      '<b>Financing, not income.</b> ' + f.purpose + ' ' + f.explain }),
 
-    h('div', { class: 'action-more is-real', html: '<b>Financing, not income.</b> ' + f.explain }),
-
-    srcs.length ? h('div', { class: 'srcs', style: 'margin-left:0' }, [
-      h('div', { class: 'srcs-label', text: 'Sources' }), ...srcs,
+    (f.sources || []).length ? h('div', { class: 'srcs', style: 'margin-left:0' }, [
+      h('div', { class: 'srcs-label', text: f.sources.length > 1 ? 'Sources' : 'Source' }),
+      ...f.sources.map((x) => h('div', { class: 'src' }, [
+        h('a', { href: x.url, target: '_blank', rel: 'noopener', text: x.title }),
+        h('span', { class: 'src-meta', text: ` \u2014 ${fmtDate(x.date)}` }),
+        x.note ? h('div', { class: 'src-note', text: x.note }) : null,
+      ].filter(Boolean))),
     ]) : null,
   ].filter(Boolean));
 }

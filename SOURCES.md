@@ -140,11 +140,16 @@ minutes for **item 5.2** (carried 3–0, moved by Picha, seconded by de Anda):
 
 > **No interest total, no schedule, no split.** The agenda carried three attachments —
 > the staff report, the **interfund loan agreement**, and an **FY27 one-year short-term
-> loan amortization schedule**. The City's portal returns **403** for all three, so they
-> are cited for reference with a note saying nothing on the card is drawn from them. No
+> loan amortization schedule**. The City's portal returns **403** for all three. No
 > total interest figure, no installment schedule, and **no allocation of interest
 > between the General Fund and the Water Fund** is shown, because the adopted action
 > does not provide one.
+
+> **Two citations, by request.** The card cites the **adopted minutes** (which carry the
+> motion, every figure on the card, and the 3–0 vote) and the **loan agreement**, with a
+> note saying the portal does not serve it so nothing is drawn from it. The agenda item,
+> the staff report, the amortization schedule and the October 12 infographic were all
+> dropped as redundant with the minutes or unreadable.
 
 The card carries **no infrastructure penalty** — no City document shows a capital
 project delayed because of it — and no meter effect of any kind, since it is outside
@@ -383,7 +388,7 @@ A source may carry a `note` where a document is linked but was not readable.
 changing the budget. Nothing in it is selectable and nothing in it reaches `totals()`.
 Each entry carries `label`, `name`, `asOf` + `asOfLabel`, `statusLine`, `principal`,
 `fromFunds`, `advances[]` (`fund` + `amount`), `rate`, `rateNote`, `dueDate`,
-`purpose`, `repaymentLine`, `repaymentNote`, `explain` and `sources[]`.
+`purpose`, `repaymentLine`, `note`, `explain` and `sources[]`.
 Sources must be on `hollister.ca.gov` or the City's own agenda portal
 `pub-hollister.escribemeetings.com`; the verification script allows exactly one
 other URL, the SEIU letter, by exact match.

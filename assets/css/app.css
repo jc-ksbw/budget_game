@@ -430,12 +430,16 @@ p:last-child { margin-bottom: 0; }
 .fin-asof { font-size: 11.5px; color: var(--muted); }
 .fin-name { font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; margin-top: 4px; }
 .fin-status { font-size: 13px; color: var(--text-2); margin-top: 3px; }
-.fin-sub {
-  font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
-  color: var(--muted); margin-top: 14px;
+.fin-due {
+  margin-top: 11px; padding-top: 10px; border-top: 1px solid var(--hairline);
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px;
 }
-.fin-text { font-size: 13px; color: var(--text-2); margin-top: 5px; }
-table.dt.fin-table { margin-top: 6px; }
+.fin-due-label {
+  font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--muted); flex: none;
+}
+.fin-due-text { font-size: 13px; font-weight: 600; flex: 1 1 180px; min-width: 0; }
+table.dt.fin-table { margin-top: 10px; }
 table.dt.fin-table tr.is-total td { font-weight: 700; border-top: 1px solid var(--hairline); }
 .financing .action-more { margin-top: 13px; }
 .src-note { font-size: 11.5px; color: var(--muted); margin-top: 2px; }

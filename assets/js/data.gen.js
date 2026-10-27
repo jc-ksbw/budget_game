@@ -104,12 +104,6 @@ export const BUDGET = {
       "confidence": "official"
     },
     {
-      "label": "General Fund reserve policy target",
-      "value": 20,
-      "unit": "percent",
-      "confidence": "official"
-    },
-    {
       "label": "Funded positions, all funds, FY 2024-25",
       "value": 222,
       "unit": "positions",
@@ -119,9 +113,7 @@ export const BUDGET = {
   "generalFund": {
     "expenditureTotal": 56588184,
     "revenueTotal": 50224900,
-    "structuralDeficit": 6363284,
-    "reservePolicyPercent": 20,
-    "currentReserve": 0,
+    "adoptedGap": 6363284,
     "confidence": "official",
     "departments": [
       {
@@ -473,16 +465,17 @@ export const BUDGET = {
         "confidence": "official"
       }
     ],
-    "deficitLabel": "Adopted FY 2026-27 budget deficit",
+    "deficitLabel": "Adopted FY 2026-27 General Fund budget gap",
     "deficitSource": {
       "title": "FY 2026-27 Approved Budget Document",
       "publisher": "City of Hollister",
       "url": "https://hollister.ca.gov/City%20Managers/Documents/Hollister_FY2026-27_Approved_Budget_July4_Cover.pdf",
       "date": "2026-07-04"
-    }
+    },
+    "gapNote": "The difference between the adopted budget’s expenditure and revenue totals. The game does not classify the City’s own lines as recurring or one-time — some include contingency and capital spending — so this is the adopted gap, not a verified structural deficit."
   },
   "projection": {
-    "note": "Baseline growth assumptions for the three-year outlook. Modeled, not a city forecast.",
+    "note": "Growth assumptions for the five-year outlook. A game estimate built on the rates below, not a City forecast, and not a verified structural projection: the adopted revenue and expenditure lines have never been classified recurring or one-time.",
     "revenueGrowth": 0.022,
     "expenditureGrowth": 0.042,
     "expenditureGrowthNote": "Personnel is $34.95M of a $56.59M General Fund. Salary steps, CalPERS rate increases and insurance renewals outrun revenue growth. This is the structural problem.",
@@ -634,7 +627,6 @@ export const ACTIONS = {
         "structural": 2.4,
         "onetimeReliance": -2.6,
         "newTaxes": -1.5,
-        "reserve": 1.5,
         "safety": 0.3,
         "infrastructure": 0.2,
         "community": 0,
@@ -653,7 +645,6 @@ export const ACTIONS = {
         "structural": 0.6,
         "onetimeReliance": -0.4,
         "newTaxes": 0.2,
-        "reserve": 0.3,
         "safety": 2.8,
         "infrastructure": 0.2,
         "community": 0.1,
@@ -672,7 +663,6 @@ export const ACTIONS = {
         "structural": 0.5,
         "onetimeReliance": -0.3,
         "newTaxes": 0.6,
-        "reserve": 0.1,
         "safety": 0.4,
         "infrastructure": 1,
         "community": 2.6,
@@ -691,7 +681,6 @@ export const ACTIONS = {
         "structural": 1.2,
         "onetimeReliance": -0.8,
         "newTaxes": -1.5,
-        "reserve": 0.6,
         "safety": 0.5,
         "infrastructure": 0.9,
         "community": 0.2,
@@ -711,7 +700,6 @@ export const ACTIONS = {
         "structural": 0.5,
         "onetimeReliance": 0.1,
         "newTaxes": 0.9,
-        "reserve": 0,
         "safety": 0.5,
         "infrastructure": 0.3,
         "community": 0.5,

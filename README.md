@@ -76,19 +76,37 @@ even let you play it: see the financing panel on the Revenue tab.
 
 ### Scoring
 
-100 points: balancing at all (30), structural balance (25), community support (20),
-service levels (20), reserve against the city's 20% policy (5), minus 6 for every
-service meter that collapses below 25.
+**100 points**, in four parts:
 
-Randomised play rarely lands — about **6.7%** of 20,000 random plans win over three
-of five, 44% score an F, and none reach an A. A thoughtful plan reaches a B-; the
-practical ceiling found by a hill-climbing search is an **A-** with all five on side.
+| | Points | What it measures |
+|---|---|---|
+| Closing the adopted gap | **33** | Does the budget balance on paper? |
+| Holding without one-time money | **27** | Is the gap still closed once borrowing, sales and deferrals come back out? |
+| Community support | **20** | How many of the five voices liked it |
+| Service levels | **20** | The average of the five meters |
+
+Minus **6** for every service meter that collapses below 25.
+
+> **Revised from the earlier build.** An older version spent **5** points on "what you
+> left in reserve", scored against the City's **20%** reserve policy target. The game
+> models no opening reserve balance, no cash flows and no loan repayment, so it could
+> not know that — a single year's projected surplus is not a reserve. Reserve scoring
+> and the reserve term in the community weights are gone, and those 5 points moved to
+> the two things the game can still measure: closing the adopted gap (+3) and closing
+> it with ongoing money (+2). A projected surplus is now labelled **"projected annual
+> surplus"** and nothing claims the player banked anything.
+
+Randomised play rarely lands — about **30%** of 40,000 random plans score an F, under
+**1%** reach an A-, and none reach an A. A thoughtful plan reaches a B-; the practical
+ceiling found by a hill-climbing search is an **A-** at 87 with four of five on side.
 
 ### Every card cites a City document
 
-There are **20** options. Every source link on every card points at a
-`hollister.ca.gov` document — BenitoLink and other reporting were used as research
-and are credited in [SOURCES.md](SOURCES.md), but are not cited in the game.
+There are **19** options plus one financing event. Almost every source link points at
+a City of Hollister document — `hollister.ca.gov` or the City's own agenda portal.
+Two exceptions are cited on the cards themselves and explained there: a City letter
+the City never posted, and one news report of a vote taken in closed session. Other
+reporting was used as research and is credited in [SOURCES.md](SOURCES.md).
 
 Each card shows three things beside its dollar figure:
 

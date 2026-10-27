@@ -52,7 +52,7 @@ function updateBoard() {
   } else {
     gapEl.textContent = fmt.money(-t.cashGap);
     gapEl.className = 'board-gap num is-balanced';
-    label.textContent = 'Surplus / reserve';
+    label.textContent = 'Projected annual surplus';
   }
 
   $('board-exp').textContent = fmt.money(t.ongoingExp);
@@ -292,7 +292,9 @@ function renderImpact() {
   /* --- revenue --- */
   const revHost = h('div', { class: 'chart-wrap' });
   const revReadout = h('div', { class: 'readout is-empty', text: 'Tap a bar for the exact amount.' });
-  const addedRev = ACTIONS.actions.some((a) => a.category === 'revenue' && state.chosen.has(a.id));
+  const revUnpricedHost = h('div', { class: 'unpriced-list' });
+  const addedRev = ACTIONS.actions.some((a) => a.category === 'revenue' && state.chosen.has(a.id)
+    && a.amountKnown && Number.isFinite(a.amount));
   const revCard = h('div', { class: 'card' }, [
     h('div', { class: 'card-title' }, ['Where the money comes from']),
     h('div', { class: 'chart-sub', text: 'Recurring general fund revenue, largest first.' }),
@@ -302,6 +304,7 @@ function renderImpact() {
       { label: 'Added by you', color: 'var(--series-3)' },
     ]) : null,
     revReadout,
+    revUnpricedHost,
   ]);
 
   /* --- three-year outlook --- */
@@ -310,7 +313,7 @@ function renderImpact() {
   const lastYr = proj.gaps.length - 1;
   const yEnd = proj.gaps[lastYr];
   const projCard = h('div', { class: 'card' }, [
-    h('div', { class: 'card-title' }, [`${proj.years.length}-year outlook`]),
+    h('div', { class: 'card-title' }, [`${proj.years.length}-year outlook \u2014 game estimate`]),
     h('div', { class: 'chart-sub', html:
       `Costs grow about <b>4.2%</b> a year, revenue about <b>2.2%</b>. One-time money lands in year one only. The shaded band is the gap.` }),
     projHost,
@@ -321,10 +324,11 @@ function renderImpact() {
       { label: 'Short', color: 'var(--neg)' },
     ]),
     projReadout,
+    h('div', { class: 'basis', style: 'margin-left:0', text: BUDGET.projection.note }),
     h('div', { class: 'callout ' + (yEnd > 3e6 ? 'is-critical' : yEnd > 0 ? 'is-warning' : ''), html:
       yEnd > 0
-        ? `By <b>${proj.years[lastYr]}</b> this plan projects a <b>${fmt.money(yEnd)}</b> gap. ${t.structurallyBalanced ? 'Even a structurally balanced budget erodes when costs outgrow revenue.' : 'The structural problem has not been solved.'}`
-        : `<b>${proj.years[lastYr]}</b> still projects in the black. That is a genuinely durable fix.` }),
+        ? `By <b>${proj.years[lastYr]}</b> this plan projects a <b>${fmt.money(yEnd)}</b> gap. ${t.ongoingBalanced ? 'Even a budget whose ongoing money covers ongoing cost erodes when costs outgrow revenue.' : 'The ongoing gap has not been closed.'}`
+        : `<b>${proj.years[lastYr]}</b> still projects in the black on these assumptions.` }),
   ]);
 
   /* --- how the gap was closed --- */
@@ -337,12 +341,12 @@ function renderImpact() {
     h('span', { class: 'src-meta', text: ` — ${x.publisher}, ${x.date}` }),
   ]);
   const figuresCard = h('div', { class: 'card' }, [
-    h('div', { class: 'card-title' }, ['Which deficit figure is which']),
+    h('div', { class: 'card-title' }, ['Which figure is which']),
     h('table', { class: 'dt', style: 'margin-top:8px' }, [
       h('tbody', {}, [
         h('tr', {}, [
           h('td', { text: BUDGET.generalFund.deficitLabel }),
-          h('td', { class: 'neg', text: fmt.full(BUDGET.generalFund.structuralDeficit) }),
+          h('td', { class: 'neg', text: fmt.full(BUDGET.generalFund.adoptedGap) }),
         ]),
         h('tr', {}, [
           h('td', { text: rv.label + ' (' + rv.asOfPeriod + ')' }),
@@ -364,6 +368,7 @@ function renderImpact() {
       'The interfund loan is financing, not revenue. It is repayable by '
       + ACTIONS.financing[0].dueDate + ', so it is kept out of every figure in this table and out of '
       + 'the game\u2019s totals. See the Revenue tab for the full terms.' }) : null,
+    h('div', { class: 'basis', style: 'margin-left:0', text: BUDGET.generalFund.gapNote }),
     h('div', { class: 'basis', style: 'margin-left:0', text: rv.note }),
     h('div', { class: 'basis', style: 'margin-left:0', text: rv.labelDiscrepancy }),
     h('div', { class: 'srcs', style: 'margin-left:0' }, [
@@ -390,10 +395,10 @@ function renderImpact() {
       ])),
       h('table', { class: 'dt', style: 'margin-top:10px' }, [
         h('tbody', {}, [
-          h('tr', {}, [h('td', { text: 'Structural gap now' }),
-                       h('td', { class: t.structuralGap > 0 ? 'neg' : 'pos', text: fmt.full(t.structuralGap) })]),
+          h('tr', {}, [h('td', { text: 'Ongoing gap now' }),
+                       h('td', { class: t.ongoingGap > 0 ? 'neg' : 'pos', text: fmt.full(t.ongoingGap) })]),
           h('tr', {}, [h('td', { text: 'If the conditional measures landed' }),
-                       h('td', { class: t.scenarioStructuralGap > 0 ? 'neg' : 'pos', text: fmt.full(t.scenarioStructuralGap) })]),
+                       h('td', { class: t.scenarioOngoingGap > 0 ? 'neg' : 'pos', text: fmt.full(t.scenarioOngoingGap) })]),
         ]),
       ]),
     ]);
@@ -419,13 +424,29 @@ function renderImpact() {
     leftLabel: 'Cut', rightLabel: 'Increase',
   });
 
+  // A measure with no published figure has no bar. Charting it as $0 would be a
+  // claim the sources do not make, so it is listed under the chart instead.
   const revItems = BUDGET.generalFund.revenues.map((r) => ({ label: r.name, value: r.amount }));
+  const revUnpriced = [];
   ACTIONS.actions.forEach((a) => {
-    if (a.category === 'revenue' && state.chosen.has(a.id)) {
+    if (a.category !== 'revenue' || !state.chosen.has(a.id)) return;
+    if (a.amountKnown && Number.isFinite(a.amount)) {
       revItems.push({ label: a.name, value: a.amount, isNew: true, color: 'var(--series-3)' });
+    } else {
+      revUnpriced.push(a);
     }
   });
   revItems.sort((a, b) => b.value - a.value);
+  setChildren(revUnpricedHost, revUnpriced.length ? [
+    h('div', { class: 'srcs-label', text: 'Also selected' }),
+    ...revUnpriced.map((a) => h('div', { class: 'unpriced' }, [
+      h('span', { class: 'unpriced-name', text: a.name }),
+      h('span', { class: 'unpriced-v', text: 'Amount not published' }),
+    ])),
+    h('div', { class: 'basis', style: 'margin-left:0', text: revUnpriced.length > 1
+      ? 'No figures have been published for these, so they are not charted and do not change the gap.'
+      : 'No figure has been published for this, so it is not charted and does not change the gap.' }),
+  ] : []);
   C.barsH(revHost, revItems, {
     ariaLabel: 'General fund revenue by source',
     onPick: (d) => {
@@ -487,9 +508,9 @@ function dataTable(t, proj) {
     h('summary', { text: 'Full figures' }),
     h('table', { class: 'dt' }, [
       h('tbody', {}, [
-        row('Recurring spending', t.ongoingExp),
-        row('Recurring revenue', t.ongoingRev),
-        row('Structural gap', t.structuralGap, t.structuralGap > 0 ? 'neg' : 'pos'),
+        row('Ongoing spending', t.ongoingExp),
+        row('Ongoing revenue', t.ongoingRev),
+        row('Ongoing gap (game estimate)', t.ongoingGap, t.ongoingGap > 0 ? 'neg' : 'pos'),
         row('One-time money used', t.oneTime),
         row('Budget as adopted', t.cashGap > 0 ? fmt.full(t.cashGap) + ' short' : fmt.full(-t.cashGap) + ' surplus',
             t.cashGap > 0 ? 'neg' : 'pos'),
@@ -542,9 +563,9 @@ function renderCommunity() {
   if (!canSubmit) {
     kids.push(h('div', { class: 'callout is-critical', html:
       `Your budget is still <b>${fmt.money(t.cashGap)} short</b>. A California city cannot adopt an unbalanced general fund budget, so there is nothing to show anyone yet.` }));
-  } else if (!t.structurallyBalanced) {
+  } else if (!t.ongoingBalanced) {
     kids.push(h('div', { class: 'callout is-warning', html:
-      `It balances, but <b>${fmt.money(t.structuralGap)}</b> of that is one-time money. Some of them will notice.` }));
+      `It balances, but <b>${fmt.money(t.ongoingGap)}</b> of that is one-time money. Some of them will notice.` }));
   }
 
   if (t.atRisk > 0 && !revealed) {
@@ -599,7 +620,7 @@ function showResult() {
     s.points >= 43 ? 'var(--serious)' : 'var(--critical)';
 
   const headline = !s.totals.balanced ? 'Never got off the ground'
-    : s.wellReceived && s.totals.structurallyBalanced ? 'Well liked — and it holds'
+    : s.wellReceived && s.totals.ongoingBalanced ? 'Well liked — and it holds'
     : s.wellReceived ? 'Well liked — for one year'
     : 'The community disliked it';
 

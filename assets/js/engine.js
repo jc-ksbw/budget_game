@@ -74,8 +74,12 @@ export function totals(state, budget, actions) {
   const ongoingExp = baseExp - deptSavings - ongoingCuts;
   const ongoingRev = baseRev + ongoingRevenue;
 
-  // The honest measure: do recurring revenues cover recurring costs?
-  const structuralGap = ongoingExp - ongoingRev;
+  // The gap left once the one-time money you used is taken back out. This is a
+  // game estimate, not a verified structural deficit: the adopted revenue and
+  // expenditure lines have never been classified recurring vs one-time, so the
+  // baseline on both sides is assumed to recur. Only the measures the player
+  // adds are genuinely typed.
+  const ongoingGap = ongoingExp - ongoingRev;
   // The paper measure: what the adopted budget would show.
   const cashGap = ongoingExp - (ongoingRev + oneTime);
 
@@ -83,21 +87,22 @@ export function totals(state, budget, actions) {
   const closed = startGap - cashGap;
 
   // What the gap would be if every conditional proposal actually landed.
-  const scenarioStructuralGap = ongoingExp - (ongoingRev + scenarioRevenue);
+  const scenarioOngoingGap = ongoingExp - (ongoingRev + scenarioRevenue);
 
   return {
     baseExp, curExp, deptSavings, baseRev,
     ongoingCuts, ongoingRevenue, oneTime, taxBurden, bizBurden,
-    unquantified, scenarioRevenue, scenarioStructuralGap,
+    unquantified, scenarioRevenue, scenarioOngoingGap,
     atRisk: 0,
     ongoingExp, ongoingRev,
-    structuralGap, cashGap, startGap, closed,
+    ongoingGap, cashGap, startGap, closed,
     picked,
     balanced: cashGap <= 0,
-    structurallyBalanced: structuralGap <= 0,
+    ongoingBalanced: ongoingGap <= 0,
+    // A single year's projected surplus. It is NOT a reserve balance: the game
+    // models no opening reserve, no cash flows and no loan repayment, so it
+    // cannot say what the City would actually have in hand.
     surplus: cashGap < 0 ? -cashGap : 0,
-    reserve: cashGap < 0 ? -cashGap : 0,
-    reservePct: ongoingExp > 0 ? (cashGap < 0 ? -cashGap : 0) / ongoingExp * 100 : 0,
   };
 }
 
@@ -164,22 +169,20 @@ export function communityReactions(state, budget, actions) {
   const m = meters(state, budget, actions);
 
   // Normalised signals, all roughly in a -10..+10 band.
-  const structural = clamp(-t.structuralGap / 1e6, -12, 8);
+  const ongoing = clamp(-t.ongoingGap / 1e6, -12, 8);
   const onetimeReliance = t.closed > 0 ? clamp(t.oneTime / t.closed * 10, 0, 10) : 0;
   const newTaxes = clamp(t.taxBurden / 1e6 * 2.2, 0, 10);
   const bizBurden = clamp(t.bizBurden / 1e6 * 2.2, 0, 10);
-  const reserve = clamp(t.reservePct / 20 * 8, 0, 10);
 
   return actions.community.map((c) => {
     let score = 50;
-    score += (c.weights.structural || 0) * structural;
+    score += (c.weights.structural || 0) * ongoing;
     score += (c.weights.onetimeReliance || 0) * onetimeReliance;
     score += (c.weights.newTaxes || 0) * newTaxes;
     score += (c.weights.bizBurden || 0) * bizBurden;
-    score += (c.weights.reserve || 0) * reserve;
-    // Structural balance is a threshold, not a gradient. Clearing it at all is
-    // the thing a fiscal conservative is actually voting for.
-    if (t.structurallyBalanced) score += 3 * (c.weights.structural || 0);
+    // Covering ongoing cost with ongoing money is a threshold, not a gradient.
+    // Clearing it at all is the thing a fiscal conservative is voting for.
+    if (t.ongoingBalanced) score += 3 * (c.weights.structural || 0);
     METER_IDS.forEach((k) => {
       score += (c.weights[k] || 0) * ((m[k] - 48) / 4.5);
     });
@@ -219,13 +222,19 @@ export function score(state, budget, actions) {
 
   let pts = 0;
 
-  // 1. Did it balance at all? (30)
-  if (t.balanced) pts += 30;
-  else pts += Math.max(0, 30 * (1 - t.cashGap / Math.max(1, t.startGap)));
+  // Weights total 100. The old build spent 5 points on "what you left in
+  // reserve", scored against the City's 20% policy target. The game models no
+  // opening reserve, no cash flows and no loan repayment, so it could not know
+  // that. Those 5 points moved to the two things it can still measure: closing
+  // the adopted gap (+3) and closing it with ongoing money (+2).
 
-  // 2. Is it structural, or papered over? (25)
-  if (t.structurallyBalanced) pts += 25;
-  else pts += Math.max(0, 25 * (1 - Math.min(1, t.structuralGap / Math.max(1, t.startGap))));
+  // 1. Did it close the adopted gap? (33)
+  if (t.balanced) pts += 33;
+  else pts += Math.max(0, 33 * (1 - t.cashGap / Math.max(1, t.startGap)));
+
+  // 2. Does it hold without one-time money? (27)
+  if (t.ongoingBalanced) pts += 27;
+  else pts += Math.max(0, 27 * (1 - Math.min(1, t.ongoingGap / Math.max(1, t.startGap))));
 
   // 3. How did the community take it? (20)
   pts += (liked / 5) * 20;
@@ -235,9 +244,6 @@ export function score(state, budget, actions) {
   pts += (avgMeter / 100) * 20;
   const failing = METER_IDS.filter((k) => m[k] < 25);
   pts -= failing.length * 6;
-
-  // 5. Is there anything left in reserve? (5)
-  pts += Math.min(5, t.reservePct / 20 * 5);
 
   pts = Math.max(0, Math.min(100, pts));
 
@@ -261,10 +267,10 @@ export function verdicts(s, budget, actions) {
 
   if (!t.balanced) {
     push('critical', `The budget still shows a <b>${money(t.cashGap)} gap</b>. Under California law a city cannot adopt a general fund budget that does not balance, so there is nothing here to put in front of anyone.`);
-  } else if (!t.structurallyBalanced) {
-    push('serious', `It balances on paper, but <b>${money(t.structuralGap)} of the fix is one-time money</b>. Next July the hole reopens, minus whatever you already sold or borrowed.`);
+  } else if (!t.ongoingBalanced) {
+    push('serious', `It balances on paper, but <b>${money(t.ongoingGap)} of the fix is one-time money</b>. Next July the hole reopens, minus whatever you already sold or borrowed.`);
   } else {
-    push('good', `This is a <b>structurally balanced</b> budget: recurring revenue covers recurring cost. That is the thing Hollister has not had.`);
+    push('good', `On this game's assumptions, ongoing money covers ongoing cost — the one-time measures are not doing the work. The game has not verified that against the City's own lines, which have never been classified recurring or one-time, so treat it as a good result here rather than proven structural balance.`);
   }
 
   if (t.oneTime > 0) {
@@ -299,11 +305,8 @@ export function verdicts(s, budget, actions) {
     push('good', `The ${yrs}-year outlook holds: <b>${s.proj.years[last]}</b> still projects in the black.`);
   }
 
-  if (t.reservePct > 0) {
-    push(t.reservePct >= 20 ? 'good' : 'warning',
-      `Reserve lands at <b>${t.reservePct.toFixed(1)}%</b> of expenditures against the city's <b>20%</b> policy target.`);
-  } else {
-    push('warning', `You left <b>nothing in reserve</b>. The next unbudgeted storm drain failure is another emergency.`);
+  if (t.surplus > 0) {
+    push('good', `This plan projects a <b>${money(t.surplus)}</b> surplus for the year. That is a single year's projection, not money in the bank: the game models no opening reserve, no cash flow and no loan repayment.`);
   }
 
   const ballot = Object.entries(s.ballotResults || {});

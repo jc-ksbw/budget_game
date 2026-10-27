@@ -399,6 +399,29 @@ visually and is quoted above. Every URL returned HTTP 200 when this was written.
 - [Hollister group raises concerns over potential animal service changes](https://benitolink.com/hollister-group-raises-concerns-over-potential-animal-service-changes/) — May 6, 2026
 - [Dozens of open jobs at stake as Hollister considers budget](https://benitolink.com/up-to-39-open-jobs-at-stake-as-hollister-aims-to-balance-budget/) — June 13, **2025**
 
+## What the game does not claim
+
+**No reserve is modelled.** There is no opening reserve balance, no cash-flow model and
+no loan-repayment model in this game, so it cannot say what the City would have in hand.
+A year that ends in the black is labelled a **projected annual surplus** — never a
+reserve, and never scored against the City's 20% reserve policy target. Reserve scoring
+and the reserve term in the community weights were removed; see the Scoring table in
+[README.md](README.md) for where those 5 points went.
+
+**No verified structural deficit.** $6,363,284 is the **adopted FY 2026-27 General Fund
+budget gap** — the difference between the adopted budget's expenditure and revenue
+totals. The game has not classified the City's own lines as recurring or one-time, and
+some of them include contingency and capital spending, so it does not call that figure,
+or any revised figure, a verified structural deficit. What the game *can* type honestly
+is the measures the player adds: the **ongoing gap (game estimate)** is what is left
+once the player's one-time money is taken back out. The five-year outlook is labelled a
+**game estimate** built on the stated growth rates, not a City forecast.
+
+**No unknown amount is charted as $0.** A selected revenue measure with no published
+figure gets no bar. It is listed under the chart as **"Amount not published"**, with a
+line saying it is not charted and does not change the gap. Chart labels, tap readouts
+and accessibility text never show it as $0.
+
 ## Schema
 
 `data/actions.json` carries per card: `status` (`adopted` / `discussed` /

@@ -103,12 +103,6 @@
       "confidence": "official"
     },
     {
-      "label": "General Fund reserve policy target",
-      "value": 20,
-      "unit": "percent",
-      "confidence": "official"
-    },
-    {
       "label": "Funded positions, all funds, FY 2024-25",
       "value": 222,
       "unit": "positions",
@@ -118,9 +112,7 @@
   "generalFund": {
     "expenditureTotal": 56588184,
     "revenueTotal": 50224900,
-    "structuralDeficit": 6363284,
-    "reservePolicyPercent": 20,
-    "currentReserve": 0,
+    "adoptedGap": 6363284,
     "confidence": "official",
     "departments": [
       {
@@ -472,16 +464,17 @@
         "confidence": "official"
       }
     ],
-    "deficitLabel": "Adopted FY 2026-27 budget deficit",
+    "deficitLabel": "Adopted FY 2026-27 General Fund budget gap",
     "deficitSource": {
       "title": "FY 2026-27 Approved Budget Document",
       "publisher": "City of Hollister",
       "url": "https://hollister.ca.gov/City%20Managers/Documents/Hollister_FY2026-27_Approved_Budget_July4_Cover.pdf",
       "date": "2026-07-04"
-    }
+    },
+    "gapNote": "The difference between the adopted budget’s expenditure and revenue totals. The game does not classify the City’s own lines as recurring or one-time — some include contingency and capital spending — so this is the adopted gap, not a verified structural deficit."
   },
   "projection": {
-    "note": "Baseline growth assumptions for the three-year outlook. Modeled, not a city forecast.",
+    "note": "Growth assumptions for the five-year outlook. A game estimate built on the rates below, not a City forecast, and not a verified structural projection: the adopted revenue and expenditure lines have never been classified recurring or one-time.",
     "revenueGrowth": 0.022,
     "expenditureGrowth": 0.042,
     "expenditureGrowthNote": "Personnel is $34.95M of a $56.59M General Fund. Salary steps, CalPERS rate increases and insurance renewals outrun revenue growth. This is the structural problem.",

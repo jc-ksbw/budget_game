@@ -619,6 +619,15 @@ table.dt th { color: var(--muted); font-weight: 600; font-size: 11.5px; text-tra
 table.dt td { font-variant-numeric: tabular-nums; }
 table.dt tr:last-child td { border-bottom: 0; }
 table.dt .pos { color: var(--good-ink); }
+/* Selected revenue measures with no published figure: listed, never charted. */
+.unpriced-list:not(:empty) { margin-top: 12px; padding-top: 11px; border-top: 1px solid var(--hairline); }
+.unpriced {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 10px; padding: 5px 0; font-size: 13px;
+}
+.unpriced-name { font-weight: 600; min-width: 0; }
+.unpriced-v { color: var(--muted); flex: none; font-size: 12.5px; }
+
 /* A row that is shown for context but counts toward nothing in the table. */
 table.dt tr.is-muted td { color: var(--muted); border-top: 1px dashed var(--hairline); }
 table.dt .neg { color: var(--critical); }
@@ -783,7 +792,7 @@ table.dt .neg { color: var(--critical); }
     </button>
 
     <div class="intro">
-      <div class="intro-kicker">Fiscal emergency declared</div>
+      <div class="intro-kicker">Fiscal emergency declared, then rescinded</div>
 
       <h1>Balancing<br>Hollister
         <small>City of Hollister · San Benito County, California · FY 2026&#8209;27</small>
@@ -792,18 +801,20 @@ table.dt .neg { color: var(--critical); }
       <p class="intro-lede">
         On <strong>October 2, 2026</strong>, the Hollister City Council declared a fiscal
         emergency. The week of September 21, the city's general fund bank account held
-        <strong>$178</strong>.
+        <strong>$178</strong>. The Council has <strong>since rescinded that declaration</strong>
+        and called the laid-off employees back. The money problem it was declared over has
+        not gone away.
       </p>
       <p class="intro-lede">
         You are the City Manager. The adopted FY 2026&#8209;27 budget carries a
-        <strong>$6,363,284</strong> general fund deficit. Close it &mdash; and win over three
+        <strong>$6,363,284</strong> General Fund budget gap. Close it &mdash; and win over three
         of five community voices.
       </p>
 
       <div class="fact-grid">
         <div class="fact">
           <div class="fact-v is-critical">$6.36M</div>
-          <div class="fact-l">Adopted FY 2026&#8209;27 budget deficit</div>
+          <div class="fact-l">Adopted FY 2026&#8209;27 General Fund budget gap</div>
         </div>
         <div class="fact">
           <div class="fact-v">$56.6M</div>
@@ -821,8 +832,8 @@ table.dt .neg { color: var(--critical); }
 
       <div class="callout is-warning">
         <b>One rule worth knowing before you start.</b> Borrowing and selling things
-        balance a budget for exactly one year. Only recurring savings and recurring
-        revenue close a structural gap &mdash; and that is what you are graded on.
+        balance a budget for exactly one year. Only ongoing savings and ongoing revenue
+        keep it closed the year after &mdash; and that is most of what you are graded on.
       </div>
 
       <div class="callout">
@@ -915,15 +926,14 @@ table.dt .neg { color: var(--critical); }
 
       <h3>From reporting on council actions <span class="sheet-tag is-official">Official</span></h3>
       <ul>
-        <li>Fiscal emergency declared <b>October 2, 2026</b></li>
-        <li><b>$18M</b> interfund loan from impact fee funds &mdash; <b>$11M</b> to the General Fund, 4% interest, repayable by June 30, 2027</li>
+        <li>Fiscal emergency declared <b>October 2, 2026</b>, and <b>rescinded</b> by the Council later that month &mdash; see the October 21 agenda item ratifying the rescission of Resolution No. 2026-111, and <a href="https://benitolink.com/hollister-city-council-rescinds-fiscal-emergency-calls-back-employees/" target="_blank" rel="noopener">BenitoLink's report</a></li>
+        <li><b>$18M</b> interfund loan from impact fee funds &mdash; <b>$11M</b> to the General Fund and <b>$7M</b> to the Water Fund, at <b>3%&ndash;4%</b>, repayable by June 30, 2027. Shown as a financing event on the Revenue tab; it is not counted as revenue</li>
         <li><b>$178</b> in the General Fund bank account the week of September 21, 2026</li>
-        <li><b>20%</b> General Fund reserve policy target</li>
       </ul>
 
       <h3>Options on the board <span class="sheet-tag is-official">City sources only</span></h3>
       <ul>
-        <li>Every source link on every card points at a <b>hollister.ca.gov</b> document. Reporting was used as research, and is credited in SOURCES.md, but is not cited here</li>
+        <li>Almost every source link points at a City of Hollister document &mdash; <b>hollister.ca.gov</b> or the City's own agenda portal. Two exceptions are cited on the cards themselves and explained there: a City letter the City never posted, and one news report of a vote taken in closed session</li>
         <li><b>Adopted</b> &mdash; the City has done it. <b>Discussed</b> &mdash; the City has said it is on the table. <b>Common elsewhere</b> &mdash; a revenue tool other California cities use that Hollister has <i>not</i> proposed</li>
         <li>Each figure says where it came from: a <b>City figure</b>, one <b>derived</b> from a published City line (the card shows the arithmetic), or a <b>benchmark</b> sized from a published City line</li>
         <li>Where the City has published no figure, the card says <b>&ldquo;Savings/revenue not published&rdquo;</b> and the option cannot move the deficit</li>
@@ -1059,12 +1069,6 @@ const BUDGET = {
       "confidence": "official"
     },
     {
-      "label": "General Fund reserve policy target",
-      "value": 20,
-      "unit": "percent",
-      "confidence": "official"
-    },
-    {
       "label": "Funded positions, all funds, FY 2024-25",
       "value": 222,
       "unit": "positions",
@@ -1074,9 +1078,7 @@ const BUDGET = {
   "generalFund": {
     "expenditureTotal": 56588184,
     "revenueTotal": 50224900,
-    "structuralDeficit": 6363284,
-    "reservePolicyPercent": 20,
-    "currentReserve": 0,
+    "adoptedGap": 6363284,
     "confidence": "official",
     "departments": [
       {
@@ -1428,16 +1430,17 @@ const BUDGET = {
         "confidence": "official"
       }
     ],
-    "deficitLabel": "Adopted FY 2026-27 budget deficit",
+    "deficitLabel": "Adopted FY 2026-27 General Fund budget gap",
     "deficitSource": {
       "title": "FY 2026-27 Approved Budget Document",
       "publisher": "City of Hollister",
       "url": "https://hollister.ca.gov/City%20Managers/Documents/Hollister_FY2026-27_Approved_Budget_July4_Cover.pdf",
       "date": "2026-07-04"
-    }
+    },
+    "gapNote": "The difference between the adopted budget’s expenditure and revenue totals. The game does not classify the City’s own lines as recurring or one-time — some include contingency and capital spending — so this is the adopted gap, not a verified structural deficit."
   },
   "projection": {
-    "note": "Baseline growth assumptions for the three-year outlook. Modeled, not a city forecast.",
+    "note": "Growth assumptions for the five-year outlook. A game estimate built on the rates below, not a City forecast, and not a verified structural projection: the adopted revenue and expenditure lines have never been classified recurring or one-time.",
     "revenueGrowth": 0.022,
     "expenditureGrowth": 0.042,
     "expenditureGrowthNote": "Personnel is $34.95M of a $56.59M General Fund. Salary steps, CalPERS rate increases and insurance renewals outrun revenue growth. This is the structural problem.",
@@ -1588,7 +1591,6 @@ const ACTIONS = {
         "structural": 2.4,
         "onetimeReliance": -2.6,
         "newTaxes": -1.5,
-        "reserve": 1.5,
         "safety": 0.3,
         "infrastructure": 0.2,
         "community": 0,
@@ -1607,7 +1609,6 @@ const ACTIONS = {
         "structural": 0.6,
         "onetimeReliance": -0.4,
         "newTaxes": 0.2,
-        "reserve": 0.3,
         "safety": 2.8,
         "infrastructure": 0.2,
         "community": 0.1,
@@ -1626,7 +1627,6 @@ const ACTIONS = {
         "structural": 0.5,
         "onetimeReliance": -0.3,
         "newTaxes": 0.6,
-        "reserve": 0.1,
         "safety": 0.4,
         "infrastructure": 1,
         "community": 2.6,
@@ -1645,7 +1645,6 @@ const ACTIONS = {
         "structural": 1.2,
         "onetimeReliance": -0.8,
         "newTaxes": -1.5,
-        "reserve": 0.6,
         "safety": 0.5,
         "infrastructure": 0.9,
         "community": 0.2,
@@ -1665,7 +1664,6 @@ const ACTIONS = {
         "structural": 0.5,
         "onetimeReliance": 0.1,
         "newTaxes": 0.9,
-        "reserve": 0,
         "safety": 0.5,
         "infrastructure": 0.3,
         "community": 0.5,
@@ -2984,8 +2982,12 @@ function totals(state, budget, actions) {
   const ongoingExp = baseExp - deptSavings - ongoingCuts;
   const ongoingRev = baseRev + ongoingRevenue;
 
-  // The honest measure: do recurring revenues cover recurring costs?
-  const structuralGap = ongoingExp - ongoingRev;
+  // The gap left once the one-time money you used is taken back out. This is a
+  // game estimate, not a verified structural deficit: the adopted revenue and
+  // expenditure lines have never been classified recurring vs one-time, so the
+  // baseline on both sides is assumed to recur. Only the measures the player
+  // adds are genuinely typed.
+  const ongoingGap = ongoingExp - ongoingRev;
   // The paper measure: what the adopted budget would show.
   const cashGap = ongoingExp - (ongoingRev + oneTime);
 
@@ -2993,21 +2995,22 @@ function totals(state, budget, actions) {
   const closed = startGap - cashGap;
 
   // What the gap would be if every conditional proposal actually landed.
-  const scenarioStructuralGap = ongoingExp - (ongoingRev + scenarioRevenue);
+  const scenarioOngoingGap = ongoingExp - (ongoingRev + scenarioRevenue);
 
   return {
     baseExp, curExp, deptSavings, baseRev,
     ongoingCuts, ongoingRevenue, oneTime, taxBurden, bizBurden,
-    unquantified, scenarioRevenue, scenarioStructuralGap,
+    unquantified, scenarioRevenue, scenarioOngoingGap,
     atRisk: 0,
     ongoingExp, ongoingRev,
-    structuralGap, cashGap, startGap, closed,
+    ongoingGap, cashGap, startGap, closed,
     picked,
     balanced: cashGap <= 0,
-    structurallyBalanced: structuralGap <= 0,
+    ongoingBalanced: ongoingGap <= 0,
+    // A single year's projected surplus. It is NOT a reserve balance: the game
+    // models no opening reserve, no cash flows and no loan repayment, so it
+    // cannot say what the City would actually have in hand.
     surplus: cashGap < 0 ? -cashGap : 0,
-    reserve: cashGap < 0 ? -cashGap : 0,
-    reservePct: ongoingExp > 0 ? (cashGap < 0 ? -cashGap : 0) / ongoingExp * 100 : 0,
   };
 }
 
@@ -3070,22 +3073,20 @@ function communityReactions(state, budget, actions) {
   const m = meters(state, budget, actions);
 
   // Normalised signals, all roughly in a -10..+10 band.
-  const structural = clamp(-t.structuralGap / 1e6, -12, 8);
+  const ongoing = clamp(-t.ongoingGap / 1e6, -12, 8);
   const onetimeReliance = t.closed > 0 ? clamp(t.oneTime / t.closed * 10, 0, 10) : 0;
   const newTaxes = clamp(t.taxBurden / 1e6 * 2.2, 0, 10);
   const bizBurden = clamp(t.bizBurden / 1e6 * 2.2, 0, 10);
-  const reserve = clamp(t.reservePct / 20 * 8, 0, 10);
 
   return actions.community.map((c) => {
     let score = 50;
-    score += (c.weights.structural || 0) * structural;
+    score += (c.weights.structural || 0) * ongoing;
     score += (c.weights.onetimeReliance || 0) * onetimeReliance;
     score += (c.weights.newTaxes || 0) * newTaxes;
     score += (c.weights.bizBurden || 0) * bizBurden;
-    score += (c.weights.reserve || 0) * reserve;
-    // Structural balance is a threshold, not a gradient. Clearing it at all is
-    // the thing a fiscal conservative is actually voting for.
-    if (t.structurallyBalanced) score += 3 * (c.weights.structural || 0);
+    // Covering ongoing cost with ongoing money is a threshold, not a gradient.
+    // Clearing it at all is the thing a fiscal conservative is voting for.
+    if (t.ongoingBalanced) score += 3 * (c.weights.structural || 0);
     METER_IDS.forEach((k) => {
       score += (c.weights[k] || 0) * ((m[k] - 48) / 4.5);
     });
@@ -3123,13 +3124,19 @@ function score(state, budget, actions) {
 
   let pts = 0;
 
-  // 1. Did it balance at all? (30)
-  if (t.balanced) pts += 30;
-  else pts += Math.max(0, 30 * (1 - t.cashGap / Math.max(1, t.startGap)));
+  // Weights total 100. The old build spent 5 points on "what you left in
+  // reserve", scored against the City's 20% policy target. The game models no
+  // opening reserve, no cash flows and no loan repayment, so it could not know
+  // that. Those 5 points moved to the two things it can still measure: closing
+  // the adopted gap (+3) and closing it with ongoing money (+2).
 
-  // 2. Is it structural, or papered over? (25)
-  if (t.structurallyBalanced) pts += 25;
-  else pts += Math.max(0, 25 * (1 - Math.min(1, t.structuralGap / Math.max(1, t.startGap))));
+  // 1. Did it close the adopted gap? (33)
+  if (t.balanced) pts += 33;
+  else pts += Math.max(0, 33 * (1 - t.cashGap / Math.max(1, t.startGap)));
+
+  // 2. Does it hold without one-time money? (27)
+  if (t.ongoingBalanced) pts += 27;
+  else pts += Math.max(0, 27 * (1 - Math.min(1, t.ongoingGap / Math.max(1, t.startGap))));
 
   // 3. How did the community take it? (20)
   pts += (liked / 5) * 20;
@@ -3139,9 +3146,6 @@ function score(state, budget, actions) {
   pts += (avgMeter / 100) * 20;
   const failing = METER_IDS.filter((k) => m[k] < 25);
   pts -= failing.length * 6;
-
-  // 5. Is there anything left in reserve? (5)
-  pts += Math.min(5, t.reservePct / 20 * 5);
 
   pts = Math.max(0, Math.min(100, pts));
 
@@ -3164,10 +3168,10 @@ function verdicts(s, budget, actions) {
 
   if (!t.balanced) {
     push('critical', `The budget still shows a <b>${money(t.cashGap)} gap</b>. Under California law a city cannot adopt a general fund budget that does not balance, so there is nothing here to put in front of anyone.`);
-  } else if (!t.structurallyBalanced) {
-    push('serious', `It balances on paper, but <b>${money(t.structuralGap)} of the fix is one-time money</b>. Next July the hole reopens, minus whatever you already sold or borrowed.`);
+  } else if (!t.ongoingBalanced) {
+    push('serious', `It balances on paper, but <b>${money(t.ongoingGap)} of the fix is one-time money</b>. Next July the hole reopens, minus whatever you already sold or borrowed.`);
   } else {
-    push('good', `This is a <b>structurally balanced</b> budget: recurring revenue covers recurring cost. That is the thing Hollister has not had.`);
+    push('good', `On this game's assumptions, ongoing money covers ongoing cost — the one-time measures are not doing the work. The game has not verified that against the City's own lines, which have never been classified recurring or one-time, so treat it as a good result here rather than proven structural balance.`);
   }
 
   if (t.oneTime > 0) {
@@ -3202,11 +3206,8 @@ function verdicts(s, budget, actions) {
     push('good', `The ${yrs}-year outlook holds: <b>${s.proj.years[last]}</b> still projects in the black.`);
   }
 
-  if (t.reservePct > 0) {
-    push(t.reservePct >= 20 ? 'good' : 'warning',
-      `Reserve lands at <b>${t.reservePct.toFixed(1)}%</b> of expenditures against the city's <b>20%</b> policy target.`);
-  } else {
-    push('warning', `You left <b>nothing in reserve</b>. The next unbudgeted storm drain failure is another emergency.`);
+  if (t.surplus > 0) {
+    push('good', `This plan projects a <b>${money(t.surplus)}</b> surplus for the year. That is a single year's projection, not money in the bank: the game models no opening reserve, no cash flow and no loan repayment.`);
   }
 
   const ballot = Object.entries(s.ballotResults || {});
@@ -3741,7 +3742,7 @@ function updateBoard() {
   } else {
     gapEl.textContent = fmt.money(-t.cashGap);
     gapEl.className = 'board-gap num is-balanced';
-    label.textContent = 'Surplus / reserve';
+    label.textContent = 'Projected annual surplus';
   }
 
   $('board-exp').textContent = fmt.money(t.ongoingExp);
@@ -3981,7 +3982,9 @@ function renderImpact() {
   /* --- revenue --- */
   const revHost = h('div', { class: 'chart-wrap' });
   const revReadout = h('div', { class: 'readout is-empty', text: 'Tap a bar for the exact amount.' });
-  const addedRev = ACTIONS.actions.some((a) => a.category === 'revenue' && state.chosen.has(a.id));
+  const revUnpricedHost = h('div', { class: 'unpriced-list' });
+  const addedRev = ACTIONS.actions.some((a) => a.category === 'revenue' && state.chosen.has(a.id)
+    && a.amountKnown && Number.isFinite(a.amount));
   const revCard = h('div', { class: 'card' }, [
     h('div', { class: 'card-title' }, ['Where the money comes from']),
     h('div', { class: 'chart-sub', text: 'Recurring general fund revenue, largest first.' }),
@@ -3991,6 +3994,7 @@ function renderImpact() {
       { label: 'Added by you', color: 'var(--series-3)' },
     ]) : null,
     revReadout,
+    revUnpricedHost,
   ]);
 
   /* --- three-year outlook --- */
@@ -3999,7 +4003,7 @@ function renderImpact() {
   const lastYr = proj.gaps.length - 1;
   const yEnd = proj.gaps[lastYr];
   const projCard = h('div', { class: 'card' }, [
-    h('div', { class: 'card-title' }, [`${proj.years.length}-year outlook`]),
+    h('div', { class: 'card-title' }, [`${proj.years.length}-year outlook \u2014 game estimate`]),
     h('div', { class: 'chart-sub', html:
       `Costs grow about <b>4.2%</b> a year, revenue about <b>2.2%</b>. One-time money lands in year one only. The shaded band is the gap.` }),
     projHost,
@@ -4010,10 +4014,11 @@ function renderImpact() {
       { label: 'Short', color: 'var(--neg)' },
     ]),
     projReadout,
+    h('div', { class: 'basis', style: 'margin-left:0', text: BUDGET.projection.note }),
     h('div', { class: 'callout ' + (yEnd > 3e6 ? 'is-critical' : yEnd > 0 ? 'is-warning' : ''), html:
       yEnd > 0
-        ? `By <b>${proj.years[lastYr]}</b> this plan projects a <b>${fmt.money(yEnd)}</b> gap. ${t.structurallyBalanced ? 'Even a structurally balanced budget erodes when costs outgrow revenue.' : 'The structural problem has not been solved.'}`
-        : `<b>${proj.years[lastYr]}</b> still projects in the black. That is a genuinely durable fix.` }),
+        ? `By <b>${proj.years[lastYr]}</b> this plan projects a <b>${fmt.money(yEnd)}</b> gap. ${t.ongoingBalanced ? 'Even a budget whose ongoing money covers ongoing cost erodes when costs outgrow revenue.' : 'The ongoing gap has not been closed.'}`
+        : `<b>${proj.years[lastYr]}</b> still projects in the black on these assumptions.` }),
   ]);
 
   /* --- how the gap was closed --- */
@@ -4026,12 +4031,12 @@ function renderImpact() {
     h('span', { class: 'src-meta', text: ` — ${x.publisher}, ${x.date}` }),
   ]);
   const figuresCard = h('div', { class: 'card' }, [
-    h('div', { class: 'card-title' }, ['Which deficit figure is which']),
+    h('div', { class: 'card-title' }, ['Which figure is which']),
     h('table', { class: 'dt', style: 'margin-top:8px' }, [
       h('tbody', {}, [
         h('tr', {}, [
           h('td', { text: BUDGET.generalFund.deficitLabel }),
-          h('td', { class: 'neg', text: fmt.full(BUDGET.generalFund.structuralDeficit) }),
+          h('td', { class: 'neg', text: fmt.full(BUDGET.generalFund.adoptedGap) }),
         ]),
         h('tr', {}, [
           h('td', { text: rv.label + ' (' + rv.asOfPeriod + ')' }),
@@ -4053,6 +4058,7 @@ function renderImpact() {
       'The interfund loan is financing, not revenue. It is repayable by '
       + ACTIONS.financing[0].dueDate + ', so it is kept out of every figure in this table and out of '
       + 'the game\u2019s totals. See the Revenue tab for the full terms.' }) : null,
+    h('div', { class: 'basis', style: 'margin-left:0', text: BUDGET.generalFund.gapNote }),
     h('div', { class: 'basis', style: 'margin-left:0', text: rv.note }),
     h('div', { class: 'basis', style: 'margin-left:0', text: rv.labelDiscrepancy }),
     h('div', { class: 'srcs', style: 'margin-left:0' }, [
@@ -4079,10 +4085,10 @@ function renderImpact() {
       ])),
       h('table', { class: 'dt', style: 'margin-top:10px' }, [
         h('tbody', {}, [
-          h('tr', {}, [h('td', { text: 'Structural gap now' }),
-                       h('td', { class: t.structuralGap > 0 ? 'neg' : 'pos', text: fmt.full(t.structuralGap) })]),
+          h('tr', {}, [h('td', { text: 'Ongoing gap now' }),
+                       h('td', { class: t.ongoingGap > 0 ? 'neg' : 'pos', text: fmt.full(t.ongoingGap) })]),
           h('tr', {}, [h('td', { text: 'If the conditional measures landed' }),
-                       h('td', { class: t.scenarioStructuralGap > 0 ? 'neg' : 'pos', text: fmt.full(t.scenarioStructuralGap) })]),
+                       h('td', { class: t.scenarioOngoingGap > 0 ? 'neg' : 'pos', text: fmt.full(t.scenarioOngoingGap) })]),
         ]),
       ]),
     ]);
@@ -4108,13 +4114,29 @@ function renderImpact() {
     leftLabel: 'Cut', rightLabel: 'Increase',
   });
 
+  // A measure with no published figure has no bar. Charting it as $0 would be a
+  // claim the sources do not make, so it is listed under the chart instead.
   const revItems = BUDGET.generalFund.revenues.map((r) => ({ label: r.name, value: r.amount }));
+  const revUnpriced = [];
   ACTIONS.actions.forEach((a) => {
-    if (a.category === 'revenue' && state.chosen.has(a.id)) {
+    if (a.category !== 'revenue' || !state.chosen.has(a.id)) return;
+    if (a.amountKnown && Number.isFinite(a.amount)) {
       revItems.push({ label: a.name, value: a.amount, isNew: true, color: 'var(--series-3)' });
+    } else {
+      revUnpriced.push(a);
     }
   });
   revItems.sort((a, b) => b.value - a.value);
+  setChildren(revUnpricedHost, revUnpriced.length ? [
+    h('div', { class: 'srcs-label', text: 'Also selected' }),
+    ...revUnpriced.map((a) => h('div', { class: 'unpriced' }, [
+      h('span', { class: 'unpriced-name', text: a.name }),
+      h('span', { class: 'unpriced-v', text: 'Amount not published' }),
+    ])),
+    h('div', { class: 'basis', style: 'margin-left:0', text: revUnpriced.length > 1
+      ? 'No figures have been published for these, so they are not charted and do not change the gap.'
+      : 'No figure has been published for this, so it is not charted and does not change the gap.' }),
+  ] : []);
   C.barsH(revHost, revItems, {
     ariaLabel: 'General fund revenue by source',
     onPick: (d) => {
@@ -4176,9 +4198,9 @@ function dataTable(t, proj) {
     h('summary', { text: 'Full figures' }),
     h('table', { class: 'dt' }, [
       h('tbody', {}, [
-        row('Recurring spending', t.ongoingExp),
-        row('Recurring revenue', t.ongoingRev),
-        row('Structural gap', t.structuralGap, t.structuralGap > 0 ? 'neg' : 'pos'),
+        row('Ongoing spending', t.ongoingExp),
+        row('Ongoing revenue', t.ongoingRev),
+        row('Ongoing gap (game estimate)', t.ongoingGap, t.ongoingGap > 0 ? 'neg' : 'pos'),
         row('One-time money used', t.oneTime),
         row('Budget as adopted', t.cashGap > 0 ? fmt.full(t.cashGap) + ' short' : fmt.full(-t.cashGap) + ' surplus',
             t.cashGap > 0 ? 'neg' : 'pos'),
@@ -4231,9 +4253,9 @@ function renderCommunity() {
   if (!canSubmit) {
     kids.push(h('div', { class: 'callout is-critical', html:
       `Your budget is still <b>${fmt.money(t.cashGap)} short</b>. A California city cannot adopt an unbalanced general fund budget, so there is nothing to show anyone yet.` }));
-  } else if (!t.structurallyBalanced) {
+  } else if (!t.ongoingBalanced) {
     kids.push(h('div', { class: 'callout is-warning', html:
-      `It balances, but <b>${fmt.money(t.structuralGap)}</b> of that is one-time money. Some of them will notice.` }));
+      `It balances, but <b>${fmt.money(t.ongoingGap)}</b> of that is one-time money. Some of them will notice.` }));
   }
 
   if (t.atRisk > 0 && !revealed) {
@@ -4288,7 +4310,7 @@ function showResult() {
     s.points >= 43 ? 'var(--serious)' : 'var(--critical)';
 
   const headline = !s.totals.balanced ? 'Never got off the ground'
-    : s.wellReceived && s.totals.structurallyBalanced ? 'Well liked — and it holds'
+    : s.wellReceived && s.totals.ongoingBalanced ? 'Well liked — and it holds'
     : s.wellReceived ? 'Well liked — for one year'
     : 'The community disliked it';
 

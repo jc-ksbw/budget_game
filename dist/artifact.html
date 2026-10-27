@@ -419,6 +419,33 @@ p:last-child { margin-bottom: 0; }
 .action[aria-pressed="true"] .action-check {
   background: var(--accent); border-color: var(--accent);
 }
+/* A financing event, not a budget option: no checkbox, no selected state. */
+.financing {
+  display: block; border: 1px solid var(--hairline); border-left: 3px solid var(--series-4);
+  border-radius: var(--radius); padding: 14px; margin-bottom: 14px;
+  background: var(--surface-2);
+}
+.fin-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 10px; flex-wrap: wrap;
+}
+.fin-kicker {
+  font-size: 11.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+  color: var(--series-4);
+}
+.fin-asof { font-size: 11.5px; color: var(--muted); }
+.fin-name { font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; margin-top: 4px; }
+.fin-status { font-size: 13px; color: var(--text-2); margin-top: 3px; }
+.fin-sub {
+  font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--muted); margin-top: 14px;
+}
+.fin-text { font-size: 13px; color: var(--text-2); margin-top: 5px; }
+table.dt.fin-table { margin-top: 6px; }
+table.dt.fin-table tr.is-total td { font-weight: 700; border-top: 1px solid var(--hairline); }
+.financing .action-more { margin-top: 13px; }
+.src-note { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+
 /* Already carried out by the City: shown ticked, with no toggle affordance. */
 .action.is-locked { cursor: default; }
 .action.is-locked:active { transform: none; }
@@ -581,6 +608,8 @@ table.dt th { color: var(--muted); font-weight: 600; font-size: 11.5px; text-tra
 table.dt td { font-variant-numeric: tabular-nums; }
 table.dt tr:last-child td { border-bottom: 0; }
 table.dt .pos { color: var(--good-ink); }
+/* A row that is shown for context but counts toward nothing in the table. */
+table.dt tr.is-muted td { color: var(--muted); border-top: 1px dashed var(--hairline); }
 table.dt .neg { color: var(--critical); }
 
 /* ---------- council ---------- */
@@ -1637,40 +1666,6 @@ const ACTIONS = {
   ],
   "actions": [
     {
-      "id": "impact-fee-loan",
-      "name": "Interfund loan from impact fee funds",
-      "category": "revenue",
-      "type": "onetime",
-      "status": "adopted",
-      "amountKnown": true,
-      "amount": 11000000,
-      "amountKind": "published",
-      "amountBasis": "The City's own October 2026 infographic states $11M borrowing \"to support cash flow and prior deficits.\"",
-      "desc": "The City borrowed $11M into the General Fund to support cash flow and prior deficits.",
-      "consequence": "Temporary cash for operating needs. It is not recurring revenue and not a structural fix — the gap is exactly as large after it as before — and it is repayable by June 30, 2027, so it creates an obligation that lands back on the General Fund.",
-      "effects": {
-        "trust": -9
-      },
-      "cashBridge": true,
-      "realWorld": true,
-      "realNote": "Approved October 2, 2026, the night the Council declared a financial emergency.",
-      "rateNote": "City staff have been quoted putting the rate at 4%; the adopted resolution has been described as stating 3-4%. The resolution text is not published on the City website, so both are recorded.",
-      "sources": [
-        {
-          "title": "A Clear Look At Our Financial Situation",
-          "publisher": "City of Hollister",
-          "url": "https://hollister.ca.gov/news_detail_T3_R111.php",
-          "date": "2026-10-12"
-        },
-        {
-          "title": "Financial Emergency Information Guide",
-          "publisher": "City of Hollister",
-          "url": "https://hollister.ca.gov/news_detail_T3_R112.php",
-          "date": "2026-10-12"
-        }
-      ]
-    },
-    {
       "id": "layoff-notices",
       "name": "Layoff notices",
       "category": "cuts",
@@ -2096,6 +2091,12 @@ const ACTIONS = {
       "realNote": "The October 2, 2026 action only authorised pursuing special state legislation.",
       "sources": [
         {
+          "title": "City Council special meeting minutes, item 5.3 — adopted resolution to pursue special state legislation \"notwithstanding the limitation contained in California Revenue and Taxation Code Section 7251.1\"",
+          "publisher": "City of Hollister",
+          "url": "https://pub-hollister.escribemeetings.com/Meeting.aspx?Id=287e7244-ae08-4e9b-8b5a-4d088ac1151a&Agenda=PostMinutes&lang=English",
+          "date": "2026-10-02"
+        },
+        {
           "title": "Financial Emergency Information Guide",
           "publisher": "City of Hollister",
           "url": "https://hollister.ca.gov/news_detail_T3_R112.php",
@@ -2228,6 +2229,76 @@ const ACTIONS = {
           "publisher": "City of Hollister",
           "url": "https://hollister.ca.gov/City%20Managers/Documents/Hollister_FY2026-27_Approved_Budget_July4_Cover.pdf",
           "date": "2026-07-04"
+        }
+      ]
+    }
+  ],
+  "financing": [
+    {
+      "id": "impact-fee-loan",
+      "label": "Cash bridge / interfund loan",
+      "name": "Interfund loan from impact-fee funds",
+      "asOf": "2026-10-02",
+      "asOfLabel": "as of October 2, 2026",
+      "statusLine": "Approved by the City Council on October 2, 2026, carried 3–0.",
+      "principal": 18000000,
+      "fromFunds": "Fund 304 (AB 1600 Traffic Impact Fee) and Fund 205 (Park Dedication Impact Fee)",
+      "advances": [
+        {
+          "fund": "General Fund",
+          "amount": 11000000
+        },
+        {
+          "fund": "Water Fund",
+          "amount": 7000000
+        }
+      ],
+      "rate": "3%–4%",
+      "dueDate": "June 30, 2027",
+      "purpose": "Short-term cash for payroll, utilities and other operating costs while the City waited on quarterly revenues.",
+      "repaymentLine": "$18,000,000 principal, plus interest at 3%–4%, due in full by June 30, 2027.",
+      "repaymentNote": "The adopted motion gives the rate as a range and no total interest amount. A one-year amortization schedule was attached to the October 2 agenda, but the City’s portal does not serve it, so no interest total, no installment schedule and no split of interest between the General Fund and the Water Fund is shown here — the adopted action does not allocate interest between the funds.",
+      "rateNote": "The resolution the Council actually adopted states “an interest rate of 3%-4%”. City staff have separately been quoted at a flat 4%. The range is what the adopted motion says, so the range is what is shown.",
+      "explain": "It moves cash between City funds, creates a repayment obligation, and does not solve a recurring operating deficit — so it is kept out of the game’s totals entirely. Nothing on this card moves the deficit, the meters or your grade. The gap you are asked to close is exactly as large with the loan as without it, and on July 1, 2027 the money has to be back.",
+      "sources": [
+        {
+          "title": "City Council special meeting agenda, item 5.2 — resolution authorising an $18 million interfund loan from impact-fee funds to the General and Water Funds",
+          "publisher": "City of Hollister",
+          "url": "https://pub-hollister.escribemeetings.com/Meeting.aspx?Id=287e7244-ae08-4e9b-8b5a-4d088ac1151a&Agenda=Agenda&lang=English",
+          "date": "2026-10-02"
+        },
+        {
+          "title": "City Council special meeting minutes, item 5.2 — adopted motion and vote",
+          "publisher": "City of Hollister",
+          "url": "https://pub-hollister.escribemeetings.com/Meeting.aspx?Id=287e7244-ae08-4e9b-8b5a-4d088ac1151a&Agenda=PostMinutes&lang=English",
+          "date": "2026-10-02"
+        },
+        {
+          "title": "Staff report: short-term interfund loan from impact fees to the General and Water Funds",
+          "publisher": "City of Hollister",
+          "url": "https://pub-hollister.escribemeetings.com/filestream.ashx?DocumentId=23522",
+          "date": "2026-10-02",
+          "note": "Attachment to the October 2 agenda. Linked for reference; the City’s portal did not serve the file, so nothing here is drawn from it."
+        },
+        {
+          "title": "Interfund loan agreement (agenda attachment B)",
+          "publisher": "City of Hollister",
+          "url": "https://pub-hollister.escribemeetings.com/filestream.ashx?DocumentId=23524",
+          "date": "2026-10-02",
+          "note": "Attachment to the October 2 agenda. Linked for reference; the City’s portal did not serve the file, so nothing here is drawn from it."
+        },
+        {
+          "title": "FY27 one-year short-term loan amortization schedule (agenda attachment C)",
+          "publisher": "City of Hollister",
+          "url": "https://pub-hollister.escribemeetings.com/filestream.ashx?DocumentId=23525",
+          "date": "2026-10-02",
+          "note": "Attachment to the October 2 agenda. Linked for reference; the City’s portal did not serve the file, so no schedule or interest total is shown."
+        },
+        {
+          "title": "A Clear Look At Our Financial Situation",
+          "publisher": "City of Hollister",
+          "url": "https://hollister.ca.gov/news_detail_T3_R111.php",
+          "date": "2026-10-12"
         }
       ]
     }
@@ -2911,7 +2982,7 @@ function totals(state, budget, actions) {
 
   let ongoingCuts = 0, ongoingRevenue = 0, oneTime = 0;
   let taxBurden = 0, bizBurden = 0;
-  let unquantified = 0, cashBridge = 0, scenarioRevenue = 0;
+  let unquantified = 0, scenarioRevenue = 0;
   const picked = [];
 
   actions.actions.forEach((a) => {
@@ -2928,10 +2999,6 @@ function totals(state, budget, actions) {
     if (!a.amountKnown) { unquantified += 1; return; }
 
     const value = a.amount;
-
-    // A cash bridge supplies operating cash. It is one-time by construction and
-    // must never reach the recurring side of the ledger.
-    if (a.cashBridge) { cashBridge += value; oneTime += value; return; }
 
     if (a.type === 'onetime') oneTime += value;
     else if (a.category === 'revenue') {
@@ -2958,7 +3025,7 @@ function totals(state, budget, actions) {
   return {
     baseExp, curExp, deptSavings, baseRev,
     ongoingCuts, ongoingRevenue, oneTime, taxBurden, bizBurden,
-    unquantified, cashBridge, scenarioRevenue, scenarioStructuralGap,
+    unquantified, scenarioRevenue, scenarioStructuralGap,
     atRisk: 0,
     ongoingExp, ongoingRev,
     structuralGap, cashGap, startGap, closed,
@@ -3136,9 +3203,6 @@ function verdicts(s, budget, actions) {
       `<b>${share}%</b> of the gap you closed came from one-time sources. Interfund loans and asset sales work exactly once.`);
   }
 
-  if (t.cashBridge > 0) {
-    push('warning', `<b>${money(t.cashBridge)}</b> of that is the interfund loan, which is operating cash and is repayable by June 30, 2027. It does not shrink the structural gap by a dollar.`);
-  }
 
   if (t.unquantified > 0) {
     push('warning', `<b>${t.unquantified}</b> of the measures you picked have no published savings or revenue figure, so none of them moved the deficit. They are real proposals; the numbers behind them are not public.`);
@@ -3450,12 +3514,70 @@ function sourceList(sources) {
     ])),
   ]);
 }
+
+/**
+ * A financing event, not a budget option. Borrowed cash is not revenue, so this
+ * renders as a read-only card: there is no checkbox, nothing to select, and the
+ * data behind it never reaches totals(). Sources carry their own notes where a
+ * document is linked but was not readable.
+ */
+function financingCard(f) {
+  const srcs = (f.sources || []).map((x) => h('div', { class: 'src' }, [
+    h('a', { href: x.url, target: '_blank', rel: 'noopener', text: x.title }),
+    h('span', { class: 'src-meta', text: ` \u2014 ${x.publisher}, ${fmtDate(x.date)}` }),
+    x.note ? h('div', { class: 'src-note', text: x.note }) : null,
+  ].filter(Boolean)));
+
+  const row = (label, value, cls) => h('tr', {}, [
+    h('td', { text: label }),
+    h('td', { class: 'num' + (cls ? ' ' + cls : ''), text: value }),
+  ]);
+
+  return h('section', { class: 'financing', 'aria-label': f.label }, [
+    h('div', { class: 'fin-head' }, [
+      h('div', { class: 'fin-kicker', text: f.label }),
+      h('div', { class: 'fin-asof', text: f.asOfLabel }),
+    ]),
+    h('div', { class: 'fin-name', text: f.name }),
+    h('div', { class: 'fin-status', text: f.statusLine }),
+
+    h('div', { class: 'fin-sub', text: 'Advances' }),
+    h('table', { class: 'dt fin-table' }, [
+      h('tbody', {}, [
+        ...f.advances.map((a) => row(a.fund, fmt.full(a.amount))),
+        h('tr', { class: 'is-total' }, [
+          h('td', { text: 'Total borrowed' }),
+          h('td', { class: 'num', text: fmt.full(f.principal) }),
+        ]),
+      ]),
+    ]),
+    h('div', { class: 'basis', style: 'margin-left:0', text: 'Borrowed from ' + f.fromFunds + '.' }),
+
+    h('div', { class: 'fin-sub', text: 'Repayment due' }),
+    h('table', { class: 'dt fin-table' }, [
+      h('tbody', {}, [
+        row('Principal', fmt.full(f.principal)),
+        row('Interest', f.rate + ' a year'),
+        row('Due in full by', f.dueDate),
+      ]),
+    ]),
+    h('div', { class: 'basis', style: 'margin-left:0', text: f.repaymentNote }),
+    h('div', { class: 'basis', style: 'margin-left:0', text: f.rateNote }),
+
+    h('div', { class: 'fin-sub', text: 'Purpose' }),
+    h('div', { class: 'fin-text', text: f.purpose }),
+
+    h('div', { class: 'action-more is-real', html: '<b>Financing, not income.</b> ' + f.explain }),
+
+    srcs.length ? h('div', { class: 'srcs', style: 'margin-left:0' }, [
+      h('div', { class: 'srcs-label', text: 'Sources' }), ...srcs,
+    ]) : null,
+  ].filter(Boolean));
+}
 function actionCard(action, selected, meterNames, onToggle, statusLabels, kindLabels) {
   const tags = [];
 
-  if (action.cashBridge) {
-    tags.push(h('span', { class: 'tag is-onetime' }, ['Cash bridge — not structural']));
-  } else if (action.type === 'onetime') {
+  if (action.type === 'onetime') {
     tags.push(h('span', { class: 'tag is-onetime' }, ['One-time money']));
   } else if (action.amountKnown && action.amount > 0) {
     tags.push(h('span', { class: 'tag' }, ['Recurring']));
@@ -3826,6 +3948,11 @@ function renderActionPanel(which) {
     onclick: () => { statusFilter = k; renderActionPanel(which); },
   }))));
 
+  // Financing is not an option on the board: it is shown, never chosen.
+  if (!isCuts) {
+    (ACTIONS.financing || []).forEach((f) => kids.push(financingCard(f)));
+  }
+
   const unpub = list.filter((a) => !a.amountKnown).length;
   if (unpub) {
     kids.push(h('div', { class: 'callout is-warning', html:
@@ -3948,8 +4075,18 @@ function renderImpact() {
           h('td', { text: 'Measures the City has already carried out, as this game sizes them' }),
           h('td', { class: 'pos', text: fmt.full(lockedTotal) }),
         ])] : []),
+        ...(ACTIONS.financing || []).flatMap((f) => f.advances
+          .filter((a) => /general fund/i.test(a.fund))
+          .map((a) => h('tr', { class: 'is-muted' }, [
+            h('td', { text: f.label + ' to the General Fund (' + f.asOfLabel + ') \u2014 borrowed cash, in no figure above' }),
+            h('td', { class: 'num', text: fmt.full(a.amount) }),
+          ]))),
       ]),
     ]),
+    (ACTIONS.financing || []).length ? h('div', { class: 'basis', style: 'margin-left:0', text:
+      'The interfund loan is financing, not revenue. It is repayable by '
+      + ACTIONS.financing[0].dueDate + ', so it is kept out of every figure in this table and out of '
+      + 'the game\u2019s totals. See the Revenue tab for the full terms.' }) : null,
     h('div', { class: 'basis', style: 'margin-left:0', text: rv.note }),
     h('div', { class: 'basis', style: 'margin-left:0', text: rv.labelDiscrepancy }),
     h('div', { class: 'srcs', style: 'margin-left:0' }, [

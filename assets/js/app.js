@@ -5,7 +5,7 @@
 import { BUDGET, ACTIONS } from './data.gen.js';
 import * as C from './charts.js';
 import * as E from './engine.js';
-import { h, SERIES, deptSlider, actionCard, meterRow, communityRow, verdictRow, icon, ICONS } from './ui.js';
+import { h, SERIES, deptSlider, actionCard, financingCard, meterRow, communityRow, verdictRow, icon, ICONS } from './ui.js';
 
 const $ = (id) => document.getElementById(id);
 const fmt = C.fmt;
@@ -223,6 +223,11 @@ function renderActionPanel(which) {
     onclick: () => { statusFilter = k; renderActionPanel(which); },
   }))));
 
+  // Financing is not an option on the board: it is shown, never chosen.
+  if (!isCuts) {
+    (ACTIONS.financing || []).forEach((f) => kids.push(financingCard(f)));
+  }
+
   const unpub = list.filter((a) => !a.amountKnown).length;
   if (unpub) {
     kids.push(h('div', { class: 'callout is-warning', html:
@@ -345,8 +350,18 @@ function renderImpact() {
           h('td', { text: 'Measures the City has already carried out, as this game sizes them' }),
           h('td', { class: 'pos', text: fmt.full(lockedTotal) }),
         ])] : []),
+        ...(ACTIONS.financing || []).flatMap((f) => f.advances
+          .filter((a) => /general fund/i.test(a.fund))
+          .map((a) => h('tr', { class: 'is-muted' }, [
+            h('td', { text: f.label + ' to the General Fund (' + f.asOfLabel + ') \u2014 borrowed cash, in no figure above' }),
+            h('td', { class: 'num', text: fmt.full(a.amount) }),
+          ]))),
       ]),
     ]),
+    (ACTIONS.financing || []).length ? h('div', { class: 'basis', style: 'margin-left:0', text:
+      'The interfund loan is financing, not revenue. It is repayable by '
+      + ACTIONS.financing[0].dueDate + ', so it is kept out of every figure in this table and out of '
+      + 'the game\u2019s totals. See the Revenue tab for the full terms.' }) : null,
     h('div', { class: 'basis', style: 'margin-left:0', text: rv.note }),
     h('div', { class: 'basis', style: 'margin-left:0', text: rv.labelDiscrepancy }),
     h('div', { class: 'srcs', style: 'margin-left:0' }, [

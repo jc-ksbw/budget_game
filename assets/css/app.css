@@ -413,6 +413,33 @@ p:last-child { margin-bottom: 0; }
 .action[aria-pressed="true"] .action-check {
   background: var(--accent); border-color: var(--accent);
 }
+/* A financing event, not a budget option: no checkbox, no selected state. */
+.financing {
+  display: block; border: 1px solid var(--hairline); border-left: 3px solid var(--series-4);
+  border-radius: var(--radius); padding: 14px; margin-bottom: 14px;
+  background: var(--surface-2);
+}
+.fin-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 10px; flex-wrap: wrap;
+}
+.fin-kicker {
+  font-size: 11.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+  color: var(--series-4);
+}
+.fin-asof { font-size: 11.5px; color: var(--muted); }
+.fin-name { font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; margin-top: 4px; }
+.fin-status { font-size: 13px; color: var(--text-2); margin-top: 3px; }
+.fin-sub {
+  font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--muted); margin-top: 14px;
+}
+.fin-text { font-size: 13px; color: var(--text-2); margin-top: 5px; }
+table.dt.fin-table { margin-top: 6px; }
+table.dt.fin-table tr.is-total td { font-weight: 700; border-top: 1px solid var(--hairline); }
+.financing .action-more { margin-top: 13px; }
+.src-note { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+
 /* Already carried out by the City: shown ticked, with no toggle affordance. */
 .action.is-locked { cursor: default; }
 .action.is-locked:active { transform: none; }
@@ -575,6 +602,8 @@ table.dt th { color: var(--muted); font-weight: 600; font-size: 11.5px; text-tra
 table.dt td { font-variant-numeric: tabular-nums; }
 table.dt tr:last-child td { border-bottom: 0; }
 table.dt .pos { color: var(--good-ink); }
+/* A row that is shown for context but counts toward nothing in the table. */
+table.dt tr.is-muted td { color: var(--muted); border-top: 1px dashed var(--hairline); }
 table.dt .neg { color: var(--critical); }
 
 /* ---------- council ---------- */

@@ -68,11 +68,11 @@ scorecard separates:
   a California council cannot adopt an unbalanced general fund budget.)
 - **Structural balance** — does recurring revenue cover recurring cost?
 
-You can cover the whole remaining gap with the $11M interfund loan the City actually
-took, share it, and watch it go down well — and still be told, correctly, that the
-structural hole is exactly as deep as before. The loan is modelled as a **cash
-bridge** and is barred in code from touching recurring savings or the structural
-gap, because that is what it is: operating cash, repayable by June 30, 2027.
+One-time money — a contingency release, a deferred capital project, an asset sale —
+closes the cash gap and leaves the structural gap untouched, so you can balance the
+budget on paper and still be told, correctly, that the hole is exactly as deep as
+before. The City's own $18M interfund loan is the extreme case, and the game does not
+even let you play it: see the financing panel on the Revenue tab.
 
 ### Scoring
 
@@ -124,9 +124,11 @@ Two cards carry heavy caveats:
   first, roughly six months for the legislation alone — so the card is tagged
   **Needs legislation, council and voters** and the game counts a full year of
   collections that could not begin until all of that cleared.
-- **The $11M interfund loan** is a **cash bridge**, barred in code from touching
-  recurring savings or the structural gap. It sits on the Revenue tab and carries no
-  infrastructure penalty, because no City document shows a project delayed by it.
+- **The $18M interfund loan** is not a card at all. It is a **financing event**:
+  $11M to the General Fund and $7M to the Water Fund, at 3%–4%, due back June 30,
+  2027. It renders as a read-only panel at the top of the Revenue tab and never
+  reaches the game's totals, because borrowed cash is not revenue and does not shrink
+  an operating deficit.
 
 One card is **locked on** from the first screen, because the City has already done it
 and has not reversed it: the July 2026 **voluntary separations**. It has no published

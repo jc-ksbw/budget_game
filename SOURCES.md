@@ -55,7 +55,6 @@ are official; the names attached to them are a reading of the account structure.
 
 | Option | Status | Amount | Kind | City sources |
 |---|---|---|---|---|
-| Interfund loan from impact fee funds | Adopted | $11,000,000 | City figure | A Clear Look At Our Financial Situation, Financial Emergency Information Guide |
 | Layoff notices | Discussed | $3,617,997 | Derived | Notification of Staffing Reductions — letter to SEIU Local 521, Press release #2: workforce reductions and financial emergency, Press release: workforce reductions and financial emergency |
 | Voluntary separation and retirement incentives | Adopted | not published | — | Press release #2: workforce reductions and financial emergency |
 | Cancelled contracts with non-profits | Adopted | not published | — | Financial Emergency Information Guide |
@@ -112,14 +111,44 @@ published a depth for any of these. The bases are all published City figures.
 
 ## The specific corrections
 
-**The loan** — approved October 2, 2026: $18M from impact fee funds, $11M to the
-General Fund, repayable by **June 30, 2027**. It sits on the **Revenue** tab, because
-that is where the money arrives, and is modelled as a **cash bridge**: it supplies
-near-term operating cash and is barred in code from touching recurring savings or the
-structural gap. Its only meter effect is on public trust. It carries **no
-infrastructure penalty**: no City document shows a capital project delayed because of
-it, so the game does not claim one. If a later City document shows a project was
-actually delayed, add it then.
+**The loan** — a **financing event, not a budget option**. It is no longer a card the
+player can pick: it lives in its own `financing` block in `data/actions.json`, renders
+as a read-only event card at the top of the Revenue tab, and **never reaches
+`totals()` at all**. Borrowed cash is not revenue and does not shrink an operating
+deficit, so the game does not let it.
+
+What the Council actually adopted, from the **October 2, 2026** agenda and the adopted
+minutes for **item 5.2** (carried 3–0, moved by Picha, seconded by de Anda):
+
+> "a short-term interfund loan of $18M from the City's Impact Fee Funds (Fund 304 –
+> AB 1600 Traffic Impact Fee and Fund 205-Park Dedication Impact Fee) to the General
+> Fund ($11M) and Water Fund ($7M), payable in full by June 30, 2027, at an interest
+> rate of 3%-4%."
+
+| | |
+|---|---|
+| Total borrowed | **$18,000,000** |
+| General Fund | **$11,000,000** |
+| Water Fund | **$7,000,000** |
+| Interest | **3%–4%** a year |
+| Due in full by | **June 30, 2027** |
+| Status | Approved October 2, 2026, carried 3–0 |
+
+> **The rate is a range, not 4%.** The adopted motion says **"3%-4%"**. City staff have
+> separately been quoted at a flat **4%**. The card shows the range, because that is
+> what the Council voted on, and records the 4% quote beside it.
+
+> **No interest total, no schedule, no split.** The agenda carried three attachments —
+> the staff report, the **interfund loan agreement**, and an **FY27 one-year short-term
+> loan amortization schedule**. The City's portal returns **403** for all three, so they
+> are cited for reference with a note saying nothing on the card is drawn from them. No
+> total interest figure, no installment schedule, and **no allocation of interest
+> between the General Fund and the Water Fund** is shown, because the adopted action
+> does not provide one.
+
+The card carries **no infrastructure penalty** — no City document shows a capital
+project delayed because of it — and no meter effect of any kind, since it is outside
+the game's scoring entirely.
 
 > **Rate discrepancy, preserved.** City staff have been quoted putting the rate at
 > **4%**; the adopted resolution has been described as stating **3–4%**. The
@@ -348,6 +377,13 @@ never 0), `amountKind` (`published` / `derived` / `benchmark`), `amountBasis` or
 `unpublishedNote`, optional `cashBridge`, `conditional`, `locked` (already carried
 out: selected from the first screen, cannot be toggled, survives Start over),
 `rateNote` and `amountTiming`, and `sources[]` with title, publisher, url and date.
+A source may carry a `note` where a document is linked but was not readable.
+
+`financing[]` is a **separate top-level array** for events that move cash without
+changing the budget. Nothing in it is selectable and nothing in it reaches `totals()`.
+Each entry carries `label`, `name`, `asOf` + `asOfLabel`, `statusLine`, `principal`,
+`fromFunds`, `advances[]` (`fund` + `amount`), `rate`, `rateNote`, `dueDate`,
+`purpose`, `repaymentLine`, `repaymentNote`, `explain` and `sources[]`.
 Sources must be on `hollister.ca.gov` or the City's own agenda portal
 `pub-hollister.escribemeetings.com`; the verification script allows exactly one
 other URL, the SEIU letter, by exact match.

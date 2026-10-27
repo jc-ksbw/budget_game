@@ -42,7 +42,7 @@ export function totals(state, budget, actions) {
 
   let ongoingCuts = 0, ongoingRevenue = 0, oneTime = 0;
   let taxBurden = 0, bizBurden = 0;
-  let unquantified = 0, cashBridge = 0, scenarioRevenue = 0;
+  let unquantified = 0, scenarioRevenue = 0;
   const picked = [];
 
   actions.actions.forEach((a) => {
@@ -59,10 +59,6 @@ export function totals(state, budget, actions) {
     if (!a.amountKnown) { unquantified += 1; return; }
 
     const value = a.amount;
-
-    // A cash bridge supplies operating cash. It is one-time by construction and
-    // must never reach the recurring side of the ledger.
-    if (a.cashBridge) { cashBridge += value; oneTime += value; return; }
 
     if (a.type === 'onetime') oneTime += value;
     else if (a.category === 'revenue') {
@@ -89,7 +85,7 @@ export function totals(state, budget, actions) {
   return {
     baseExp, curExp, deptSavings, baseRev,
     ongoingCuts, ongoingRevenue, oneTime, taxBurden, bizBurden,
-    unquantified, cashBridge, scenarioRevenue, scenarioStructuralGap,
+    unquantified, scenarioRevenue, scenarioStructuralGap,
     atRisk: 0,
     ongoingExp, ongoingRev,
     structuralGap, cashGap, startGap, closed,
@@ -274,9 +270,6 @@ export function verdicts(s, budget, actions) {
       `<b>${share}%</b> of the gap you closed came from one-time sources. Interfund loans and asset sales work exactly once.`);
   }
 
-  if (t.cashBridge > 0) {
-    push('warning', `<b>${money(t.cashBridge)}</b> of that is the interfund loan, which is operating cash and is repayable by June 30, 2027. It does not shrink the structural gap by a dollar.`);
-  }
 
   if (t.unquantified > 0) {
     push('warning', `<b>${t.unquantified}</b> of the measures you picked have no published savings or revenue figure, so none of them moved the deficit. They are real proposals; the numbers behind them are not public.`);

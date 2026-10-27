@@ -259,12 +259,70 @@ function sourceList(sources) {
   ]);
 }
 
+/**
+ * A financing event, not a budget option. Borrowed cash is not revenue, so this
+ * renders as a read-only card: there is no checkbox, nothing to select, and the
+ * data behind it never reaches totals(). Sources carry their own notes where a
+ * document is linked but was not readable.
+ */
+export function financingCard(f) {
+  const srcs = (f.sources || []).map((x) => h('div', { class: 'src' }, [
+    h('a', { href: x.url, target: '_blank', rel: 'noopener', text: x.title }),
+    h('span', { class: 'src-meta', text: ` \u2014 ${x.publisher}, ${fmtDate(x.date)}` }),
+    x.note ? h('div', { class: 'src-note', text: x.note }) : null,
+  ].filter(Boolean)));
+
+  const row = (label, value, cls) => h('tr', {}, [
+    h('td', { text: label }),
+    h('td', { class: 'num' + (cls ? ' ' + cls : ''), text: value }),
+  ]);
+
+  return h('section', { class: 'financing', 'aria-label': f.label }, [
+    h('div', { class: 'fin-head' }, [
+      h('div', { class: 'fin-kicker', text: f.label }),
+      h('div', { class: 'fin-asof', text: f.asOfLabel }),
+    ]),
+    h('div', { class: 'fin-name', text: f.name }),
+    h('div', { class: 'fin-status', text: f.statusLine }),
+
+    h('div', { class: 'fin-sub', text: 'Advances' }),
+    h('table', { class: 'dt fin-table' }, [
+      h('tbody', {}, [
+        ...f.advances.map((a) => row(a.fund, fmt.full(a.amount))),
+        h('tr', { class: 'is-total' }, [
+          h('td', { text: 'Total borrowed' }),
+          h('td', { class: 'num', text: fmt.full(f.principal) }),
+        ]),
+      ]),
+    ]),
+    h('div', { class: 'basis', style: 'margin-left:0', text: 'Borrowed from ' + f.fromFunds + '.' }),
+
+    h('div', { class: 'fin-sub', text: 'Repayment due' }),
+    h('table', { class: 'dt fin-table' }, [
+      h('tbody', {}, [
+        row('Principal', fmt.full(f.principal)),
+        row('Interest', f.rate + ' a year'),
+        row('Due in full by', f.dueDate),
+      ]),
+    ]),
+    h('div', { class: 'basis', style: 'margin-left:0', text: f.repaymentNote }),
+    h('div', { class: 'basis', style: 'margin-left:0', text: f.rateNote }),
+
+    h('div', { class: 'fin-sub', text: 'Purpose' }),
+    h('div', { class: 'fin-text', text: f.purpose }),
+
+    h('div', { class: 'action-more is-real', html: '<b>Financing, not income.</b> ' + f.explain }),
+
+    srcs.length ? h('div', { class: 'srcs', style: 'margin-left:0' }, [
+      h('div', { class: 'srcs-label', text: 'Sources' }), ...srcs,
+    ]) : null,
+  ].filter(Boolean));
+}
+
 export function actionCard(action, selected, meterNames, onToggle, statusLabels, kindLabels) {
   const tags = [];
 
-  if (action.cashBridge) {
-    tags.push(h('span', { class: 'tag is-onetime' }, ['Cash bridge — not structural']));
-  } else if (action.type === 'onetime') {
+  if (action.type === 'onetime') {
     tags.push(h('span', { class: 'tag is-onetime' }, ['One-time money']));
   } else if (action.amountKnown && action.amount > 0) {
     tags.push(h('span', { class: 'tag' }, ['Recurring']));

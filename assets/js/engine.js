@@ -19,7 +19,7 @@ export function createState(budget, actions) {
   // Measures the City has already carried out are on the board from the first
   // screen and cannot be switched off.
   const chosen = new Set();
-  actions.actions.forEach((a) => { if (a.locked) chosen.add(a.id); });
+  actions.actions.forEach((a) => { if (a.locked && !a.rescinded) chosen.add(a.id); });
 
   return {
     deptPct: dept,
@@ -47,6 +47,9 @@ export function totals(state, budget, actions) {
 
   actions.actions.forEach((a) => {
     if (!state.chosen.has(a.id)) return;
+    // The City reversed this one. It stays on the board for the record, but it
+    // cannot be chosen and it never contributes a dollar.
+    if (a.rescinded) return;
     picked.push(a);
 
     // A conditional proposal — one that still needs legislation, a council

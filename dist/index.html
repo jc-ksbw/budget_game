@@ -456,6 +456,12 @@ table.dt.fin-table tr.is-total td { font-weight: 700; border-top: 1px solid var(
 .src-note { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
 
 /* Already carried out by the City: shown ticked, with no toggle affordance. */
+/* Reversed by the Council: shown for the record, never selectable. */
+.action.is-rescinded { cursor: default; opacity: .92; }
+.action.is-rescinded:active { transform: none; }
+.action.is-rescinded .action-check { visibility: hidden; }
+.action.is-rescinded .action-name { text-decoration: line-through; text-decoration-thickness: 1px; }
+
 .action.is-locked { cursor: default; }
 .action.is-locked:active { transform: none; }
 .action.is-locked .action-check { border-radius: 50%; }
@@ -511,6 +517,7 @@ table.dt.fin-table tr.is-total td { font-weight: 700; border-top: 1px solid var(
 .status.is-discussed   { background: color-mix(in srgb, var(--warning) 26%, var(--surface-2)); color: var(--text-1); }
 .status.is-exploratory { background: color-mix(in srgb, var(--series-7) 16%, var(--surface-2)); color: var(--text-1); }
 .status.is-benchmark   { background: color-mix(in srgb, var(--series-1) 16%, var(--surface-2)); color: var(--accent-ink); }
+.status.is-rescinded   { background: color-mix(in srgb, var(--critical) 15%, var(--surface-2)); color: var(--critical-ink, var(--text-1)); }
 
 .action-amt.is-unpublished {
   font-size: 12px; font-weight: 650; color: var(--muted);
@@ -1528,7 +1535,8 @@ const ACTIONS = {
       "adopted": "Adopted",
       "discussed": "Discussed",
       "exploratory": "Exploratory",
-      "benchmark": "Common elsewhere"
+      "benchmark": "Common elsewhere",
+      "rescinded": "Rescinded"
     },
     "amountKinds": {
       "published": "City figure",
@@ -1679,49 +1687,34 @@ const ACTIONS = {
       "name": "Layoff notices",
       "category": "cuts",
       "type": "ongoing",
-      "status": "discussed",
-      "amountKnown": true,
-      "amount": 3617997,
-      "desc": "On October 14, 2026 the City issued layoff notices to employees across multiple departments and placed them on paid administrative leave.",
-      "consequence": "Whether this happens is now an open question. On October 21, 2026 the Council took up a resolution ratifying the rescission of Resolution No. 2026-111 — the fiscal emergency the layoffs rested on — together with direction regarding the employees placed on administrative leave. The City is meeting and conferring with SEIU Local 521 and the Police Officers Association, and is being run by an acting city manager. This is a choice the City has not settled, not a saving already banked.",
-      "effects": {
-        "workforce": -11,
-        "trust": -6,
-        "community": -3,
-        "safety": -2
-      },
+      "status": "rescinded",
+      "amountKnown": false,
+      "amount": null,
+      "desc": "On October 14, 2026 the City issued layoff notices to employees across multiple departments and placed them on paid administrative leave. The Council has since reversed them.",
+      "consequence": "The Council voted unanimously in closed session to rescind the layoffs of 35 city workers, reversing the decision of the now-former city manager. The jobs are retained for now: this is not recorded as a permanent rehire, because no City record of the action has been posted yet. The City says layoffs are off the table for the moment but that financial changes are still needed, and it will hold weekly budget meetings every Monday to reassess. If major savings cannot be found, layoffs may be reconsidered — so further staffing cuts, or other savings, could come back onto this board.",
+      "effects": {},
       "realWorld": true,
-      "realNote": "Noticed October 14, 2026; the Council rescinded the underlying fiscal emergency on October 21.",
+      "realNote": "Rescinded by the City Council on October 26, 2026, on a unanimous closed-session vote.",
       "sources": [
+        {
+          "title": "Hollister City Council reverses layoffs for 35 city workers",
+          "publisher": "KSBW Action News 8",
+          "url": "https://www.ksbw.com/article/hollister-reverses-layoffs-city-workers/74262552",
+          "date": "2026-10-27",
+          "note": "Updated Oct. 27, 2026. The vote was taken in closed session; the City has not yet posted a record of it, so this is the only source for the reversal and the count of 35."
+        },
         {
           "title": "Notification of Staffing Reductions — letter to SEIU Local 521",
           "publisher": "City of Hollister",
           "url": "https://www.instagram.com/p/DedlTzsFP_7/?img_index=1",
           "date": "2026-10-14",
-          "note": "City letter signed by the City Manager. It is not posted on the City website; this is the public copy it was released through."
-        },
-        {
-          "title": "City Council special meeting agenda, item 6.4 — resolution ratifying rescission of Resolution No. 2026-111 and direction regarding employees placed on administrative leave",
-          "publisher": "City of Hollister",
-          "url": "https://pub-hollister.escribemeetings.com/Meeting.aspx?Id=63f3e03b-2282-4916-9e39-d3315a9611ed&Agenda=Agenda&lang=English",
-          "date": "2026-10-21"
-        },
-        {
-          "title": "Press release: workforce reductions and financial emergency",
-          "publisher": "City of Hollister",
-          "url": "https://hollister.ca.gov/news_detail_T3_R119.php",
-          "date": "2026-10-14"
-        },
-        {
-          "title": "Press release #2: workforce reductions and financial emergency",
-          "publisher": "City of Hollister",
-          "url": "https://hollister.ca.gov/news_detail_T3_R120.php",
-          "date": "2026-10-14"
+          "note": "The original notices, now rescinded. City letter signed by the City Manager; not posted on the City website."
         }
       ],
-      "amountKind": "derived",
-      "amountBasis": "Averaged from the City's October 14, 2026 notification to SEIU Local 521: 16 named employees at a combined $2,315,518 of annual payroll, an average of $144,720 each, applied to 25 positions. A derivation for this game, not a City figure: the City has published no savings estimate for the layoffs.",
-      "rateNote": "What the figure is not: it is gross payroll rather than General Fund savings — five of the sixteen named are water operators and one is at the airport, paid from enterprise funds; it is a part-year saving at best, since the notices set separation for November 13; and 25 is not a City count — the letter covers SEIU-represented staff only, and the City has published no citywide total."
+      "rateNote": "No savings are counted for these 35 positions. No verified revised payroll figure has been published for the reversal, so none is shown, and the deficit figures in this game are unchanged. An earlier count comes from the City’s October 14 letter to SEIU Local 521, which named 16 positions; 35 is the later figure and the two are not the same measure — the letter covered SEIU-represented staff only.",
+      "rescinded": true,
+      "unpublishedNote": "No savings counted — rescinded",
+      "updatedLabel": "Updated Oct. 27, 2026"
     },
     {
       "id": "voluntary-separations",
@@ -2942,7 +2935,7 @@ function createState(budget, actions) {
   // Measures the City has already carried out are on the board from the first
   // screen and cannot be switched off.
   const chosen = new Set();
-  actions.actions.forEach((a) => { if (a.locked) chosen.add(a.id); });
+  actions.actions.forEach((a) => { if (a.locked && !a.rescinded) chosen.add(a.id); });
 
   return {
     deptPct: dept,
@@ -2969,6 +2962,9 @@ function totals(state, budget, actions) {
 
   actions.actions.forEach((a) => {
     if (!state.chosen.has(a.id)) return;
+    // The City reversed this one. It stays on the board for the record, but it
+    // cannot be chosen and it never contributes a dollar.
+    if (a.rescinded) return;
     picked.push(a);
 
     // A conditional proposal — one that still needs legislation, a council
@@ -3490,10 +3486,11 @@ function sourceList(sources) {
   if (!sources || !sources.length) return null;
   return h('div', { class: 'srcs' }, [
     h('div', { class: 'srcs-label', text: sources.length > 1 ? 'Sources' : 'Source' }),
-    ...sources.map((s) => h('span', { class: 'src' }, [
+    ...sources.map((s) => h('div', { class: 'src' }, [
       h('a', { href: s.url, target: '_blank', rel: 'noopener', text: s.title }),
       h('span', { class: 'src-meta', text: ` — ${s.publisher}, ${fmtDate(s.date)}` }),
-    ])),
+      s.note ? h('div', { class: 'src-note', text: s.note }) : null,
+    ].filter(Boolean))),
   ]);
 }
 
@@ -3556,6 +3553,7 @@ function actionCard(action, selected, meterNames, onToggle, statusLabels, kindLa
   if (action.preliminary) tags.push(h('span', { class: 'tag is-ballot' }, ['Preliminary estimate']));
   if (action.enacted) tags.push(h('span', { class: 'tag is-real' }, ['Already enacted']));
   if (action.locked) tags.push(h('span', { class: 'tag is-real' }, ['Already in effect \u2014 cannot be undone']));
+  if (action.rescinded) tags.push(h('span', { class: 'tag is-real' }, ['Reversed by the Council \u2014 not on the board']));
 
   Object.entries(action.effects || {}).forEach(([k, v]) => {
     if (!v) return;
@@ -3584,6 +3582,7 @@ function actionCard(action, selected, meterNames, onToggle, statusLabels, kindLa
       ? h('div', { class: 'kind', text: action.amountTiming }) : null,
     action.amountKind && kindLabels && kindLabels[action.amountKind]
       ? h('div', { class: 'kind', text: kindLabels[action.amountKind] }) : null,
+    action.updatedLabel ? h('div', { class: 'kind', text: action.updatedLabel }) : null,
     h('span', { class: 'status is-' + action.status }, [
       h('span', { class: 'status-dot', style: 'background:currentColor' }),
       (statusLabels && statusLabels[action.status]) || action.status,
@@ -3591,9 +3590,10 @@ function actionCard(action, selected, meterNames, onToggle, statusLabels, kindLa
   ]);
 
   const btn = h('button', {
-    class: 'action' + (action.locked ? ' is-locked' : ''), type: 'button',
+    class: 'action' + (action.locked ? ' is-locked' : '') + (action.rescinded ? ' is-rescinded' : ''),
+    type: 'button',
     'aria-pressed': selected ? 'true' : 'false',
-    ...(action.locked ? { 'aria-disabled': 'true' } : {}),
+    ...((action.locked || action.rescinded) ? { 'aria-disabled': 'true' } : {}),
   }, [
     h('div', { class: 'action-top' }, [
       h('div', { class: 'action-check' }, [icon(ICONS.check, 14)]),
@@ -3781,7 +3781,7 @@ function changed() {
 
 function toggleAction(id) {
   const a = ACTIONS.actions.find((x) => x.id === id);
-  if (a && a.locked) return;   // already done in the real world
+  if (a && (a.locked || a.rescinded)) return;   // settled in the real world, either way
   if (state.chosen.has(id)) state.chosen.delete(id);
   else state.chosen.add(id);
   document.querySelectorAll(`[data-action="${id}"]`).forEach((n) => {
@@ -3922,7 +3922,9 @@ function renderActionPanel(which) {
     (ACTIONS.financing || []).forEach((f) => kids.push(financingCard(f)));
   }
 
-  const unpub = list.filter((a) => !a.amountKnown).length;
+  // A rescinded measure has no figure because it was reversed, not because
+  // nobody published one — it does not belong in this count.
+  const unpub = list.filter((a) => !a.amountKnown && !a.rescinded).length;
   if (unpub) {
     kids.push(h('div', { class: 'callout is-warning', html:
       `<b>${unpub} of these ${list.length}</b> have no published savings or revenue figure. They are real measures, but they cannot move the deficit, because nobody has put a number on them.` }));

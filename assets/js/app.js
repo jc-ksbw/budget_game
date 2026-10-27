@@ -87,7 +87,7 @@ function changed() {
 
 function toggleAction(id) {
   const a = ACTIONS.actions.find((x) => x.id === id);
-  if (a && a.locked) return;   // already done in the real world
+  if (a && (a.locked || a.rescinded)) return;   // settled in the real world, either way
   if (state.chosen.has(id)) state.chosen.delete(id);
   else state.chosen.add(id);
   document.querySelectorAll(`[data-action="${id}"]`).forEach((n) => {
@@ -228,7 +228,9 @@ function renderActionPanel(which) {
     (ACTIONS.financing || []).forEach((f) => kids.push(financingCard(f)));
   }
 
-  const unpub = list.filter((a) => !a.amountKnown).length;
+  // A rescinded measure has no figure because it was reversed, not because
+  // nobody published one — it does not belong in this count.
+  const unpub = list.filter((a) => !a.amountKnown && !a.rescinded).length;
   if (unpub) {
     kids.push(h('div', { class: 'callout is-warning', html:
       `<b>${unpub} of these ${list.length}</b> have no published savings or revenue figure. They are real measures, but they cannot move the deficit, because nobody has put a number on them.` }));

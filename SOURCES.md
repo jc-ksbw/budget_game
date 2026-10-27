@@ -55,7 +55,7 @@ are official; the names attached to them are a reading of the account structure.
 
 | Option | Status | Amount | Kind | City sources |
 |---|---|---|---|---|
-| Layoff notices | Discussed | $3,617,997 | Derived | Notification of Staffing Reductions — letter to SEIU Local 521, Press release #2: workforce reductions and financial emergency, Press release: workforce reductions and financial emergency |
+| Layoff notices | **Rescinded** | none — reversed | — | KSBW, Oct 27 2026; Notification of Staffing Reductions — letter to SEIU Local 521 |
 | Voluntary separation and retirement incentives | Adopted | not published | — | Press release #2: workforce reductions and financial emergency |
 | Cancelled contracts with non-profits | Adopted | not published | — | Financial Emergency Information Guide |
 | Release the budgeted contingency | Discussed | $1,200,000 | City figure | FY 2026-27 Approved Budget Document, Financial Emergency Information Guide |
@@ -195,20 +195,45 @@ collections could not begin until all of them cleared.
 > this as a rate note. The statute is named in the text rather than added as a
 > citation, because the game's `sources[]` are City documents only.
 
-**The Oct 14 layoffs** — noticed, then reopened. On **October 21, 2026** the Council
-took up a resolution *ratifying the rescission of Resolution No. 2026-111* — the
-fiscal emergency the layoffs rested on — together with *direction regarding the
-employees placed on administrative leave*. The City is meeting and conferring with
-**SEIU Local 521** and the **Police Officers Association**, and its October 26 agenda
-is signed by an **acting city manager**. So the card is **not** locked on: the layoffs
-are a choice the player makes, carrying status **discussed**, not a saving already
-banked.
+**The Oct 14 layoffs** — noticed, then **rescinded**. *Updated Oct. 27, 2026.*
+
+On **October 21, 2026** the Council took up a resolution *ratifying the rescission of
+Resolution No. 2026-111* — the fiscal emergency the layoffs rested on — together with
+*direction regarding the employees placed on administrative leave*. Then, on
+**October 26**, it voted **unanimously in closed session to rescind the layoffs of 35
+city workers**, reversing the decision of the now-former city manager.
+
+The card carries status **Rescinded**. It is **not selectable**, carries **no dollar
+figure**, imposes **no meter penalties**, and is skipped inside `totals()` even if
+something contrives to select it — a check forces it on and confirms neither gap, no
+meter and no sub-total moves. The money line reads *"No savings counted — rescinded."*
+
+> **What the card does not claim.** Not a permanent rehire: the jobs are described as
+> **retained for now**, because the vote was taken in closed session and **no City
+> record of it has been posted**. No revised payroll figure is shown, because none has
+> been published. The deficit figures are **unchanged**. And the card notes that the
+> City will hold **weekly budget meetings every Monday**, and that **if major savings
+> cannot be found, layoffs may be reconsidered**.
+
+> **On the count.** **35** is the figure in the October 27 KSBW report. The City's own
+> October 14 letter to SEIU Local 521 named **16** positions; the card says so and says
+> the two are not the same measure, since the letter covered SEIU-represented staff
+> only. The earlier derived figure of **$3,617,997** — 16 names averaged and applied to
+> 25 positions — is **gone from the card entirely**, and a check asserts no trace of
+> that arithmetic remains.
+
+> **The one news citation.** The reversal happened in closed session and the City has
+> posted nothing, so the **KSBW report of October 27** is the only source that exists
+> for it. It is cited with a note saying exactly that. This is the single exception to
+> the City-documents-only rule, and the verification script allows it **by exact URL and
+> only with that note**, so no other outlet can slip in.
 
 **The voluntary separations** (July 2026) were not reversed, so that card stays
 **locked on**. It has no published savings figure, so nothing lands on the board
 before the player chooses anything: the game opens at the full adopted **$6,363,284**.
 
-The savings figure is **derived, not published**. The City's October 14, 2026
+The figure below is the one the card **used to carry**, kept here as a record of how it
+was built. It is no longer shown in the game. It was **derived, not published**. The City's October 14, 2026
 *Notification of Staffing Reductions* to SEIU Local 521 — signed by the City Manager
 — lists **16 employees** being laid off, plus one frozen vacancy, with a combined
 annual payroll of **$2,315,518**, an average of **$144,720** each. That average
@@ -221,9 +246,9 @@ applied to **25** positions gives **$3,617,997**.
 > City count** — the letter covers SEIU-represented staff only, and the City has
 > published no citywide total. The card says all of this.
 
-> **Still worth showing.** The notices were really issued and the letter is real, so
-> the card keeps its figure. What changed is its standing: it is now an option with a
-> contested future rather than a settled fact, and the card says so.
+> **Superseded.** The Council rescinded the layoffs on October 26, 2026, so the card
+> no longer carries this figure or any other. It is recorded here only so the earlier
+> arithmetic is not lost.
 
 > **Where the letter came from.** The City has not posted it on hollister.ca.gov. The
 > public copy is an [Instagram
@@ -381,7 +406,9 @@ visually and is quoted above. Every URL returned HTTP 200 when this was written.
 never 0), `amountKind` (`published` / `derived` / `benchmark`), `amountBasis` or
 `unpublishedNote`, optional `cashBridge`, `conditional`, `locked` (already carried
 out: selected from the first screen, cannot be toggled, survives Start over),
-`rateNote` and `amountTiming`, and `sources[]` with title, publisher, url and date.
+`rateNote`, `updatedLabel`, `rescinded` (reversed by the Council: shown for the
+record, never selectable, skipped inside `totals()`) and `amountTiming`, and
+`sources[]` with title, publisher, url and date.
 A source may carry a `note` where a document is linked but was not readable.
 
 `financing[]` is a **separate top-level array** for events that move cash without

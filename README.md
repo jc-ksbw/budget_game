@@ -134,13 +134,13 @@ One card is **locked on** from the first screen, because the City has already do
 and has not reversed it: the July 2026 **voluntary separations**. It has no published
 figure, so the board still opens at the full adopted **$6,363,284**.
 
-The **October 14 layoffs** are a choice, not a lock. The notices were issued, but on
-October 21 the Council took up a resolution ratifying the rescission of the fiscal
-emergency they rested on, and the City is now meeting and conferring with its unions
-under an acting city manager. The card carries a derived **$3,617,997** — the City's
-October 14 letter to SEIU Local 521 names 16 employees at a combined $2,315,518, an
-average of $144,720, applied to 25 positions — and says plainly what that number is
-not. See SOURCES.md.
+The **October 14 layoffs** are **rescinded**. On October 26 the Council voted
+unanimously in closed session to reverse the layoffs of **35 city workers**. The card
+stays on the board for the record but carries status **Rescinded**: it cannot be
+selected, carries no figure, and is skipped inside `totals()`, so it counts for
+nothing. The jobs are described as **retained for now** — not a permanent rehire,
+since no City record of the closed-session vote has been posted — and the card notes
+that layoffs may be reconsidered if major savings cannot be found. See SOURCES.md.
 
 ### The community
 

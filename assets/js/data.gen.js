@@ -576,7 +576,8 @@ export const ACTIONS = {
       "adopted": "Adopted",
       "discussed": "Discussed",
       "exploratory": "Exploratory",
-      "benchmark": "Common elsewhere"
+      "benchmark": "Common elsewhere",
+      "rescinded": "Rescinded"
     },
     "amountKinds": {
       "published": "City figure",
@@ -727,49 +728,34 @@ export const ACTIONS = {
       "name": "Layoff notices",
       "category": "cuts",
       "type": "ongoing",
-      "status": "discussed",
-      "amountKnown": true,
-      "amount": 3617997,
-      "desc": "On October 14, 2026 the City issued layoff notices to employees across multiple departments and placed them on paid administrative leave.",
-      "consequence": "Whether this happens is now an open question. On October 21, 2026 the Council took up a resolution ratifying the rescission of Resolution No. 2026-111 — the fiscal emergency the layoffs rested on — together with direction regarding the employees placed on administrative leave. The City is meeting and conferring with SEIU Local 521 and the Police Officers Association, and is being run by an acting city manager. This is a choice the City has not settled, not a saving already banked.",
-      "effects": {
-        "workforce": -11,
-        "trust": -6,
-        "community": -3,
-        "safety": -2
-      },
+      "status": "rescinded",
+      "amountKnown": false,
+      "amount": null,
+      "desc": "On October 14, 2026 the City issued layoff notices to employees across multiple departments and placed them on paid administrative leave. The Council has since reversed them.",
+      "consequence": "The Council voted unanimously in closed session to rescind the layoffs of 35 city workers, reversing the decision of the now-former city manager. The jobs are retained for now: this is not recorded as a permanent rehire, because no City record of the action has been posted yet. The City says layoffs are off the table for the moment but that financial changes are still needed, and it will hold weekly budget meetings every Monday to reassess. If major savings cannot be found, layoffs may be reconsidered — so further staffing cuts, or other savings, could come back onto this board.",
+      "effects": {},
       "realWorld": true,
-      "realNote": "Noticed October 14, 2026; the Council rescinded the underlying fiscal emergency on October 21.",
+      "realNote": "Rescinded by the City Council on October 26, 2026, on a unanimous closed-session vote.",
       "sources": [
+        {
+          "title": "Hollister City Council reverses layoffs for 35 city workers",
+          "publisher": "KSBW Action News 8",
+          "url": "https://www.ksbw.com/article/hollister-reverses-layoffs-city-workers/74262552",
+          "date": "2026-10-27",
+          "note": "Updated Oct. 27, 2026. The vote was taken in closed session; the City has not yet posted a record of it, so this is the only source for the reversal and the count of 35."
+        },
         {
           "title": "Notification of Staffing Reductions — letter to SEIU Local 521",
           "publisher": "City of Hollister",
           "url": "https://www.instagram.com/p/DedlTzsFP_7/?img_index=1",
           "date": "2026-10-14",
-          "note": "City letter signed by the City Manager. It is not posted on the City website; this is the public copy it was released through."
-        },
-        {
-          "title": "City Council special meeting agenda, item 6.4 — resolution ratifying rescission of Resolution No. 2026-111 and direction regarding employees placed on administrative leave",
-          "publisher": "City of Hollister",
-          "url": "https://pub-hollister.escribemeetings.com/Meeting.aspx?Id=63f3e03b-2282-4916-9e39-d3315a9611ed&Agenda=Agenda&lang=English",
-          "date": "2026-10-21"
-        },
-        {
-          "title": "Press release: workforce reductions and financial emergency",
-          "publisher": "City of Hollister",
-          "url": "https://hollister.ca.gov/news_detail_T3_R119.php",
-          "date": "2026-10-14"
-        },
-        {
-          "title": "Press release #2: workforce reductions and financial emergency",
-          "publisher": "City of Hollister",
-          "url": "https://hollister.ca.gov/news_detail_T3_R120.php",
-          "date": "2026-10-14"
+          "note": "The original notices, now rescinded. City letter signed by the City Manager; not posted on the City website."
         }
       ],
-      "amountKind": "derived",
-      "amountBasis": "Averaged from the City's October 14, 2026 notification to SEIU Local 521: 16 named employees at a combined $2,315,518 of annual payroll, an average of $144,720 each, applied to 25 positions. A derivation for this game, not a City figure: the City has published no savings estimate for the layoffs.",
-      "rateNote": "What the figure is not: it is gross payroll rather than General Fund savings — five of the sixteen named are water operators and one is at the airport, paid from enterprise funds; it is a part-year saving at best, since the notices set separation for November 13; and 25 is not a City count — the letter covers SEIU-represented staff only, and the City has published no citywide total."
+      "rateNote": "No savings are counted for these 35 positions. No verified revised payroll figure has been published for the reversal, so none is shown, and the deficit figures in this game are unchanged. An earlier count comes from the City’s October 14 letter to SEIU Local 521, which named 16 positions; 35 is the later figure and the two are not the same measure — the letter covered SEIU-represented staff only.",
+      "rescinded": true,
+      "unpublishedNote": "No savings counted — rescinded",
+      "updatedLabel": "Updated Oct. 27, 2026"
     },
     {
       "id": "voluntary-separations",

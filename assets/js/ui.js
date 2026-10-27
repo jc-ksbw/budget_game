@@ -252,10 +252,11 @@ function sourceList(sources) {
   if (!sources || !sources.length) return null;
   return h('div', { class: 'srcs' }, [
     h('div', { class: 'srcs-label', text: sources.length > 1 ? 'Sources' : 'Source' }),
-    ...sources.map((s) => h('span', { class: 'src' }, [
+    ...sources.map((s) => h('div', { class: 'src' }, [
       h('a', { href: s.url, target: '_blank', rel: 'noopener', text: s.title }),
       h('span', { class: 'src-meta', text: ` — ${s.publisher}, ${fmtDate(s.date)}` }),
-    ])),
+      s.note ? h('div', { class: 'src-note', text: s.note }) : null,
+    ].filter(Boolean))),
   ]);
 }
 
@@ -319,6 +320,7 @@ export function actionCard(action, selected, meterNames, onToggle, statusLabels,
   if (action.preliminary) tags.push(h('span', { class: 'tag is-ballot' }, ['Preliminary estimate']));
   if (action.enacted) tags.push(h('span', { class: 'tag is-real' }, ['Already enacted']));
   if (action.locked) tags.push(h('span', { class: 'tag is-real' }, ['Already in effect \u2014 cannot be undone']));
+  if (action.rescinded) tags.push(h('span', { class: 'tag is-real' }, ['Reversed by the Council \u2014 not on the board']));
 
   Object.entries(action.effects || {}).forEach(([k, v]) => {
     if (!v) return;
@@ -347,6 +349,7 @@ export function actionCard(action, selected, meterNames, onToggle, statusLabels,
       ? h('div', { class: 'kind', text: action.amountTiming }) : null,
     action.amountKind && kindLabels && kindLabels[action.amountKind]
       ? h('div', { class: 'kind', text: kindLabels[action.amountKind] }) : null,
+    action.updatedLabel ? h('div', { class: 'kind', text: action.updatedLabel }) : null,
     h('span', { class: 'status is-' + action.status }, [
       h('span', { class: 'status-dot', style: 'background:currentColor' }),
       (statusLabels && statusLabels[action.status]) || action.status,
@@ -354,9 +357,10 @@ export function actionCard(action, selected, meterNames, onToggle, statusLabels,
   ]);
 
   const btn = h('button', {
-    class: 'action' + (action.locked ? ' is-locked' : ''), type: 'button',
+    class: 'action' + (action.locked ? ' is-locked' : '') + (action.rescinded ? ' is-rescinded' : ''),
+    type: 'button',
     'aria-pressed': selected ? 'true' : 'false',
-    ...(action.locked ? { 'aria-disabled': 'true' } : {}),
+    ...((action.locked || action.rescinded) ? { 'aria-disabled': 'true' } : {}),
   }, [
     h('div', { class: 'action-top' }, [
       h('div', { class: 'action-check' }, [icon(ICONS.check, 14)]),

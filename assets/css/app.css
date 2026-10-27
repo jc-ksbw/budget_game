@@ -445,6 +445,12 @@ table.dt.fin-table tr.is-total td { font-weight: 700; border-top: 1px solid var(
 .src-note { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
 
 /* Already carried out by the City: shown ticked, with no toggle affordance. */
+/* Reversed by the Council: shown for the record, never selectable. */
+.action.is-rescinded { cursor: default; opacity: .92; }
+.action.is-rescinded:active { transform: none; }
+.action.is-rescinded .action-check { visibility: hidden; }
+.action.is-rescinded .action-name { text-decoration: line-through; text-decoration-thickness: 1px; }
+
 .action.is-locked { cursor: default; }
 .action.is-locked:active { transform: none; }
 .action.is-locked .action-check { border-radius: 50%; }
@@ -500,6 +506,7 @@ table.dt.fin-table tr.is-total td { font-weight: 700; border-top: 1px solid var(
 .status.is-discussed   { background: color-mix(in srgb, var(--warning) 26%, var(--surface-2)); color: var(--text-1); }
 .status.is-exploratory { background: color-mix(in srgb, var(--series-7) 16%, var(--surface-2)); color: var(--text-1); }
 .status.is-benchmark   { background: color-mix(in srgb, var(--series-1) 16%, var(--surface-2)); color: var(--accent-ink); }
+.status.is-rescinded   { background: color-mix(in srgb, var(--critical) 15%, var(--surface-2)); color: var(--critical-ink, var(--text-1)); }
 
 .action-amt.is-unpublished {
   font-size: 12px; font-weight: 650; color: var(--muted);

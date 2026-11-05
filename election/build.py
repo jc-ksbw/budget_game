@@ -173,6 +173,20 @@ def split_name(name):
     return 'Monterey County', n, 'schools' if SCHOOL.search(n) else 'special'
 
 
+def is_multiseat_contest(race):
+    """A contest electing several seats, with more candidates than seats.
+
+    These are excluded. In a vote-for-N contest each voter casts up to N votes,
+    so one ballot can carry a vote for both a trailing candidate and the one
+    they would have to pass. The two-way "share of the remaining ballots" figure
+    this page reports assumes a gain for one is a loss for the other, which is
+    false here, and the denominator is wrong as well: candidates draw on up to
+    N votes per ballot, not one. Unopposed multi-seat contests are kept -- they
+    carry no catch-up arithmetic, only the call.
+    """
+    return race['seats'] > 1 and len(race['candidates']) > race['seats']
+
+
 def is_measure(race):
     names = {c['name'].upper() for c in race['candidates']}
     return names <= {'YES', 'NO'} and len(names) > 1
@@ -204,9 +218,14 @@ def main():
         sys.exit('Only %d contests parsed from %s — the county page markup has probably '
                  'changed. Check the regexes in scrape() before publishing.'
                  % (len(races), args.source))
-    kept, dropped = [], []
+    kept, statewide, multiseat = [], [], []
     for r in races:
-        (dropped if is_statewide(r['name']) else kept).append(r)
+        if is_statewide(r['name']):
+            statewide.append(r)
+        elif is_multiseat_contest(r):
+            multiseat.append(r)
+        else:
+            kept.append(r)
 
     out = []
     for r in kept:
@@ -243,8 +262,8 @@ def main():
     print('report   %s (%s)' % (meta.get('title', '?'), meta.get('published', '?')))
     print('left     %s' % (format(args.left, ',') + ' ballots still to count countywide'
                            if args.left else 'outstanding ballots not published (--left unset)'))
-    print('kept     %d local contests' % len(kept))
-    print('dropped  %d statewide contests' % len(dropped))
+    print('kept     %d contests' % len(kept))
+    print('dropped  %d statewide, %d contested multi-seat' % (len(statewide), len(multiseat)))
     print('wrote    %s (%.0f KB)' % (args.out, os.path.getsize(args.out) / 1024))
 
 

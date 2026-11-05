@@ -81,6 +81,7 @@ body.compact .wrap{padding-top:10px}
 .pill.close{background:var(--amber-bg);color:var(--amber)}
 .pill.lead{background:var(--sky);color:var(--blue-dk)}
 .pill.safe{background:var(--grey-bg);color:var(--grey)}
+.pill.multi{background:var(--grey-bg);color:var(--grey)}
 .headrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:3px}
 .headrow .where{min-width:0;overflow-wrap:anywhere}
 
@@ -146,7 +147,7 @@ footer p{margin:0 0 8px}
   <header>
     <p class="eyebrow" id="eyebrow">Monterey County</p>
     <h1>What&rsquo;s left to count?</h1>
-    <p class="lede">Local results only &mdash; county, city, school and special-district contests and local measures. For every race still undecided, see how many of the outstanding ballots the trailing candidate would need.</p>
+    <p class="lede">Local single-seat contests and ballot measures in Monterey County &mdash; county, city, school and special-district. For every race still undecided, see how many of the outstanding ballots the trailing candidate would need.</p>
     <p class="stamp" id="stamp"></p>
   </header>
 
@@ -172,6 +173,7 @@ footer p{margin:0 0 8px}
 
   <footer>
     <p id="srcline"></p>
+    <p><b>Which contests are here.</b> Every local contest that elects one person, plus local ballot measures. Contests electing two or more &mdash; city councils electing two, school boards electing three or five &mdash; are left out. In those a voter casts several votes, so one ballot can back both a trailing candidate and the one they would have to pass; a &ldquo;share of the remaining ballots&rdquo; figure assumes a gain for one is a loss for the other, and that is not true there. Full results for those contests are on the county&rsquo;s own page, linked above.</p>
     <p><b>How the estimate works.</b> The countywide total of ballots still to be counted is the figure reported by the Registrar. Each contest reports its own registration and turnout, so ballots already counted in that jurisdiction = registration &times; reported turnout, and the outstanding ballots are spread across jurisdictions in proportion to those counts. The countywide number is known; the split between jurisdictions is an estimate. For the top candidate not currently winning a seat, we show the votes needed to pass the last candidate in, and what share of that jurisdiction&rsquo;s outstanding ballots it would take &mdash; assuming those ballots split only between those two candidates. It is a scenario, not a forecast of how anyone will vote.</p>
     <p><b>Caveats.</b> Results are unofficial until certified by the Monterey County Registrar of Voters. Outstanding ballots are not evenly spread, and not every ballot carries a vote in every contest. Some measures need a 55% or two-thirds majority to pass &mdash; this page shows which side leads, not whether a measure clears its threshold.</p>
   </footer>
@@ -243,8 +245,6 @@ function shortName(s){
   if (/^(Jr|Sr|II|III|IV)\.?$/i.test(tail) && t.length > 1) tail = t[t.length - 2] + ' ' + tail;
   return tail;
 }
-var ORD = ['', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth'];
-function ordinal(n){ return ORD[n] || (n + 'th'); }
 
 /* ---------------------------------------------------------------- math */
 function analyze(r){
@@ -256,6 +256,12 @@ function analyze(r){
     contested: r.c.length > r.seats
   };
   if (!a.contested){ a.status = 'elected'; return a; }
+
+  // Belt and braces: build.py already drops contested multi-seat contests.
+  // A voter there casts up to r.seats votes, so one ballot can back both the
+  // trailing candidate and the one they must pass -- the two-way share below
+  // would be wrong. Show the result, never the arithmetic.
+  if (r.seats > 1){ a.status = 'multi'; return a; }
 
   var lastIn = r.c[r.seats - 1], firstOut = r.c[r.seats];
   a.lastIn = lastIn;
@@ -270,7 +276,8 @@ function analyze(r){
 }
 
 /* -------------------------------------------------------------- render */
-var PILL = { elected:'Elected', close:'Too close to call', lead:'Leading', safe:'Safe lead' };
+var PILL = { elected:'Elected', close:'Too close to call', lead:'Leading',
+             safe:'Safe lead', multi:'Multi-seat' };
 
 function candRows(r, a, limit){
   var top = r.c[0][1] || 1;
@@ -334,28 +341,33 @@ function cardHTML(r, idx){
 
 function takesHTML(r, a){
   if (a.status === 'elected') return electedHTML(r);
+  if (a.status === 'multi'){
+    return '<div class="elected-note" style="background:var(--grey-bg);color:var(--grey)">' +
+      'This contest elects ' + r.seats + ' members, so each voter casts ' + r.seats +
+      ' votes and one ballot can back two candidates at once. A share-of-the-remaining-ballots ' +
+      'figure would mislead, so none is shown.</div>';
+  }
 
   var trailing = proseName(a.firstOut[0]);
   var leading = proseName(a.lastIn[0]);
   var trailShort = shortName(a.firstOut[0]);
   var leadShort = shortName(a.lastIn[0]);
   var where = esc(r.where);
-  var seatWord = r.seats > 1 ? ' for the ' + ordinal(r.seats) + ' and final seat' : '';
   var line;
 
   if (a.remaining <= 0){
     line = 'With no ballots left to count, <strong>' + esc(trailing) + '</strong> stays ' +
-      fmt(a.gap) + ' votes behind <strong>' + esc(leading) + '</strong>' + seatWord +
+      fmt(a.gap) + ' votes behind <strong>' + esc(leading) + '</strong>' +
       '.';
   } else if (a.status === 'safe'){
     line = '<strong>' + esc(trailing) + '</strong> is ' + fmt(a.gap) + ' votes behind <strong>' +
-      esc(leading) + '</strong>' + seatWord + ' &mdash; more than the estimated ' +
+      esc(leading) + '</strong>' + ' &mdash; more than the estimated ' +
       approx(a.remaining) + ' ballots still out in ' + where +
       '. The gap stays out of reach unless more than <strong>' + approx(a.countyNeeded) +
       '</strong> ballots remain countywide.';
   } else if (a.gap === 0){
     line = '<strong>' + esc(trailing) + '</strong> and <strong>' + esc(leading) +
-      '</strong> are tied' + seatWord + '. One vote out of the estimated ' + approx(a.remaining) +
+      '</strong> are tied' + '. One vote out of the estimated ' + approx(a.remaining) +
       ' ballots still out in ' + where + ' would separate them.';
   } else if (r.measure){
     line = '<strong>' + esc(trailing) + '</strong> trails <strong>' + esc(leading) + '</strong> by ' +
@@ -365,7 +377,7 @@ function takesHTML(r, a){
       ' ballots still out in ' + where + '.';
   } else {
     line = '<strong>' + esc(trailing) + '</strong> is ' + fmt(a.gap) + ' votes behind <strong>' +
-      esc(leading) + '</strong>' + seatWord + '. To pass ' + esc(leadShort) + ', ' +
+      esc(leading) + '</strong>' + '. To pass ' + esc(leadShort) + ', ' +
       esc(trailShort) + ' needs <strong>' + fmt(a.need) + ' more votes</strong> than ' +
       esc(leadShort) + ' picks up &mdash; about <strong>' + (a.share * 100).toFixed(0) +
       '%</strong> of the estimated ' + approx(a.remaining) + ' ballots still out in ' + where + '.';
@@ -413,7 +425,7 @@ function visible(){
   return races.map(function(r, i){ return { r:r, i:i, a:analyze(r) }; })
     .filter(function(x){
       if (state.group === 'live'){
-        if (x.a.status === 'elected' || x.a.status === 'safe') return false;
+        if (x.a.status !== 'close' && x.a.status !== 'lead') return false;
       } else if (state.group !== 'all' && x.r.group !== state.group) return false;
       if (!q) return true;
       var hay = (x.r.name + ' ' + x.r.where + ' ' + x.r.what + ' ' +
@@ -424,7 +436,7 @@ function visible(){
       if (state.sort === 'az')
         return (p.r.where + ' ' + p.r.what).localeCompare(n.r.where + ' ' + n.r.what);
       if (state.sort === 'size') return n.r.castVotes - p.r.castVotes;
-      var rank = { close:0, lead:1, safe:2, elected:3 };
+      var rank = { close:0, lead:1, safe:2, multi:3, elected:4 };
       if (rank[p.a.status] !== rank[n.a.status]) return rank[p.a.status] - rank[n.a.status];
       var ps = p.a.share === undefined ? Infinity : p.a.share;
       var ns = n.a.share === undefined ? Infinity : n.a.share;

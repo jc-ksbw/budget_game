@@ -1,8 +1,9 @@
 # Monterey County election tracker
 
-A phone-first, iframe-ready results page for **local** Monterey County contests:
-how each race stands, and — for any race still undecided — how many of the
-outstanding ballots the trailing candidate would still need.
+A phone-first, iframe-ready results page for **local, single-seat** Monterey
+County contests and ballot measures: how each race stands, and — for any race
+still undecided — how many of the outstanding ballots the trailing candidate
+would still need.
 
 Three files matter:
 
@@ -114,20 +115,43 @@ the congressional and Assembly districts that sit inside the county. The rules
 live in the `STATEWIDE` list at the top of `build.py` — delete a line there to
 put a contest back.
 
+**Single-seat contests only.** A contest that elects two or more people *and*
+has more candidates than seats is dropped (`is_multiseat_contest` in
+`build.py`) — 13 of them in Report 07, including the Seaside, Carmel and Sand
+City councils and the five-seat King City and Greenfield school boards.
+
+The reason is that the page's central number does not survive the move to
+multi-seat. In a vote-for-N contest each voter casts up to N votes, so one
+ballot can carry a vote for *both* the trailing candidate and the one they
+have to pass. The share-of-remaining-ballots figure assumes a gain for one is
+a loss for the other, which is false there, and its denominator is wrong as
+well: candidates draw on up to N votes per ballot, not one. Single-seat
+contests and yes/no measures are one vote per ballot, where the arithmetic
+holds.
+
+The page enforces this a second time, independently of the build: `analyze()`
+in `template.html` refuses to compute the catch-up maths for any contest with
+more than one seat and renders a plain explanation in place of the figures. So
+loosening the build filter cannot put a wrong number back on the page.
+
 **Uncontested races are called.** If a contest has no more candidates than
 seats, every candidate is marked elected and no catch-up maths is shown. One
 candidate for one seat and four candidates for four seats are both handled.
+These are kept even when multi-seat, since they carry no arithmetic — only the
+call.
 
-**One scenario per contested race.** Where there are more candidates than seats,
-the page shows the maths for exactly one candidate: the highest-ranked one *not*
-currently winning a seat. In a three-seat race that is the fourth-place
-candidate, and the person they have to pass is third place — not the leader.
+**One scenario per contested race.** The page shows the maths for exactly one
+candidate: second place, against the leader. Where three or four candidates
+contest a single seat, the figure assumes the remaining ballots split between
+those top two — a simplification the card states, not a unit error, because
+each ballot still carries exactly one vote.
 
 **Statuses** are assigned from that one calculation:
 
 | status | meaning |
 |---|---|
 | Elected | unopposed |
+| Multi-seat | a contest the maths does not apply to (never reached in a normal build) |
 | Too close to call | the trailing candidate needs ≤ 60% of the ballots left |
 | Leading | they need more than 60%, but under 100% |
 | Safe lead | they would need more than every ballot left |
@@ -142,7 +166,7 @@ in with `--left`. Everything else follows from figures each contest publishes:
 ```
 ballots counted here      = registration × reported turnout
 ballots still out here    = ballots still out countywide × (ballots counted here ÷ ballots counted countywide)
-votes needed to pass      = (last candidate in) − (first candidate out) + 1
+votes needed to pass      = (leader) − (second place) + 1
 share of the ballots left = (ballots still out + votes needed) ÷ (2 × ballots still out)
 ```
 

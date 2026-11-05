@@ -67,16 +67,23 @@ def scrape(src):
     m = re.search(r'reporting-content".*?<b>Precincts Reported:</b>\s*([^<]+)', s, re.S)
     meta['countyPrecincts'] = strip_tags(m.group(1)) if m else ''
 
+    # Tolerant of attribute changes between report revisions: the county has
+    # already added inline styles once mid-election.
+    # "candidate-table-cell" is what separates a data row from the table header,
+    # and [^<]* keeps a match from bridging across cells into the next row.
+    # Trailing [^>]* tolerates attribute changes: the county added inline styles
+    # and renamed tab-label to tab-label-no-accordion mid-election.
     cand_re = re.compile(
-        r'<div class="candidate-table-name-col candidate-table-cell">(.*?)</div>'
-        r'<div class="candidate-table-party-col candidate-table-cell">(.*?)</div>'
-        r'<div class="candidate-table-count-col candidate-table-cell">([\d,]+) \(([\d.]+)%\)</div>',
-        re.S)
+        r'<div class="candidate-table-name-col candidate-table-cell"[^>]*>([^<]*)</div>\s*'
+        r'<div class="candidate-table-party-col candidate-table-cell"[^>]*>([^<]*)</div>\s*'
+        r'<div class="candidate-table-count-col candidate-table-cell"[^>]*>\s*'
+        r'([\d,]+)\s*\(([\d.]+)%\)\s*</div>')
 
-    races, parts = [], re.split(r'<div id="contest(\d+)" class="contest-section">', s)
+    races, parts = [], re.split(r'<div id="contest(\d+)" class="contest-section"[^>]*>', s)
     for i in range(1, len(parts), 2):
         body = parts[i + 1]
-        lm = re.search(r'<span class="tab-label"[^>]*>(.*?)</span>', body, re.S)
+        lm = re.search(r'<span class="tab-label[^"]*"[^>]*>(.*?)</span>', body, re.S)
+
         if not lm:
             continue
         label = strip_tags(lm.group(1))
@@ -179,12 +186,24 @@ def main():
                     help='saved copy of the county election-results page')
     ap.add_argument('-o', '--out', default=os.path.join(HERE, 'index.html'))
     ap.add_argument('-t', '--template', default=os.path.join(HERE, 'template.html'))
+    ap.add_argument('-l', '--left', type=int, default=0,
+                    help='ballots still to be counted countywide, as reported by the '
+                         'Registrar. 0 means not yet published, and the page says so.')
     args = ap.parse_args()
 
     if not os.path.exists(args.source):
         sys.exit('No results file at %s — save the county page there first.' % args.source)
 
     meta, races = scrape(args.source)
+    strays = [(r['name'], c['name']) for r in races for c in r['candidates']
+              if not c['name'] or 'Candidate Name' in c['name'] or len(c['name']) > 60]
+    if strays:
+        sys.exit('Candidate parse looks wrong (%d suspect names, e.g. %r) — check cand_re.'
+                 % (len(strays), strays[0]))
+    if len(races) < 50:
+        sys.exit('Only %d contests parsed from %s — the county page markup has probably '
+                 'changed. Check the regexes in scrape() before publishing.'
+                 % (len(races), args.source))
     kept, dropped = [], []
     for r in races:
         (dropped if is_statewide(r['name']) else kept).append(r)
@@ -204,11 +223,16 @@ def main():
             'registered': r['registered'],
             'turnout': r['turnout'],
             'totalVotes': r['totalVotes'],
+            # The county's "Total Votes" leaves write-in candidates out, which makes
+            # the published shares in a write-in contest sum past 100%. Percentages
+            # on the page use this instead; the two are equal wherever no write-in ran.
+            'castVotes': sum(c['votes'] for c in cands),
             'vbm': r['vbm'], 'pp': r['pp'],
             'c': [[c['name'], c['votes'], c['party'] if c['party'] not in ('N/A', '') else '']
                   for c in cands],
         })
 
+    meta['ballotsLeft'] = max(0, args.left)
     payload = {'meta': meta, 'races': out}
     tpl = open(args.template, encoding='utf-8').read()
     doc = tpl.replace('/*__DATA__*/null',
@@ -217,6 +241,8 @@ def main():
 
     print('source   %s' % args.source)
     print('report   %s (%s)' % (meta.get('title', '?'), meta.get('published', '?')))
+    print('left     %s' % (format(args.left, ',') + ' ballots still to count countywide'
+                           if args.left else 'outstanding ballots not published (--left unset)'))
     print('kept     %d local contests' % len(kept))
     print('dropped  %d statewide contests' % len(dropped))
     print('wrote    %s (%.0f KB)' % (args.out, os.path.getsize(args.out) / 1024))

@@ -22,22 +22,31 @@ The county has no JSON feed — results are rendered straight into the HTML of
 1. Open that page in a browser.
 2. **File → Save Page As…** → save over `election/source/results.html`
    ("Web Page, HTML Only" is enough and much smaller).
-3. Run the build:
+3. Run the build, passing the number of ballots the Registrar says are still to
+   be processed:
 
 ```bash
-python3 election/build.py
+python3 election/build.py --left 38728
 ```
 
-It prints the report number it found, how many contests it kept and how many it
-dropped, then rewrites `election/index.html`. Commit and deploy that file.
+It prints the report number it found, the outstanding-ballot figure, and how
+many contests it kept and dropped, then rewrites `election/index.html`. Commit
+and deploy that file.
 
-To build from a file somewhere else, or to a different output path:
+Leave `--left` off and the page says the outstanding count has not been
+published, showing each margin but no catch-up maths. To build from a file
+somewhere else, or to a different output path:
 
 ```bash
-python3 election/build.py ~/Downloads/results.html -o /tmp/index.html
+python3 election/build.py ~/Downloads/results.html --left 38728 -o /tmp/index.html
 ```
 
 `build.py` needs only the Python standard library.
+
+**If the build stops with an error**, the county has changed its page markup —
+it already renamed a CSS class and added inline styles once mid-election. The
+script refuses to publish a page it has parsed badly rather than emit an empty
+or wrong one; the three regexes to check are at the top of `scrape()`.
 
 [src]: https://www.countyofmonterey.gov/government/departments-a-h/elections/election-results
 
@@ -90,7 +99,7 @@ tracker is embedded in several stories:
 | `?group=cities` | opens on one filter: `cities`, `schools`, `measures`, `special`, `federal`, `live`, `all` |
 | `?q=salinas` | pre-fills the search box |
 | `?sort=az` | `close` (default), `az`, `size` |
-| `?left=20000` | sets the outstanding-ballot estimate |
+| `?left=20000` | overrides the outstanding-ballot count baked in at build time — useful if the Registrar updates the figure between builds |
 
 Example: `index.html?compact=1&group=cities&q=seaside`
 
@@ -125,13 +134,14 @@ candidate, and the person they have to pass is third place — not the leader.
 
 ---
 
-## How the estimate is calculated
+## How the maths works
 
-Each contest publishes its own registration and turnout, so:
+The countywide outstanding-ballot total comes from the Registrar and is passed
+in with `--left`. Everything else follows from figures each contest publishes:
 
 ```
 ballots counted here      = registration × reported turnout
-ballots still out here    = countywide ballots still out × (ballots counted here ÷ ballots counted countywide)
+ballots still out here    = ballots still out countywide × (ballots counted here ÷ ballots counted countywide)
 votes needed to pass      = (last candidate in) − (first candidate out) + 1
 share of the ballots left = (ballots still out + votes needed) ÷ (2 × ballots still out)
 ```
@@ -140,14 +150,15 @@ That last line is the head-to-head share: to make up a gap of *g* out of *r*
 remaining ballots, a candidate has to win those ballots by *g*, which means
 taking *(r+g)/2* of them.
 
-The one number a journalist sets is **ballots still to be counted countywide**,
-in the "Scenario" panel. It defaults to 15,000, which would put Monterey County
-at about 43% final turnout. On election night, replace it with the figure the
-Registrar reports as unprocessed — vote-by-mail, provisionals and conditional
-registrations — and every race on the page recalculates. The panel shows the
-final countywide turnout each setting implies, as a sanity check.
+The countywide figure is known. The split between jurisdictions is not — it
+assumes outstanding ballots are spread like the ballots already counted, which
+is an assumption, not a fact, and the page says so.
 
-Caveats stated on the page itself: results are unofficial until certified,
-outstanding ballots are not spread evenly across jurisdictions, not every ballot
-carries a vote in every contest, and some measures need a 55% or two-thirds
-majority that this page does not attempt to judge.
+Vote shares use the sum of every candidate's votes, not the county's "Total
+Votes" field, which leaves write-in candidates out. The two are identical in
+every contest without a write-in; where there is one, the county's own
+percentages sum past 100%.
+
+Other caveats stated on the page itself: results are unofficial until certified,
+not every ballot carries a vote in every contest, and some measures need a 55%
+or two-thirds majority that this page does not attempt to judge.

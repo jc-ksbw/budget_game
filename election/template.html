@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Monterey County local election results | KSBW</title>
+<meta name="description" content="Unofficial Monterey County local election results, and how many of the remaining ballots a trailing candidate would still need.">
+<base target="_blank">
+<style>
+:root{
+  --navy:#0b2740; --blue:#15699f; --blue-dk:#0f5280; --sky:#eef6fb;
+  --ink:#16242f; --muted:#5d7083; --line:#dde5ec; --bg:#fff;
+  --green:#0d7347; --green-bg:#e7f5ee;
+  --amber:#8a5500; --amber-bg:#fff4da;
+  --grey:#5d7083; --grey-bg:#eef1f4;
+  --bar:#ccdae5; --bar-lead:#15699f; --bar-win:#0d7347;
+  --r:10px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;overflow-x:hidden}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,Helvetica,sans-serif;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:720px;margin:0 auto;padding:16px 14px 26px}
+a{color:var(--blue-dk)}
+button{font-family:inherit}
+
+/* ---------- header ---------- */
+.eyebrow{font:800 11px/1 inherit;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin:0 0 8px}
+h1{font-size:25px;line-height:1.15;margin:0 0 8px;color:var(--navy);letter-spacing:-.01em}
+.lede{margin:0;color:var(--muted);font-size:14.5px}
+.stamp{margin:12px 0 0;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.stamp b{color:var(--ink);font-weight:700}
+body.compact header{display:none}
+body.compact .wrap{padding-top:10px}
+
+/* ---------- controls ---------- */
+.controls{margin:16px 0 0}
+.search{
+  width:100%;padding:11px 12px;border:1px solid #c3d0db;border-radius:var(--r);
+  font-size:16px;font-family:inherit;background:#fff;color:var(--ink);
+}
+.search:focus{outline:2px solid var(--blue);outline-offset:1px;border-color:var(--blue)}
+.chips{display:flex;gap:6px;overflow-x:auto;margin:0 -14px;padding:10px 14px 2px;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{
+  flex:0 0 auto;border:1px solid #c3d0db;background:#fff;color:var(--ink);
+  padding:7px 12px;border-radius:999px;font:600 13px/1 inherit;cursor:pointer;white-space:nowrap;
+}
+.chip[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.sortrow{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:13px;color:var(--muted);flex-wrap:wrap}
+.sortrow select{font:inherit;font-size:13px;padding:6px 8px;border:1px solid #c3d0db;border-radius:7px;background:#fff;color:var(--ink)}
+.resultcount{margin-left:auto;font-variant-numeric:tabular-nums}
+
+/* ---------- scenario ---------- */
+details.scen{margin:11px 0 0;border:1px solid #cfe0ec;border-radius:var(--r);background:var(--sky)}
+details.scen>summary{
+  padding:11px 13px;cursor:pointer;font:700 13.5px/1.35 inherit;color:var(--navy);
+  list-style:none;display:flex;align-items:center;gap:8px;
+}
+details.scen>summary::-webkit-details-marker{display:none}
+details.scen>summary::after{content:"▾";margin-left:auto;color:var(--blue);font-size:12px}
+details.scen[open]>summary::after{content:"▴"}
+.scen-body{padding:0 13px 13px;font-size:13.5px}
+.left-label{display:block;font-weight:700;color:var(--navy);margin:2px 0 6px}
+.left-row{display:flex;align-items:center;gap:12px;margin:0 0 10px}
+.left-row input[type=range]{flex:1 1 auto;min-width:0;accent-color:var(--blue)}
+.left-val{font:800 18px/1 inherit;color:var(--navy);font-variant-numeric:tabular-nums;min-width:64px;text-align:right}
+.presets{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:9px}
+.preset{border:1px solid #bcd0df;background:#fff;color:var(--blue-dk);border-radius:7px;
+  padding:5px 9px;font:700 12.5px/1 inherit;cursor:pointer}
+.preset[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.scen-note{color:var(--muted);font-size:12.5px;margin:0;line-height:1.55}
+.scen-note b{color:var(--ink)}
+
+/* ---------- cards ---------- */
+.list{margin-top:14px}
+.card{border:1px solid var(--line);border-radius:var(--r);background:#fff;margin-bottom:10px;overflow:hidden}
+.card-top{display:block;width:100%;text-align:left;background:none;border:0;padding:13px 14px;font:inherit;color:inherit;cursor:pointer}
+.card-top:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.where{display:block;font:700 11.5px/1.3 inherit;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.what{font:800 17px/1.25 inherit;color:var(--navy);margin:2px 0 0;letter-spacing:-.005em}
+.sub{font-size:12.5px;color:var(--muted);margin-top:3px}
+.pill{display:inline-block;padding:3px 8px;border-radius:999px;font:800 10.5px/1.35 inherit;
+  letter-spacing:.07em;text-transform:uppercase;white-space:nowrap}
+.pill.elected{background:var(--green-bg);color:var(--green)}
+.pill.close{background:var(--amber-bg);color:var(--amber)}
+.pill.lead{background:var(--sky);color:var(--blue-dk)}
+.pill.safe{background:var(--grey-bg);color:var(--grey)}
+.headrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:3px}
+.headrow .where{min-width:0;overflow-wrap:anywhere}
+
+.cands{margin-top:11px}
+.cand{padding:6px 0 0}
+.cand-line{display:flex;align-items:baseline;gap:7px}
+.mark{flex:0 0 11px;font-weight:700;font-size:11px;line-height:1.6;color:var(--blue)}
+.cand.won .mark{color:var(--green);font-size:13px}
+.cname{flex:1 1 auto;font-weight:700;font-size:14.5px;min-width:0;overflow-wrap:anywhere}
+.cand.out .cname{font-weight:600;color:#3d4f5e}
+.party{display:inline-block;margin-left:5px;padding:1px 5px;border-radius:4px;
+  font:800 10px/1.5 inherit;letter-spacing:.04em;background:var(--grey-bg);color:var(--grey);vertical-align:1px}
+.party.dem{background:#e6eefa;color:#17417e}
+.party.rep{background:#fbeaea;color:#8d2b24}
+.party.wi{background:#f3eefa;color:#5a3f87;text-transform:none;letter-spacing:0;font-weight:700}
+.cvotes{font-weight:700;font-variant-numeric:tabular-nums;font-size:14px}
+.cpct{color:var(--muted);font-size:12.5px;font-variant-numeric:tabular-nums;min-width:44px;text-align:right}
+.bar{height:6px;background:#eef2f5;border-radius:6px;overflow:hidden;margin:5px 0 0}
+.bar>span{display:block;height:100%;border-radius:6px;background:var(--bar)}
+.cand.in .bar>span{background:var(--bar-lead)}
+.cand.won .bar>span{background:var(--bar-win)}
+.more{margin:0 14px 11px;background:none;border:0;padding:3px 0;color:var(--blue-dk);
+  font:700 13px/1 inherit;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+.takes{margin:11px 14px 13px;border-left:3px solid var(--blue);background:var(--sky);
+  border-radius:0 8px 8px 0;padding:11px 12px}
+.takes.safe{border-left-color:#9fb0bf;background:var(--grey-bg)}
+.takes.close{border-left-color:#d79a1b;background:var(--amber-bg)}
+.takes h3{margin:0 0 8px;font:800 10.5px/1.3 inherit;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.big{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:9px}
+.big b{display:block;font:800 20px/1.1 inherit;color:var(--navy);font-variant-numeric:tabular-nums}
+.big small{display:block;color:var(--muted);font-size:11px;margin-top:3px;line-height:1.3}
+.takes p{margin:0;font-size:13.5px;line-height:1.5}
+.takes p strong{color:var(--navy)}
+.elected-note{margin:0 14px 13px;background:var(--green-bg);color:var(--green);
+  border-radius:8px;padding:10px 12px;font-size:13.5px;line-height:1.45}
+.elected-note strong{color:#0a5634}
+
+.detail{border-top:1px solid var(--line);padding:11px 14px 13px;background:#fbfcfd}
+.facts{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:12.5px;color:var(--muted);margin:0}
+.facts b{color:var(--ink);font-variant-numeric:tabular-nums}
+.method{margin:9px 0 0;font-size:12px;color:var(--muted);line-height:1.55}
+.empty{padding:28px 14px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:var(--r)}
+.showmore{display:block;width:100%;margin:4px 0 0;padding:13px;border:1px solid #c3d0db;
+  background:#fff;color:var(--blue-dk);border-radius:var(--r);font:800 14px/1 inherit;cursor:pointer}
+.showmore:hover{background:var(--sky)}
+
+footer{margin-top:20px;border-top:1px solid var(--line);padding-top:12px;font-size:12px;color:var(--muted);line-height:1.6}
+footer p{margin:0 0 8px}
+
+@media (min-width:620px){
+  .wrap{padding:22px 20px 32px}
+  h1{font-size:31px}
+  .what{font-size:18.5px}
+  .chips{flex-wrap:wrap;overflow:visible;margin:0;padding:10px 0 2px}
+  .big{grid-template-columns:repeat(3,minmax(0,160px))}
+}
+@media (prefers-reduced-motion:no-preference){.bar>span{transition:width .25s ease}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow" id="eyebrow">Monterey County</p>
+    <h1>What&rsquo;s left to count?</h1>
+    <p class="lede">Local results only &mdash; county, city, school and special-district contests and local measures. For every race still undecided, see how many of the outstanding ballots the trailing candidate would need.</p>
+    <p class="stamp" id="stamp"></p>
+  </header>
+
+  <div class="controls">
+    <input class="search" id="q" type="search" placeholder="Search a race, city or candidate…" aria-label="Search races, cities or candidates" autocomplete="off">
+    <div class="chips" id="chips" role="group" aria-label="Filter races"></div>
+    <div class="sortrow">
+      <label for="sort">Sort</label>
+      <select id="sort">
+        <option value="close">Closest first</option>
+        <option value="az">By jurisdiction (A&ndash;Z)</option>
+        <option value="size">Most votes cast</option>
+      </select>
+      <span class="resultcount" id="count"></span>
+    </div>
+
+    <details class="scen" id="scen">
+      <summary>Scenario: how many ballots are still out?</summary>
+      <div class="scen-body">
+        <label class="left-label" for="left">Ballots still to be counted countywide</label>
+        <div class="left-row">
+          <input id="left" type="range" min="0" max="60000" step="1000" value="15000">
+          <span class="left-val" id="leftVal">15,000</span>
+        </div>
+        <div class="presets" id="presets"></div>
+        <p class="scen-note" id="scenNote"></p>
+      </div>
+    </details>
+  </div>
+
+  <div class="list" id="list"></div>
+  <button class="showmore" id="showmore" hidden></button>
+
+  <footer>
+    <p id="srcline"></p>
+    <p><b>How the estimate works.</b> Each contest reports its own registration and turnout, so ballots already counted in that jurisdiction = registration &times; reported turnout. The outstanding ballots you set above are spread across jurisdictions in proportion to the ballots each has already counted. For the top candidate not currently winning a seat, we show the votes needed to pass the last candidate in, and what share of that jurisdiction&rsquo;s outstanding ballots it would take &mdash; assuming those ballots split only between those two candidates. It is a scenario, not a forecast of how anyone will vote.</p>
+    <p><b>Caveats.</b> Results are unofficial until certified by the Monterey County Registrar of Voters. Outstanding ballots are not evenly spread, and not every ballot carries a vote in every contest. Some measures need a 55% or two-thirds majority to pass &mdash; this page shows which side leads, not whether a measure clears its threshold.</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+var DATA = /*__DATA__*/null;
+var races = DATA.races, meta = DATA.meta;
+var COUNTY_COUNTED = meta.countyBallots || 0;
+var COUNTY_REG = meta.countyRegistered || 0;
+
+var params = new URLSearchParams(location.search);
+if (params.get('compact') === '1') document.body.classList.add('compact');
+
+var GROUPS = [
+  {k:'all',      label:'All'},
+  {k:'live',     label:'Still in play'},
+  {k:'cities',   label:'Cities'},
+  {k:'schools',  label:'Schools'},
+  {k:'measures', label:'Measures'},
+  {k:'special',  label:'Special districts'},
+  {k:'federal',  label:'Congress & Assembly'}
+];
+var PAGE = 12, STEP = 20;
+
+var state = {
+  q: params.get('q') || '',
+  group: params.get('group') || 'all',
+  sort: params.get('sort') || 'close',
+  left: clamp(parseInt(params.get('left'), 10) || 15000, 0, 60000),
+  limit: PAGE,
+  open: {},
+  showAll: {}
+};
+
+/* ------------------------------------------------------------- helpers */
+function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+function fmt(n){ return Math.round(n).toLocaleString('en-US'); }
+function approx(n){
+  n = Math.round(n);
+  if (n >= 2000) return fmt(Math.round(n / 100) * 100);
+  if (n >= 200)  return fmt(Math.round(n / 10) * 10);
+  return fmt(n);
+}
+function esc(s){
+  return String(s).replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+function titleCase(s){
+  // split on separators so accented letters (Muñoz, Velásquez) are not treated
+  // as word boundaries the way \b would
+  return String(s).toLowerCase().split(/([\s"'()\-\/.]+)/)
+    .map(function(w){ return w.charAt(0).toUpperCase() + w.slice(1); }).join('')
+    .replace(/\b(Iii|Ii|Iv)\b/g, function(m){ return m.toUpperCase(); })
+    .replace(/\b(Jr|Sr)\b\.?/g, function(m){ return m.replace('.', '') + '.'; })
+    .replace(/\bMc([a-z])/g, function(_, c){ return 'Mc' + c.toUpperCase(); });
+}
+function isYN(s){ return s === 'YES' || s === 'NO'; }
+function rowName(s){ return isYN(s) ? s : titleCase(s); }
+function proseName(s){ return isYN(s) ? (s === 'YES' ? 'Yes' : 'No') : titleCase(s); }
+function shortName(s){
+  if (isYN(s)) return proseName(s);
+  var t = titleCase(s).replace(/\(.*?\)/g, ' ').replace(/"[^"]*"/g, ' ').trim().split(/\s+/);
+  var tail = t[t.length - 1];
+  if (/^(Jr|Sr|II|III|IV)\.?$/i.test(tail) && t.length > 1) tail = t[t.length - 2] + ' ' + tail;
+  return tail;
+}
+var ORD = ['', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth'];
+function ordinal(n){ return ORD[n] || (n + 'th'); }
+
+/* ---------------------------------------------------------------- math */
+function analyze(r){
+  var counted = Math.round(r.registered * r.turnout / 100);
+  var remaining = COUNTY_COUNTED ? Math.round(state.left * counted / COUNTY_COUNTED) : 0;
+  var a = {
+    counted: counted,
+    remaining: remaining,
+    contested: r.c.length > r.seats
+  };
+  if (!a.contested){ a.status = 'elected'; return a; }
+
+  var lastIn = r.c[r.seats - 1], firstOut = r.c[r.seats];
+  a.lastIn = lastIn;
+  a.firstOut = firstOut;
+  a.gap = lastIn[1] - firstOut[1];
+  a.need = a.gap + 1;                                       // votes needed to pass
+  a.share = remaining > 0 ? (remaining + a.need) / (2 * remaining) : Infinity;
+  // ballots that would have to be outstanding countywide for the gap to be closeable
+  a.countyNeeded = counted ? a.need * COUNTY_COUNTED / counted : Infinity;
+  a.status = a.share > 1 ? 'safe' : (a.share <= 0.60 ? 'close' : 'lead');
+  return a;
+}
+
+/* -------------------------------------------------------------- render */
+var PILL = { elected:'Elected', close:'Too close to call', lead:'Leading', safe:'Safe lead' };
+
+function candRows(r, a, limit){
+  var top = r.c[0][1] || 1;
+  return r.c.slice(0, limit).map(function(c, i){
+    var inSeat = i < r.seats;
+    var cls = a.status === 'elected' && inSeat ? 'won' : (inSeat ? 'in' : 'out');
+    var mark = a.status === 'elected' && inSeat ? '✓' : (inSeat && r.seats > 1 ? '●' : '');
+    var pct = r.totalVotes ? (c[1] / r.totalVotes * 100) : 0;
+    var tag = '';
+    if (c[2] === 'DEM') tag = '<span class="party dem">DEM</span>';
+    else if (c[2] === 'REP') tag = '<span class="party rep">REP</span>';
+    else if (/write/i.test(c[2] || '')) tag = '<span class="party wi">Write-in</span>';
+    else if (c[2]) tag = '<span class="party">' + esc(c[2]) + '</span>';
+    return '<div class="cand ' + cls + '">' +
+             '<div class="cand-line">' +
+               '<span class="mark" aria-hidden="true">' + mark + '</span>' +
+               '<span class="cname">' + esc(rowName(c[0])) + tag + '</span>' +
+               '<span class="cvotes">' + fmt(c[1]) + '</span>' +
+               '<span class="cpct">' + pct.toFixed(1) + '%</span>' +
+             '</div>' +
+             '<div class="bar"><span style="width:' + (c[1] / top * 100).toFixed(2) + '%"></span></div>' +
+           '</div>';
+  }).join('');
+}
+
+function precinctLine(r){
+  if (!r.precinctsOf) return '';
+  if (r.precinctsIn >= r.precinctsOf) return 'All precincts reporting';
+  return r.precinctsIn + ' of ' + r.precinctsOf + ' precincts reporting';
+}
+
+function cardHTML(r, idx){
+  var a = analyze(r);
+  var open = !!state.open[idx];
+  var showAll = !!state.showAll[idx];
+  var base = Math.max(r.seats + 1, 3);
+  var limit = showAll ? r.c.length : Math.min(r.c.length, base);
+
+  var moreBtn = '';
+  if (r.c.length > base){
+    moreBtn = '<button class="more" data-more="' + idx + '">' +
+      (showAll ? 'Show fewer' : 'Show all ' + r.c.length + ' candidates') + '</button>';
+  }
+
+  return '<article class="card">' +
+    '<button class="card-top" data-i="' + idx + '" aria-expanded="' + open + '">' +
+      '<div class="headrow">' +
+        '<span class="pill ' + a.status + '">' + PILL[a.status] + '</span>' +
+        '<span class="where">' + esc(r.where) + '</span>' +
+      '</div>' +
+      '<div class="what">' + esc(r.what) + '</div>' +
+      '<div class="sub">' + (r.measure ? 'Ballot measure' : 'Vote for ' + r.seats) +
+        ' &middot; ' + precinctLine(r) + '</div>' +
+      '<div class="cands">' + candRows(r, a, limit) + '</div>' +
+    '</button>' +
+    moreBtn +
+    takesHTML(r, a) +
+    (open ? detailHTML(r, a) : '') +
+  '</article>';
+}
+
+function takesHTML(r, a){
+  if (a.status === 'elected') return electedHTML(r);
+
+  var trailing = proseName(a.firstOut[0]);
+  var leading = proseName(a.lastIn[0]);
+  var trailShort = shortName(a.firstOut[0]);
+  var leadShort = shortName(a.lastIn[0]);
+  var where = esc(r.where);
+  var seatWord = r.seats > 1 ? ' for the ' + ordinal(r.seats) + ' and final seat' : '';
+  var line;
+
+  if (a.remaining <= 0){
+    line = 'With no ballots left to count, <strong>' + esc(trailing) + '</strong> stays ' +
+      fmt(a.gap) + ' votes behind <strong>' + esc(leading) + '</strong>' + seatWord +
+      '. Raise the outstanding-ballot setting above to model late returns.';
+  } else if (a.status === 'safe'){
+    line = '<strong>' + esc(trailing) + '</strong> is ' + fmt(a.gap) + ' votes behind <strong>' +
+      esc(leading) + '</strong>' + seatWord + ' &mdash; more than the estimated ' +
+      approx(a.remaining) + ' ballots still out in ' + where +
+      '. The gap stays out of reach unless more than <strong>' + approx(a.countyNeeded) +
+      '</strong> ballots remain countywide.';
+  } else if (a.gap === 0){
+    line = '<strong>' + esc(trailing) + '</strong> and <strong>' + esc(leading) +
+      '</strong> are tied' + seatWord + '. One vote out of the estimated ' + approx(a.remaining) +
+      ' ballots still out in ' + where + ' would separate them.';
+  } else if (r.measure){
+    line = '<strong>' + esc(trailing) + '</strong> trails <strong>' + esc(leading) + '</strong> by ' +
+      fmt(a.gap) + ' votes. To pull ahead, ' + esc(trailing) + ' would need <strong>' + fmt(a.need) +
+      ' more votes</strong> than ' + esc(leading) + ' picks up &mdash; about <strong>' +
+      (a.share * 100).toFixed(0) + '%</strong> of the estimated ' + approx(a.remaining) +
+      ' ballots still out in ' + where + '.';
+  } else {
+    line = '<strong>' + esc(trailing) + '</strong> is ' + fmt(a.gap) + ' votes behind <strong>' +
+      esc(leading) + '</strong>' + seatWord + '. To pass ' + esc(leadShort) + ', ' +
+      esc(trailShort) + ' needs <strong>' + fmt(a.need) + ' more votes</strong> than ' +
+      esc(leadShort) + ' picks up &mdash; about <strong>' + (a.share * 100).toFixed(0) +
+      '%</strong> of the estimated ' + approx(a.remaining) + ' ballots still out in ' + where + '.';
+  }
+
+  var stats = '<div class="big">' +
+      '<div><b>' + fmt(a.need) + '</b><small>votes ' + esc(trailShort) + ' still needs</small></div>' +
+      '<div><b>' + (a.share > 1 ? '&mdash;' : (a.share * 100).toFixed(0) + '%') +
+        '</b><small>of the ballots left here</small></div>' +
+      '<div><b>' + approx(a.remaining) + '</b><small>est. ballots left here</small></div>' +
+    '</div>';
+
+  return '<div class="takes ' + a.status + '">' +
+    '<h3>What it would take</h3>' + stats + '<p>' + line + '</p></div>';
+}
+
+function electedHTML(r){
+  var who = r.c.map(function(c){ return esc(proseName(c[0])); });
+  var txt = r.c.length === 1
+    ? '<strong>' + who[0] + '</strong> ran unopposed and is elected.'
+    : '<strong>' + who.slice(0, -1).join(', ') + ' and ' + who[who.length - 1] +
+      '</strong> ran unopposed for ' + r.seats + ' seats and are elected.';
+  return '<div class="elected-note">✓ ' + txt + '</div>';
+}
+
+function detailHTML(r, a){
+  var mailed = (r.vbm + r.pp) ? (r.vbm / (r.vbm + r.pp) * 100) : 0;
+  return '<div class="detail">' +
+    '<p class="facts">' +
+      '<span>Registered voters: <b>' + fmt(r.registered) + '</b></span>' +
+      '<span>Ballots counted: <b>' + fmt(a.counted) + '</b> (' + r.turnout.toFixed(2) + '%)</span>' +
+      '<span>Votes cast in this contest: <b>' + fmt(r.totalVotes) + '</b></span>' +
+      '<span>Counted by mail: <b>' + mailed.toFixed(0) + '%</b></span>' +
+    '</p>' +
+    '<p class="method">Of the ' + fmt(state.left) + ' ballots assumed still outstanding countywide, ' +
+      'this jurisdiction&rsquo;s share works out to about ' + approx(a.remaining) + '. ' +
+      'Late-arriving ballots are overwhelmingly vote-by-mail. ' +
+      'Official contest name: ' + esc(r.name) + '.</p>' +
+  '</div>';
+}
+
+/* ---------------------------------------------------------------- list */
+function visible(){
+  var q = state.q.trim().toLowerCase();
+  return races.map(function(r, i){ return { r:r, i:i, a:analyze(r) }; })
+    .filter(function(x){
+      if (state.group === 'live'){
+        if (x.a.status === 'elected' || x.a.status === 'safe') return false;
+      } else if (state.group !== 'all' && x.r.group !== state.group) return false;
+      if (!q) return true;
+      var hay = (x.r.name + ' ' + x.r.where + ' ' + x.r.what + ' ' +
+                 x.r.c.map(function(c){ return c[0]; }).join(' ')).toLowerCase();
+      return hay.indexOf(q) !== -1;
+    })
+    .sort(function(p, n){
+      if (state.sort === 'az')
+        return (p.r.where + ' ' + p.r.what).localeCompare(n.r.where + ' ' + n.r.what);
+      if (state.sort === 'size') return n.r.totalVotes - p.r.totalVotes;
+      var rank = { close:0, lead:1, safe:2, elected:3 };
+      if (rank[p.a.status] !== rank[n.a.status]) return rank[p.a.status] - rank[n.a.status];
+      var ps = p.a.share === undefined ? Infinity : p.a.share;
+      var ns = n.a.share === undefined ? Infinity : n.a.share;
+      if (ps !== ns) return ps - ns;
+      return n.r.totalVotes - p.r.totalVotes;
+    });
+}
+
+function render(){
+  var rows = visible();
+  var shown = rows.slice(0, state.limit);
+  document.getElementById('list').innerHTML = shown.length
+    ? shown.map(function(x){ return cardHTML(x.r, x.i); }).join('')
+    : '<div class="empty">No local races match that search.</div>';
+
+  var btn = document.getElementById('showmore');
+  if (rows.length > shown.length){
+    btn.hidden = false;
+    btn.textContent = 'Show ' + Math.min(STEP, rows.length - shown.length) +
+      ' more of ' + rows.length + ' races';
+  } else {
+    btn.hidden = true;
+  }
+  document.getElementById('count').textContent =
+    rows.length + (rows.length === 1 ? ' race' : ' races');
+  postHeight();
+}
+
+function renderScenario(){
+  document.getElementById('leftVal').textContent = fmt(state.left);
+  var finalBallots = COUNTY_COUNTED + state.left;
+  var finalTurnout = COUNTY_REG ? (finalBallots / COUNTY_REG * 100) : 0;
+  document.getElementById('scenNote').innerHTML =
+    'Monterey County has counted <b>' + fmt(COUNTY_COUNTED) + '</b> ballots, ' +
+    (COUNTY_REG ? (COUNTY_COUNTED / COUNTY_REG * 100).toFixed(1) + '% of ' + fmt(COUNTY_REG) +
+      ' registered voters' : '') + '. Another <b>' + fmt(state.left) +
+    '</b> would bring the county to <b>' + fmt(finalBallots) + '</b> ballots, a final turnout of <b>' +
+    finalTurnout.toFixed(1) + '%</b>. Set this to the number of unprocessed ballots the Registrar reports.';
+  document.querySelectorAll('.preset').forEach(function(b){
+    b.setAttribute('aria-pressed', String(Number(b.dataset.v) === state.left));
+  });
+}
+
+function buildChips(){
+  var counts = {};
+  races.forEach(function(r){ counts[r.group] = (counts[r.group] || 0) + 1; });
+  document.getElementById('chips').innerHTML = GROUPS.filter(function(g){
+    return g.k === 'all' || g.k === 'live' || counts[g.k];
+  }).map(function(g){
+    var n = g.k === 'all' ? races.length : (g.k === 'live' ? '' : counts[g.k]);
+    return '<button class="chip" data-g="' + g.k + '" aria-pressed="' + (state.group === g.k) +
+      '">' + g.label + (n ? ' ' + n : '') + '</button>';
+  }).join('');
+}
+
+function buildPresets(){
+  document.getElementById('presets').innerHTML =
+    [0, 5000, 10000, 15000, 25000, 40000].map(function(v){
+      return '<button class="preset" data-v="' + v + '" aria-pressed="false">' +
+        (v ? fmt(v) : 'None') + '</button>';
+    }).join('');
+}
+
+function stamp(){
+  var d = (meta.date || '').replace(/^[A-Za-z]+,\s*/, '')
+    .replace(/^(Jan|Feb|Aug|Sept?|Oct|Nov|Dec)[a-z]*/, '$1.')
+    .replace(/^Sep\./, 'Sept.');
+  document.getElementById('eyebrow').textContent = 'Monterey County' + (d ? ' · ' + d : '');
+  document.getElementById('stamp').innerHTML =
+    '<b>Unofficial results</b> &middot; ' + esc(meta.title || '') + ' &middot; posted ' +
+    esc(meta.published || '') + ' &middot; ' + esc(meta.countyPrecincts || '') +
+    ' precincts reporting countywide.';
+  document.getElementById('srcline').innerHTML =
+    'Source: <a href="https://www.countyofmonterey.gov/government/departments-a-h/elections/election-results">' +
+    'Monterey County Registrar of Voters</a> &mdash; ' + esc(meta.title || '') + ', posted ' +
+    esc(meta.published || '') + '. Statewide offices, judicial retention and statewide propositions ' +
+    'are not shown on this page.';
+}
+
+/* ------------------------------------------------------- iframe height */
+var lastH = 0;
+function postHeight(){
+  var h = Math.ceil(document.documentElement.getBoundingClientRect().height);
+  if (h === lastH) return;
+  lastH = h;
+  try {
+    parent.postMessage({ type:'ksbw:embed:height', slug:'monterey-election', height:h }, '*');
+  } catch (e) {}
+}
+window.addEventListener('message', function(e){
+  var d = e.data;
+  if (d === 'ksbw:embed:ping' || (d && d.type === 'ksbw:embed:ping')){ lastH = 0; postHeight(); }
+});
+if (window.ResizeObserver) new ResizeObserver(postHeight).observe(document.documentElement);
+window.addEventListener('load', postHeight);
+window.addEventListener('resize', function(){ lastH = 0; postHeight(); });
+
+/* ------------------------------------------------------------- events */
+document.getElementById('list').addEventListener('click', function(e){
+  var m = e.target.closest('[data-more]');
+  if (m){ state.showAll[m.dataset.more] = !state.showAll[m.dataset.more]; render(); return; }
+  var t = e.target.closest('[data-i]');
+  if (t){ state.open[t.dataset.i] = !state.open[t.dataset.i]; render(); }
+});
+document.getElementById('showmore').addEventListener('click', function(){
+  state.limit += STEP; render();
+});
+document.getElementById('chips').addEventListener('click', function(e){
+  var b = e.target.closest('.chip');
+  if (!b) return;
+  state.group = b.dataset.g; state.limit = PAGE;
+  buildChips(); render();
+});
+document.getElementById('q').addEventListener('input', function(e){
+  state.q = e.target.value; state.limit = PAGE; render();
+});
+document.getElementById('sort').addEventListener('change', function(e){
+  state.sort = e.target.value; state.limit = PAGE; render();
+});
+document.getElementById('left').addEventListener('input', function(e){
+  state.left = clamp(parseInt(e.target.value, 10) || 0, 0, 60000);
+  renderScenario(); render();
+});
+document.getElementById('presets').addEventListener('click', function(e){
+  var b = e.target.closest('.preset');
+  if (!b) return;
+  state.left = Number(b.dataset.v);
+  document.getElementById('left').value = state.left;
+  renderScenario(); render();
+});
+document.getElementById('scen').addEventListener('toggle', function(){ lastH = 0; postHeight(); });
+
+/* ------------------------------------------------------------------ go */
+document.getElementById('q').value = state.q;
+document.getElementById('sort').value = state.sort;
+document.getElementById('left').value = state.left;
+stamp(); buildChips(); buildPresets(); renderScenario(); render();
+})();
+</script>
+</body>
+</html>

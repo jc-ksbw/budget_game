@@ -215,3 +215,15 @@ would contain duplicate top-level declarations.
 To retarget the game at another city, replace the two JSON files. The engine
 reads departments, revenues, actions, meters and community voices entirely from
 data.
+
+---
+
+## Also in this repo: the Monterey County election tracker
+
+`election/` is a separate, self-contained project — a phone-first, iframe-ready
+page of **local** Monterey County election results that shows, for each
+undecided race, how many of the outstanding ballots the trailing candidate would
+still need. It shares nothing with the budget game but the repo and the host.
+
+See **[election/README.md](election/README.md)** for how to refresh the numbers
+on election night and how to embed the page.

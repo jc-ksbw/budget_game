@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Embed test — Monterey County election tracker</title>
+<style>
+  body{font:16px/1.5 Georgia,serif;margin:0;background:#f2f4f6;color:#222}
+  .story{max-width:760px;margin:0 auto;padding:30px 18px 60px;background:#fff}
+  h1{font:800 30px/1.2 Arial,sans-serif}
+  iframe{width:100%;border:0;display:block}
+  .note{background:#fffbe9;border-left:4px solid #e2b21b;padding:10px 12px;font-size:14px}
+</style>
+</head>
+<body>
+<div class="story">
+  <h1>Monterey County election results</h1>
+  <p>Story text above the embed. The iframe below resizes itself to its content,
+     so the reader never gets a scrollbar inside a scrollbar.</p>
+
+  <!-- ------------------------- PASTE FROM HERE ------------------------- -->
+  <iframe id="ksbw-monterey-election"
+          src="index.html"
+          title="Monterey County local election results"
+          scrolling="no"
+          loading="lazy"
+          style="width:100%;border:0;height:1400px"></iframe>
+  <script>
+  (function(){
+    var frame = document.getElementById('ksbw-monterey-election');
+    window.addEventListener('message', function(e){
+      var d = e.data;
+      if (!d || d.type !== 'ksbw:embed:height') return;
+      if (e.source !== frame.contentWindow) return;
+      frame.style.height = d.height + 'px';
+    });
+    // ask for a height in case the first message was sent before this listener existed
+    frame.addEventListener('load', function(){
+      frame.contentWindow.postMessage('ksbw:embed:ping', '*');
+    });
+  })();
+  </script>
+  <!-- -------------------------- TO HERE -------------------------------- -->
+
+  <p>Story text below the embed.</p>
+  <p class="note">If the CMS cannot run the resize script, drop it and give the
+     iframe a fixed height (for example <code>height:1600px</code>) plus
+     <code>scrolling="yes"</code>. The page works either way.</p>
+</div>
+</body>
+</html>
